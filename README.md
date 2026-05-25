@@ -1,50 +1,60 @@
-# Claude Wall Monitor — Docs
+# Claude Wall Monitor — public site
 
-Manual de usuario del **Claude Wall Monitor**, el panel de pared (ESP32-S3) que
-muestra el uso en tiempo real de Claude, Codex y Gemini.
+Public landing + tutorial site for the Claude Wall Monitor ESP32
+wall display. Source for <https://fractal-manifold.github.io/c-wall-monitor-docs/>.
 
-🌐 **Sitio en vivo:** https://fractal-manifold.github.io/c-wall-monitor-docs/
+## Stack
 
-El sitio es estático, generado con [Astro](https://astro.build) + [Starlight](https://starlight.astro.build) y se publica automáticamente en GitHub Pages cada vez que se hace push a `main`.
+Static HTML + CSS + JS — no build step.
 
-## Desarrollo
+## Local preview
 
 ```bash
-npm install
-npm run dev       # http://localhost:4321/c-wall-monitor-docs
-npm run build     # genera dist/
-npm run preview   # sirve dist/ localmente
+python3 -m http.server 8000
+# → http://localhost:8000
 ```
 
-## Estructura
+Any static file server works (`npx serve`, `caddy file-server`, etc.).
+
+## Structure
 
 ```
-src/
-  assets/         # logo, imágenes referenciadas desde MDX
-  content/docs/   # contenido del manual (Markdown / MDX)
-    introduccion/
-    puesta-en-marcha/
-    uso/
-    troubleshooting/
-  styles/theme.css  # overrides de la paleta de Starlight
-astro.config.mjs    # configuración del sitio (site, base, sidebar)
+index.html          Landing
+how-it-works.html
+setup.html          5-step tutorial
+usage.html
+plugin.html         Per-CLI install (Claude / Codex / Gemini)
+skills.html
+faq.html
+
+assets/
+  site.css          Main stylesheet
+  site.js           Theme toggle + page interactions
+  fm-tokens.css     Fractalmanifold design tokens (palette, typography)
+  device-screens.js Renders the 480×480 device mockups
+  logo.png, logo2.png
+  prototype.png, prototype.jpg
 ```
 
-Para añadir una página nueva basta con crear un fichero `.md` o `.mdx` bajo
-`src/content/docs/` y enlazarlo desde el `sidebar` en `astro.config.mjs`.
+## Deploy
 
-## Despliegue
+Push to `main` → GitHub Actions stages the static files into `_site/`
+and publishes via `actions/deploy-pages`. Workflow:
+`.github/workflows/deploy.yml`.
 
-Workflow en `.github/workflows/deploy.yml`. Source de GitHub Pages = **GitHub
-Actions** (no la rama `gh-pages` clásica — Astro publica directamente el
-artefacto).
+## Editing content
 
-## Relación con el firmware
+See `CLAUDE.md` and `BRIEF.md` in this directory for the product
+brief, page-by-page content guidelines and rules of what NOT to
+publish (proprietary firmware repo, secrets, etc.).
 
-Este repo es público y vive como submódulo dentro del repo privado del
-firmware/proyecto (`fractal-manifold/claude-wall-monitor`) bajo `docs/`. El
-firmware sigue siendo privado; solo el manual de usuario se publica aquí.
+## Relationship with the firmware repo
 
-## Licencia
+This repo is public and is mounted as a submodule at `website/`
+inside the private firmware repo (`fractal-manifold/claude-wall-monitor`).
+The firmware itself stays private; only the user-facing site lives
+here.
 
-Documentación © Fractal Manifold S.L. — todos los derechos reservados.
+## License
+
+Documentation © Fractal Manifold S.L. — all rights reserved.

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Usage — C Wall Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Day-to-day usage guide for the C Wall Monitor — dashboard, standby, settings, alerts, themes.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 60ch; font-size: 1.18rem; }
+
+  .usage-block {
+    padding: 5rem 0;
+    border-top: var(--border-faint);
+  }
+  .usage-block:first-of-type { border-top: none; padding-top: 2rem; }
+  .usage-inner {
+    display: grid;
+    grid-template-columns: 1fr 460px;
+    gap: 5rem;
+    align-items: start;
+  }
+  .usage-block.reverse .usage-inner { grid-template-columns: 460px 1fr; }
+  .usage-block.reverse .ut { order: 2; }
+  .usage-block.reverse .uv { order: 1; }
+
+  .usage-block h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: 0.8px;
+    margin-bottom: 1.25rem;
+  }
+  .usage-block .step-rule {
+    height: 2px; width: 56px;
+    background: var(--gradient-brand);
+    border-radius: 1px;
+    margin: 0 0 1.5rem 0;
+  }
+  .usage-block .eyebrow { margin-bottom: 1rem; }
+
+  /* ── Anatomy list (dashboard breakdown) ─────────────────── */
+  .anatomy {
+    list-style: none;
+    padding: 0; margin: 1.5rem 0 0 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .anatomy li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(8px);
+  }
+  .anatomy .pin {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.10);
+    border: 1px solid rgba(245,158,11,0.30);
+    color: var(--color-gold);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .anatomy h4 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+    color: var(--fg-1);
+    margin: 0 0 0.3rem 0;
+  }
+  .anatomy p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+
+  /* ── Alerts table ───────────────────────────────────────── */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .alert-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .alert-card.warn   { border-left: 3px solid var(--color-warning); }
+  .alert-card.danger { border-left: 3px solid var(--color-danger); }
+  .alert-card.gold   { border-left: 3px solid var(--color-gold); }
+  .alert-card.purple { border-left: 3px solid var(--color-purple); }
+  .alert-card .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .alert-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.3px;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .alert-card .threshold {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-gold-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .alert-card p {
+    font-size: 0.88rem;
+    color: var(--fg-2);
+    margin: 0 0 0.6rem 0;
+    line-height: 1.55;
+  }
+  .alert-card .signal {
+    display: flex; gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .alert-card .signal span {
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ── Theme picker mock ──────────────────────────────────── */
+  .theme-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .theme-tile {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .theme-tile:hover { border-color: rgba(245,158,11,0.25); transform: translateY(-2px); }
+  .theme-tile .swatch-stack {
+    display: flex; justify-content: center; gap: 4px;
+    margin-bottom: 0.7rem;
+  }
+  .theme-tile .swatch-stack span {
+    width: 22px; height: 36px;
+    border-radius: 4px;
+  }
+  .theme-tile h5 {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    color: var(--fg-1);
+    letter-spacing: 0.5px;
+    margin: 0 0 0.2rem 0;
+  }
+  .theme-tile p {
+    font-size: 0.75rem;
+    color: var(--fg-3);
+    margin: 0;
+    line-height: 1.4;
+  }
+  /* Theme dual screens */
+  .theme-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .theme-pair .lbl {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--fg-3);
+    text-align: center;
+    margin-top: 0.6rem;
+  }
+
+  @media (max-width: 900px) {
+    .usage-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .usage-block.reverse .usage-inner { grid-template-columns: 1fr; }
+    .usage-block.reverse .ut { order: 1; }
+    .usage-block.reverse .uv { order: 2; }
+    .alerts-grid { grid-template-columns: 1fr; }
+    .theme-row { grid-template-columns: 1fr; }
+    .usage-block { padding: 3rem 0; }
+  }
+</style>
+</head>
+<body data-page="usage">
+
+<main>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">Day-to-day</p>
+      <h1>How to use<br>your wall monitor.</h1>
+      <div class="rule"></div>
+      <p class="lead">The dashboard explained, what to expect in standby, where to find settings, what each of the four alerts means, and how themes follow your local daylight.</p>
+    </div>
+  </div>
+
+  <!-- ── Dashboard anatomy ──────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Dashboard</p>
+          <h2>What each number means.</h2>
+          <div class="step-rule"></div>
+          <p>The default screen is three stacked cards plus a single ambient strip. Designed to be read from 2–3 m away in under a second.</p>
+          <ol class="anatomy">
+            <li><div class="pin">1</div>
+              <div><h4>Current — 5-h session window</h4>
+                <p>How much of your active 5-hour Claude / Codex / Gemini quota you've burned. Right-side projection is the AI's own forecast for end of window.</p></div></li>
+            <li><div class="pin">2</div>
+              <div><h4>Weekly — monthly cap pace</h4>
+                <p>Percent of the monthly limit consumed, with the day-of-month projection to the right. Yellow when you're trending over.</p></div></li>
+            <li><div class="pin">3</div>
+              <div><h4>Design — week's average</h4>
+                <p>Optional smaller card. Tracks long-running threads (Claude's "Design" mode). Hidden when zero so it never adds noise.</p></div></li>
+            <li><div class="pin">4</div>
+              <div><h4>Ambient strip</h4>
+                <p>Sunrise · sunset · temperature · battery. Lives under the header, stays lit in standby. Polls Open-Meteo hourly.</p></div></li>
+            <li><div class="pin">5</div>
+              <div><h4>Last-sync indicator</h4>
+                <p>The status word at the bottom (Whispering · Generating · Synthesizing) animates only while the broker has fresh data. Stale &gt; 60 s → fades to dim.</p></div></li>
+          </ol>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-cwm-screen="claude-day"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Standby ────────────────────────────────────────────── -->
+  <section class="usage-block reverse">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Standby</p>
+          <h2>Quiet after 20 minutes.</h2>
+          <div class="step-rule"></div>
+          <p>Backlight ramps to 0% after 20 min of no touch. The last values persist in framebuffer along with the ambient strip — at 0% backlight they're invisible but the panel doesn't blank.</p>
+          <p>Tap anywhere to wake. The dashboard fades back in over 600 ms.</p>
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Why so long?</strong>
+              <span>20 min is empirically about one focused work block. Shorter and the device blanks mid-task; longer and you stop noticing it. Both bounds are tweakable in Settings.</span>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-cwm-screen="standby-day"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Settings ───────────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Settings</p>
+          <h2>Tap the gear, bottom-right.</h2>
+          <div class="step-rule"></div>
+          <p>The gear icon on the dashboard's footer band opens Settings. Editable fields:</p>
+          <ul style="padding-left: 1.2rem; margin: 1rem 0; color: var(--fg-2)">
+            <li>City (controls weather + Auto-theme sunrise / sunset)</li>
+            <li>Wi-Fi SSID + password</li>
+            <li>Broker URL (override the auto-discovered one)</li>
+            <li>Passphrase (rotates PSK — broker side updates via skill)</li>
+            <li>Day brightness · Night brightness</li>
+            <li>Alert volume</li>
+          </ul>
+          <p>Edits land on the editor screen with a slider + pencil for exact input. Cancel restores the previous value.</p>
+        </div>
+        <div class="uv">
+          <div class="theme-pair">
+            <div>
+              <div class="device-frame"><div class="screen" data-cwm-screen="settings-day"></div></div>
+              <div class="lbl">Settings list</div>
+            </div>
+            <div>
+              <div class="device-frame"><div class="screen" data-cwm-screen="editor-day"></div></div>
+              <div class="lbl">Editor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Alerts ─────────────────────────────────────────────── -->
+  <section class="usage-block reverse">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Alerts</p>
+          <h2>Four events. Hysteresis-armed.</h2>
+          <div class="step-rule"></div>
+          <p>The device fires four kinds of alert. Each is armed with a hysteresis band so it can't oscillate at the boundary — you get a single beep + flash, not a chatter loop.</p>
+          <div class="alerts-grid">
+            <div class="alert-card warn">
+              <div class="head"><h4>Battery low</h4><span class="threshold">&lt; 20%</span></div>
+              <p>Battery icon turns warning-orange. Soft chime on the hour.</p>
+              <div class="signal"><span>icon · orange</span><span>chime · soft</span></div>
+            </div>
+            <div class="alert-card danger">
+              <div class="head"><h4>Battery critical</h4><span class="threshold">&lt; 10%</span></div>
+              <p>Wakes the device from standby. Repeating beep until USB power is reconnected.</p>
+              <div class="signal"><span>full wake</span><span>beep · repeat</span></div>
+            </div>
+            <div class="alert-card gold">
+              <div class="head"><h4>Limit overshoot</h4><span class="threshold">→ &gt; 100%</span></div>
+              <p>Predicted to exceed the session or weekly cap before reset. Card outline pulses gold; one chime.</p>
+              <div class="signal"><span>card · pulse</span><span>chime · once</span></div>
+            </div>
+            <div class="alert-card purple">
+              <div class="head"><h4>5-h window rollover</h4><span class="threshold">@ rollover</span></div>
+              <p>Marks the moment Claude's 5-hour session window resets. Subtle bell.</p>
+              <div class="signal"><span>flash · purple</span><span>bell · soft</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-cwm-screen="claude-night"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Themes ─────────────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Themes</p>
+          <h2>Day · Night · Auto.</h2>
+          <div class="step-rule"></div>
+          <p>Three modes. <strong style="color: var(--fg-1)">Auto</strong> follows sunrise/sunset for your configured city — with a ±90 s hysteresis so a passing cloud doesn't trigger a swap. Switch any time from Claude Code, Codex or Gemini:</p>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /cwallmonitor:theme day|night|auto</div>
+          <div class="theme-row">
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: #f5efe2"></span>
+                <span style="background: #fffaf0"></span>
+                <span style="background: #c15f3c"></span>
+              </div>
+              <h5>Day</h5>
+              <p>High-contrast, cream paper</p>
+            </div>
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: #1a1410"></span>
+                <span style="background: #221a14"></span>
+                <span style="background: #e07a4a"></span>
+              </div>
+              <h5>Night</h5>
+              <p>Warm dark, low-glare</p>
+            </div>
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: linear-gradient(180deg, #f5efe2 50%, #1a1410 50%)"></span>
+                <span style="background: linear-gradient(180deg, #fffaf0 50%, #221a14 50%)"></span>
+                <span style="background: linear-gradient(180deg, #c15f3c 50%, #e07a4a 50%)"></span>
+              </div>
+              <h5>Auto</h5>
+              <p>Tracks local daylight</p>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="theme-pair">
+            <div>
+              <div class="device-frame"><div class="screen" data-cwm-screen="claude-day"></div></div>
+              <div class="lbl">Day · Claude</div>
+            </div>
+            <div>
+              <div class="device-frame"><div class="screen" data-cwm-screen="claude-night"></div></div>
+              <div class="lbl">Night · Claude</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="container">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px);">
+      <p class="eyebrow">Control plane</p>
+      <h2 style="margin-bottom: 1rem">Two skills do the heavy lifting.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/cwallmonitor:configure</code> pairs and provisions. <code class="inline-code">/cwallmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
+      <a href="skills.html" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/site.js"></script>
+<script src="assets/device-screens.js"></script>
+</body>
+</html>

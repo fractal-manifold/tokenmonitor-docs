@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plugin install — C Wall Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 62ch; font-size: 1.18rem; }
+
+  /* ── Big tab switcher ───────────────────────────────────── */
+  .cli-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin: 3rem 0 2.5rem 0;
+  }
+  .cli-tab {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    cursor: pointer;
+    text-align: left;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .cli-tab:hover { transform: translateY(-3px); }
+  .cli-tab .swatch {
+    width: 14px; height: 14px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cli-tab .swatch.claude { background: #e07a4a; box-shadow: 0 0 14px rgba(224,122,74,0.5); }
+  .cli-tab .swatch.codex  { background: #1ed29c; box-shadow: 0 0 14px rgba(30,210,156,0.5); }
+  .cli-tab .swatch.gemini { background: #5a9bff; box-shadow: 0 0 14px rgba(90,155,255,0.5); }
+  .cli-tab .label-block { line-height: 1.2; }
+  .cli-tab h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    color: var(--fg-1);
+    margin: 0 0 0.2rem 0;
+  }
+  .cli-tab .sub {
+    font-size: 0.78rem;
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+  }
+  .cli-tab.active {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .cli-tab.active.claude { border-color: rgba(224,122,74,0.50); box-shadow: 0 8px 30px rgba(224,122,74,0.18); }
+  .cli-tab.active.codex  { border-color: rgba(30,210,156,0.50); box-shadow: 0 8px 30px rgba(30,210,156,0.18); }
+  .cli-tab.active.gemini { border-color: rgba(90,155,255,0.50); box-shadow: 0 8px 30px rgba(90,155,255,0.18); }
+
+  /* ── CLI panel ──────────────────────────────────────────── */
+  .cli-panel { display: none; }
+  .cli-panel.active { display: block; }
+  .cli-panel .panel-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-faint);
+  }
+  .cli-panel h2 {
+    font-size: 1.6rem;
+    margin: 0;
+  }
+  .cli-panel .marketplace {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--fg-3);
+  }
+  .cli-panel .marketplace a {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: rgba(245,158,11,0.4);
+  }
+  .cli-panel .lead { font-size: 1.05rem; color: var(--fg-2); }
+  .cli-panel h4 {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 1.8px;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    margin: 2rem 0 0.8rem 0;
+  }
+  .cli-panel .code-block { margin-bottom: 1rem; }
+
+  .file-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--fg-3);
+    background: rgba(255,255,255,0.04);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── Verify section ─────────────────────────────────────── */
+  .verify {
+    margin-top: 4rem;
+    background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(245,158,11,0.05) 100%);
+    border: 1px solid rgba(16,185,129,0.18);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+  }
+  .verify .head {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .verify .head .check {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.4);
+    display: grid; place-items: center;
+    color: var(--color-success);
+    flex-shrink: 0;
+  }
+  .verify h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  .verify .head p { margin: 0.2rem 0 0 0; font-size: 0.88rem; color: var(--fg-3); }
+  .verify p { color: var(--fg-2); }
+
+  .chat-bubble {
+    background: rgba(20,20,20,0.6);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .chat-bubble.user {
+    border-left: 3px solid var(--color-gold);
+    color: var(--fg-1);
+  }
+  .chat-bubble.user::before {
+    content: 'YOU';
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    color: var(--color-gold);
+    margin-bottom: 0.3rem;
+  }
+  .chat-bubble.cli {
+    border-left: 3px solid var(--color-purple-light);
+  }
+  .chat-bubble.cli::before {
+    content: 'CLI';
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    color: var(--color-purple-light);
+    margin-bottom: 0.3rem;
+  }
+  .chat-bubble code {
+    font-family: var(--font-mono);
+    background: rgba(245,158,11,0.10);
+    color: var(--color-gold-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.86rem;
+  }
+
+  @media (max-width: 900px) {
+    .cli-tabs { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-page="plugin">
+
+<main>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">Plugin install</p>
+      <h1>One MCP plugin.<br>Three CLIs.</h1>
+      <div class="rule"></div>
+      <p class="lead">The <code class="inline-code">cwallmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Same skill catalogue, same tool surface — only the install command differs.</p>
+
+      <div class="cli-tabs">
+        <button class="cli-tab claude active" data-cli="claude">
+          <span class="swatch claude"></span>
+          <div class="label-block">
+            <h3>Claude Code</h3>
+            <span class="sub">claude-sonnet-4.5</span>
+          </div>
+        </button>
+        <button class="cli-tab codex" data-cli="codex">
+          <span class="swatch codex"></span>
+          <div class="label-block">
+            <h3>Codex CLI</h3>
+            <span class="sub">gpt-5.1-codex</span>
+          </div>
+        </button>
+        <button class="cli-tab gemini" data-cli="gemini">
+          <span class="swatch gemini"></span>
+          <div class="label-block">
+            <h3>Gemini CLI</h3>
+            <span class="sub">gemini-2.5-pro</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- ── Claude Code panel ───────────────────────────────── -->
+      <div class="cli-panel active" data-panel="claude">
+        <div class="panel-head">
+          <h2>Claude Code</h2>
+          <span class="marketplace">via <a href="#" target="_blank">fractal-manifold/mcp-marketplace</a></span>
+        </div>
+        <p class="lead">Claude Code natively supports MCP marketplaces. Two commands — first you add the marketplace, then you install the plugin from it.</p>
+
+        <h4>Install</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor</div>
+
+        <h4>What it adds</h4>
+<div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
+/cwallmonitor:configure
+/cwallmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
+
+<span class="cmt"># Tools (Claude calls these as needed)</span>
+wall_monitor_status
+wall_monitor_health
+wall_monitor_recent_logs
+wall_monitor_provision_hint</div>
+
+        <h4>Where it lives</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Marketplace entries land in <code class="inline-code">~/.claude/plugins/</code>. Uninstall any time with <code class="inline-code">/plugin uninstall cwallmonitor</code>.</p>
+      </div>
+
+      <!-- ── Codex CLI panel ─────────────────────────────────── -->
+      <div class="cli-panel" data-panel="codex">
+        <div class="panel-head">
+          <h2>Codex CLI</h2>
+          <span class="marketplace">manual MCP server entry</span>
+        </div>
+        <p class="lead">Codex reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. Add the cwallmonitor block; Codex will spawn it on next start.</p>
+
+        <h4>Config snippet</h4>
+        <span class="file-tag">~/.codex/config.toml</span>
+<div class="code-block">[<span class="kw">mcp_servers</span>.cwallmonitor]
+<span class="var">command</span> = <span class="str">"cwm-mcp"</span>
+<span class="var">args</span>    = [<span class="str">"mcp"</span>]
+<span class="var">env</span>     = { <span class="var">CWM_BROKER</span> = <span class="str">"http://localhost:9787"</span> }
+
+<span class="cmt"># Optional: pin a specific device when you have several</span>
+<span class="cmt"># [mcp_servers.cwallmonitor.env]</span>
+<span class="cmt"># CWM_DEVICE_ID = "cwm-3c7c"</span></div>
+
+        <h4>Restart Codex</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> codex restart
+<span class="cmt"># MCP servers ready: cwallmonitor (4 tools)</span></div>
+
+        <h4>Where the broker lives</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Make sure <code class="inline-code">cwm-mcp</code> is on your <code class="inline-code">$PATH</code> (the broker installer puts it there). If you used the Go path, that's <code class="inline-code">$GOPATH/bin</code>.</p>
+      </div>
+
+      <!-- ── Gemini CLI panel ────────────────────────────────── -->
+      <div class="cli-panel" data-panel="gemini">
+        <div class="panel-head">
+          <h2>Gemini CLI</h2>
+          <span class="marketplace">via <a href="#" target="_blank">fractal-manifold/mcp-marketplace</a></span>
+        </div>
+        <p class="lead">Gemini reads extensions from <code class="inline-code">~/.gemini/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually.</p>
+
+        <h4>Install (recommended)</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini extensions install fractal-manifold/mcp-marketplace/plugins/cwallmonitor</div>
+
+        <h4>Or — drop the JSON manually</h4>
+        <span class="file-tag">~/.gemini/extensions/cwallmonitor/gemini-extension.json</span>
+<div class="code-block">{
+  <span class="str">"name"</span>:    <span class="str">"cwallmonitor"</span>,
+  <span class="str">"version"</span>: <span class="str">"0.3.1"</span>,
+  <span class="str">"mcpServers"</span>: {
+    <span class="str">"cwallmonitor"</span>: {
+      <span class="str">"command"</span>: <span class="str">"cwm-mcp"</span>,
+      <span class="str">"args"</span>:    [<span class="str">"mcp"</span>],
+      <span class="str">"env"</span>: {
+        <span class="str">"CWM_BROKER"</span>: <span class="str">"http://localhost:9787"</span>
+      }
+    }
+  },
+  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>]
+}</div>
+
+        <h4>Restart Gemini</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini restart
+<span class="cmt"># Loaded extension: cwallmonitor (skills: configure, theme)</span></div>
+      </div>
+
+      <!-- ── Verify (common to all three) ────────────────────── -->
+      <div class="verify">
+        <div class="head">
+          <div class="check">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+          <div>
+            <h3>Verify the plugin is loaded</h3>
+            <p>Same prompt works in any of the three CLIs. It hits <code class="inline-code">wall_monitor_status</code> under the hood.</p>
+          </div>
+        </div>
+        <div class="chat-bubble user">
+          What's the status of my wall monitor broker?
+        </div>
+        <div class="chat-bubble cli">
+          The broker is running with role <code>broker</code> on <code>localhost:9787</code>. It has served <strong style="color: var(--color-gold-light);">2,847 requests</strong> across <strong style="color: var(--color-gold-light);">1 device</strong> (<code>cwm-3c7c</code>) since it started 4&nbsp;hours ago. Health: <strong style="color: var(--color-success);">PASS</strong>.
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 0.92rem; color: var(--fg-3);">If the answer comes back with a different broker role, an empty request count, or the CLI says it can't find the tool — head to the <a href="faq.html" style="color: var(--color-gold-light);">troubleshooting page</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="container">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px); margin-top: 4rem;">
+      <p class="eyebrow">Next step</p>
+      <h2 style="margin-bottom: 1rem">Configure your device.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">With the plugin loaded, <code class="inline-code">/cwallmonitor:configure</code> takes over from here. It discovers the device on your LAN, prompts for the pairing code, pushes the PSK.</p>
+      <a href="skills.html" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/site.js"></script>
+<script>
+  document.querySelectorAll('.cli-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const cli = t.dataset.cli;
+      document.querySelectorAll('.cli-tab').forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      document.querySelectorAll('.cli-panel').forEach(p => {
+        p.classList.toggle('active', p.dataset.panel === cli);
+      });
+    });
+  });
+</script>
+</body>
+</html>

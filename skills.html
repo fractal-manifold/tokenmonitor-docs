@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Skills reference — C Wall Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Skills and MCP tools shipped by the cwallmonitor plugin.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 62ch; font-size: 1.18rem; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+  .skill-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(245,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    top: -20%; right: -20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    color: var(--color-gold-light);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .skill-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 1rem 0;
+  }
+  .skill-card .desc {
+    color: var(--fg-2);
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+  .skill-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 1.75rem 0 0.6rem 0;
+  }
+  .skill-card .syntax {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    color: var(--fg-2);
+    background: #07070a;
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+  }
+  .skill-card .syntax .opt { color: var(--color-purple-light); }
+  .skill-card .syntax .arg { color: var(--color-gold-light); }
+  .skill-card ul {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .skill-card ul li {
+    padding: 0.5rem 0;
+    border-bottom: var(--border-faint);
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.92rem;
+    color: var(--fg-2);
+  }
+  .skill-card ul li:last-child { border-bottom: none; }
+  .skill-card ul li .b {
+    flex-shrink: 0;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    margin-top: 0.65rem;
+  }
+
+  /* ── Tool cards (the 4 MCP tools) ───────────────────────── */
+  .tools-section {
+    margin-top: 4rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .tool-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .tool-card:hover {
+    border-color: rgba(245,158,11,0.25);
+    transform: translateY(-2px);
+  }
+  .tool-card .tool-name {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--color-gold-light);
+    margin-bottom: 0.6rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tool-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    color: var(--fg-1);
+    margin: 0 0 0.6rem 0;
+  }
+  .tool-card p {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+  .tool-card .returns {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+  .tool-card .returns span {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--fg-3);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── Example flow ───────────────────────────────────────── */
+  .flow {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(147,51,234,0.05) 0%, rgba(245,158,11,0.04) 100%);
+    border: 1px solid rgba(147,51,234,0.18);
+    border-radius: var(--radius-xl);
+  }
+  .flow h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.4rem 0;
+  }
+  .flow .lead-sm { color: var(--fg-2); margin-bottom: 2rem; }
+  .flow-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .chat-bubble {
+    background: rgba(20,20,20,0.6);
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .chat-bubble.user { border-left: 3px solid var(--color-gold); }
+  .chat-bubble.cli  { border-left: 3px solid var(--color-purple-light); }
+  .chat-bubble.user::before { content: 'YOU'; display: block; font-family: var(--font-display); font-size: 0.6rem; letter-spacing: 1.5px; color: var(--color-gold); margin-bottom: 0.3rem; }
+  .chat-bubble.cli::before  { content: 'CLAUDE'; display: block; font-family: var(--font-display); font-size: 0.6rem; letter-spacing: 1.5px; color: var(--color-purple-light); margin-bottom: 0.3rem; }
+  .chat-bubble code {
+    font-family: var(--font-mono);
+    background: rgba(245,158,11,0.10);
+    color: var(--color-gold-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.84rem;
+  }
+
+  @media (max-width: 900px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow { padding: 1.75rem; }
+  }
+</style>
+</head>
+<body data-page="skills">
+
+<main>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">Skills reference</p>
+      <h1>Two skills.<br>Four MCP tools.</h1>
+      <div class="rule"></div>
+      <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. Both are loaded the moment the <code class="inline-code">cwallmonitor</code> plugin is installed.</p>
+    </div>
+
+    <!-- ── Skills (pulled from SKILL.md frontmatter) ────────── -->
+    <div class="skills-grid">
+      <article class="skill-card">
+        <div class="skill-name">/cwallmonitor:configure</div>
+        <h3>Pair or reconfigure a device</h3>
+        <p class="desc">Provision a new device, or reconfigure an existing one, from the LAN. Discovers via mDNS, prompts for the 6-digit pairing code, pushes broker URL + auto-generated PSK, registers the device locally.</p>
+
+        <h4>When to use</h4>
+        <ul>
+          <li><span class="b"></span>New device showing "Waiting for setup" / pairing code on screen</li>
+          <li><span class="b"></span>Moving the broker to a different machine</li>
+          <li><span class="b"></span>Rotating the passphrase / PSK</li>
+          <li><span class="b"></span>Re-establishing trust after a device factory reset</li>
+        </ul>
+
+        <h4>Syntax</h4>
+        <div class="syntax"><span class="arg">/cwallmonitor:configure</span></div>
+
+        <h4>What it does, step by step</h4>
+        <ul>
+          <li><span class="b"></span>Scans <code class="inline-code">_cwm._tcp.local</code> for advertised devices</li>
+          <li><span class="b"></span>Prompts you to confirm the pairing code on the device</li>
+          <li><span class="b"></span>Generates a memorable passphrase, derives PSK with HKDF-SHA256</li>
+          <li><span class="b"></span>POSTs broker URL + PSK to the device over the LAN</li>
+          <li><span class="b"></span>Writes the device entry to <code class="inline-code">~/.cwm/devices.json</code></li>
+        </ul>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-name">/cwallmonitor:theme</div>
+        <h3>Switch themes remotely</h3>
+        <p class="desc">Flip a device between Day, Night or Auto themes from the comfort of your CLI. Auto follows sunrise/sunset for the device's configured city with a ±90 s hysteresis.</p>
+
+        <h4>When to use</h4>
+        <ul>
+          <li><span class="b"></span>Force Day mode for a screenshot</li>
+          <li><span class="b"></span>Force Night mode when you're working late and the sensor lags</li>
+          <li><span class="b"></span>Reset to Auto after manual overrides</li>
+        </ul>
+
+        <h4>Syntax</h4>
+        <div class="syntax"><span class="arg">/cwallmonitor:theme</span> <span class="opt">&lt;day | night | auto&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+        <h4>Examples</h4>
+        <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> auto</div>
+        <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> night <span class="opt">--device</span> cwm-3c7c</div>
+        <div class="syntax"><span class="arg">/cwallmonitor:theme</span> day <span class="opt">--device</span> kitchen</div>
+      </article>
+    </div>
+
+    <!-- ── 4 MCP tools (table-style) ────────────────────────── -->
+    <div class="tools-section">
+      <p class="eyebrow">MCP tools</p>
+      <h2>What the model can call directly.</h2>
+      <div class="rule"></div>
+      <p class="lead" style="max-width: 60ch;">These four tools are exposed by <code class="inline-code">cwm-mcp</code>. Your AI agent can call them in response to natural-language questions — no slash-skill needed.</p>
+
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-name">wall_monitor_status</div>
+          <h4>Broker role + request count</h4>
+          <p>Returns the broker's running role (<code class="inline-code">broker</code> or <code class="inline-code">relay</code>), how many devices it's serving, and a rolling counter of requests handled since startup.</p>
+          <div class="returns">
+            <span>role</span><span>devices[]</span><span>req_count</span><span>uptime_s</span>
+          </div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">wall_monitor_health</div>
+          <h4>PASS / FAIL diagnostic per component</h4>
+          <p>Runs a check across each subsystem: broker socket, CLI log readers, mDNS responder, time sync, weather fetch. Each line reports PASS, FAIL, or N/A with a reason.</p>
+          <div class="returns">
+            <span>broker</span><span>cli_logs</span><span>mdns</span><span>sntp</span><span>weather</span>
+          </div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">wall_monitor_recent_logs</div>
+          <h4>Tail the broker log</h4>
+          <p>Returns the last N lines (default 50) of the broker's structured log. Useful when a device shows stale data and you want to see whether the broker even received the poll.</p>
+          <div class="returns">
+            <span>lines: int</span><span>level?: warn|err</span>
+          </div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">wall_monitor_provision_hint</div>
+          <h4>Suggests laptop LAN URLs</h4>
+          <p>Lists candidate broker URLs (your laptop's LAN interfaces) ranked by reachability. The captive portal uses this to populate the broker-URL field when you'd rather not run the configure skill.</p>
+          <div class="returns">
+            <span>urls[]</span><span>preferred: string</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Example end-to-end flow ──────────────────────────── -->
+    <div class="flow">
+      <p class="eyebrow" style="color: var(--color-purple-light);">Example</p>
+      <h3>A new device, end to end.</h3>
+      <p class="lead-sm">Powered on, pairing code visible, plugin installed. From here:</p>
+      <div class="flow-row">
+        <div>
+          <div class="chat-bubble user">I just powered on a new wall monitor. It's showing pairing code <code>428 715</code>.</div>
+          <div class="chat-bubble cli">I'll configure it. Running <code>/cwallmonitor:configure</code>… Found <code>cwm-3c7c</code> at <code>192.168.1.42</code> via mDNS. Generated passphrase, derived PSK, pushed to device. It's rebooting now — give it ~10 s.</div>
+        </div>
+        <div>
+          <div class="chat-bubble user">Is my broker actually serving it?</div>
+          <div class="chat-bubble cli">Called <code>wall_monitor_status</code>. Broker is running with role <code>broker</code>, serving <strong style="color: var(--color-gold-light);">1 device</strong>, <strong style="color: var(--color-gold-light);">12 requests</strong> in the last minute. <strong style="color: var(--color-success);">PASS</strong>.</div>
+          <div class="chat-bubble user">Switch to night mode.</div>
+          <div class="chat-bubble cli">Ran <code>/cwallmonitor:theme night</code>. Device acknowledged in 110 ms.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="container">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px); margin-top: 4rem;">
+      <p class="eyebrow">Something off?</p>
+      <h2 style="margin-bottom: 1rem">Check the FAQ.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">Stale data, captive portal not appearing, Auto theme stuck on Night, audio silent. Every common stumble has a fix.</p>
+      <a href="faq.html" class="btn btn-primary">FAQ &amp; troubleshooting <span class="arrow">→</span></a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

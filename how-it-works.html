@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How it works — C Wall Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Architecture and data flow for the C Wall Monitor — local-network only, HMAC-SHA256 + AES-CTR.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+    border-bottom: var(--border-faint);
+    margin-bottom: 4rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead {
+    max-width: 60ch;
+    font-size: 1.18rem;
+  }
+
+  /* ── Architecture diagram ────────────────────────────────── */
+  .arch-canvas {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .arch-canvas::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .arch-svg-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .arch-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    align-items: center;
+  }
+  .arch-cell {
+    text-align: center;
+    padding: 2rem 1rem;
+    position: relative;
+  }
+  .arch-cell .arch-icon {
+    width: 88px; height: 88px;
+    margin: 0 auto 1.25rem auto;
+    border-radius: 16px;
+    background: rgba(245,158,11,0.06);
+    border: var(--border-gold-2);
+    display: grid; place-items: center;
+    color: var(--color-gold);
+    transition: all var(--ease-standard);
+  }
+  .arch-cell:hover .arch-icon {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(245,158,11,0.18);
+  }
+  .arch-cell h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    color: var(--fg-1);
+    margin: 0 0 0.5rem 0;
+  }
+  .arch-cell .sub {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-gold-light);
+    margin-bottom: 0.5rem;
+  }
+  .arch-cell p {
+    font-size: 0.85rem;
+    color: var(--fg-3);
+    line-height: 1.5;
+  }
+
+  /* edges between nodes */
+  .arch-edge {
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 2rem;
+  }
+  .arch-edge .label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 0.5rem;
+  }
+  .arch-edge .sub {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--fg-3);
+    margin-top: 0.5rem;
+  }
+  .arch-edge svg { width: 100%; max-width: 180px; }
+
+  /* Side branch (weather/SNTP) */
+  .arch-branch {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    align-items: center;
+    gap: 0;
+  }
+  .arch-branch .spacer { visibility: hidden; }
+  .arch-branch .branch-edge {
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .arch-branch .branch-edge .label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 0.4rem;
+  }
+  .arch-branch .branch-edge svg { width: 100%; max-width: 240px; }
+  .arch-branch .branch-edge .sub { color: var(--fg-3); font-family: var(--font-mono); font-size: 0.74rem; margin-top: 0.5rem; }
+  .arch-branch .arch-icon {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    background: rgba(147,51,234,0.08);
+    border: 1px solid rgba(147,51,234,0.25);
+    color: var(--color-purple-light);
+  }
+  .arch-branch .arch-cell h3 { font-size: 0.85rem; }
+
+  /* ── Property list ──────────────────────────────────────── */
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .property {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    backdrop-filter: blur(8px);
+    display: flex; gap: 1.25rem;
+    align-items: flex-start;
+  }
+  .property .icon-circle {
+    flex: 0 0 auto;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.20);
+    color: var(--color-gold);
+    display: grid; place-items: center;
+  }
+  .property h4 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    color: var(--fg-1);
+    margin: 0 0 0.4rem 0;
+  }
+  .property p { margin: 0; font-size: 0.9rem; color: var(--fg-2); line-height: 1.55; }
+
+  /* ── Data shape snippet ─────────────────────────────────── */
+  .data-shape {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+  .data-shape .code-block {
+    font-size: 0.82rem;
+  }
+  .data-shape .annotation {
+    font-size: 1rem;
+    color: var(--fg-2);
+  }
+
+  @media (max-width: 900px) {
+    .arch-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .arch-edge { padding: 0; }
+    .arch-edge svg { transform: rotate(90deg); max-width: 80px; height: 60px; }
+    .arch-branch { grid-template-columns: 1fr; }
+    .arch-branch .branch-edge svg { transform: rotate(90deg); }
+    .property-grid { grid-template-columns: 1fr; }
+    .data-shape { grid-template-columns: 1fr; }
+    .arch-canvas { padding: 2rem 1rem; }
+  }
+</style>
+</head>
+<body data-page="how-it-works">
+
+<main>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">How it works</p>
+      <h1>Architecture &<br>data flow.</h1>
+      <div class="rule"></div>
+      <p class="lead">The device never talks to the public internet for usage data. Your laptop runs a broker that exposes a small JSON endpoint; the device polls it over your LAN.</p>
+    </div>
+
+    <!-- ── Main diagram ────────────────────────────────────── -->
+    <div class="arch-canvas">
+      <div class="arch-grid">
+        <!-- Node 1: Laptop -->
+        <div class="arch-cell">
+          <div class="arch-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="14" rx="2"/>
+              <path d="M2 20h20"/>
+              <path d="M9 8h6M9 11h4" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>Your laptop</h3>
+          <div class="sub">cwm-mcp</div>
+          <p>Broker runs alongside Claude Code, Codex or Gemini CLI. Reads their per-session usage logs, exposes JSON over <code class="inline-code" style="font-size:0.78rem">:9787</code>.</p>
+        </div>
+
+        <!-- Edge 1 → 2 -->
+        <div class="arch-edge">
+          <div class="label">HTTP · HMAC</div>
+          <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.2"/>
+                <stop offset="50%" stop-color="#F59E0B" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.2"/>
+              </linearGradient>
+              <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#F59E0B"/>
+              </marker>
+            </defs>
+            <path d="M 10 30 Q 100 5 190 30" stroke="url(#grad1)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow1)"/>
+            <circle cx="100" cy="17" r="3" fill="#F59E0B">
+              <animateMotion dur="2.5s" repeatCount="indefinite" path="M -90 13 Q 0 -12 90 13"/>
+            </circle>
+          </svg>
+          <div class="sub">SHA-256</div>
+        </div>
+
+        <!-- Node 2: Wi-Fi LAN (centered) -->
+        <div class="arch-cell" style="grid-column: 2; grid-row: 1; display:none"></div>
+
+        <!-- Node 3: Device -->
+        <div class="arch-cell">
+          <div class="arch-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor" opacity="0.4"/>
+            </svg>
+          </div>
+          <h3>Wall device</h3>
+          <div class="sub">ESP32-S3</div>
+          <p>Pulls JSON every 2.4 s, decrypts the body, redraws the 480×480 LVGL UI. Sleeps backlight after 20 min idle.</p>
+        </div>
+      </div>
+
+      <!-- ── Side branch: device → internet (weather + SNTP) ── -->
+      <div class="arch-branch">
+        <div class="spacer"></div>
+        <div class="branch-edge">
+          <div class="label">Side branch · Internet</div>
+          <svg viewBox="0 0 240 80" fill="none">
+            <defs>
+              <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#9333EA" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#9333EA" stop-opacity="0.9"/>
+              </linearGradient>
+              <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#9333EA"/>
+              </marker>
+            </defs>
+            <path d="M 220 10 Q 120 10 120 70 L 30 70" stroke="url(#grad2)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow2)"/>
+          </svg>
+          <div class="sub">Open-Meteo · SNTP · hourly</div>
+        </div>
+        <div class="arch-cell">
+          <div class="arch-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+            </svg>
+          </div>
+          <h3>Open-Meteo</h3>
+          <p style="font-size: 0.78rem">Weather, sunrise/sunset</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="fm-small" style="text-align:center; margin-top:1.5rem; color: var(--fg-3); max-width: 60ch; margin-left: auto; margin-right: auto;">
+      The only public-internet calls the device makes are SNTP for time and a once-an-hour weather fetch. Usage telemetry never leaves your LAN.
+    </p>
+  </div>
+
+  <!-- ── Key properties ─────────────────────────────────────── -->
+  <section class="container">
+    <div class="section-head">
+      <p class="eyebrow">Properties</p>
+      <h2>Designed for trust.</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="property-grid">
+      <div class="property">
+        <div class="icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div>
+          <h4>No cloud account for the device</h4>
+          <p>The device itself doesn't sign in anywhere. Anthropic / OpenAI / Google credentials live on your laptop with the respective CLI.</p>
+        </div>
+      </div>
+      <div class="property">
+        <div class="icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1L3 5v6c0 5 3.5 9.5 9 11 5.5-1.5 9-6 9-11V5l-9-4z"/></svg>
+        </div>
+        <div>
+          <h4>HMAC-SHA256 + AES-CTR</h4>
+          <p>Every request from device → broker carries an HMAC over the timestamp + body. Payloads are AES-CTR encrypted with a per-device PSK.</p>
+        </div>
+      </div>
+      <div class="property">
+        <div class="icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div>
+          <h4>Memorable passphrase, derived key</h4>
+          <p>You pick a passphrase at setup. PSK is derived locally — passphrase never travels to the device in clear, and never leaves your machine over the LAN.</p>
+        </div>
+      </div>
+      <div class="property">
+        <div class="icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M23 12h-6M7 12H1M19 5l-4 4M9 15l-4 4M19 19l-4-4M9 9 5 5"/></svg>
+        </div>
+        <div>
+          <h4>Per-device control plane</h4>
+          <p>Rotate keys, switch theme, change broker URL — all from Claude Code, Codex or Gemini via the <code class="inline-code">/cwallmonitor:configure</code> skill.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Data shape ─────────────────────────────────────────── -->
+  <section class="container">
+    <div class="section-head">
+      <p class="eyebrow">On the wire</p>
+      <h2>What the device actually receives.</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="data-shape">
+      <div>
+        <p class="annotation">One poll, one JSON object. The broker aggregates whatever the CLIs are writing locally and serves it shaped the way the firmware expects.</p>
+        <p class="annotation" style="margin-top: 1rem">The <span class="inline-code">cards</span> array is positional: 0 = Current session, 1 = Weekly, 2 = Design (optional smaller card).</p>
+      </div>
+      <div class="code-block"><span class="cmt">// GET /v1/usage?device=cwm-3c7c</span>
+<span class="cmt">// X-CWM-HMAC: 4f8c…ae21</span>
+
+{
+  <span class="str">"provider"</span>: <span class="str">"claude"</span>,
+  <span class="str">"clock"</span>:    <span class="str">"16:24"</span>,
+  <span class="str">"date"</span>:     <span class="str">"Thu 14 May"</span>,
+  <span class="str">"status"</span>:   { <span class="str">"word"</span>: <span class="str">"Whispering"</span>, <span class="str">"glyph"</span>: <span class="str">"+"</span> },
+  <span class="str">"ambient"</span>:  {
+    <span class="str">"sunrise"</span>: <span class="str">"06:59"</span>,
+    <span class="str">"sunset"</span>:  <span class="str">"21:23"</span>,
+    <span class="str">"tempC"</span>:   <span class="num">21.6</span>,
+    <span class="str">"battery"</span>: <span class="num">76</span>
+  },
+  <span class="str">"cards"</span>: [
+    { <span class="str">"pill"</span>: <span class="str">"Current"</span>, <span class="str">"pct"</span>: <span class="num">18.0</span>, <span class="str">"projected"</span>: <span class="num">44</span>, <span class="str">"resetsIn"</span>: <span class="str">"2h 56m"</span> },
+    { <span class="str">"pill"</span>: <span class="str">"Weekly"</span>,  <span class="str">"pct"</span>: <span class="num">43.0</span>, <span class="str">"projected"</span>: <span class="num">92</span>, <span class="str">"resetsIn"</span>: <span class="str">"3d 17h"</span> },
+    { <span class="str">"pill"</span>: <span class="str">"Design"</span>,  <span class="str">"pct"</span>: <span class="num">0.0</span>,  <span class="str">"resetsIn"</span>: <span class="str">"3d 17h"</span> }
+  ]
+}</div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="container">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px);">
+      <p class="eyebrow">Ready when you are</p>
+      <h2 style="margin-bottom: 1rem">Set up in five steps.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">Install the broker, power the device, pair from your AI agent. The setup page walks through it with screenshots.</p>
+      <a href="setup.html" class="btn btn-primary">Setup tutorial <span class="arrow">→</span></a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

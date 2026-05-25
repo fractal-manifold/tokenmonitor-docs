@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>C Wall Monitor — See your AI usage on the wall</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A 4-inch always-on display that shows live Claude Code, Codex and Gemini usage from your laptop. Fits a standard wall switch box.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  /* ── Landing-specific ───────────────────────────────────── */
+  .hero {
+    min-height: calc(100vh - 80px);
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 5rem 0 6rem 0;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -1px;
+    margin-bottom: 1.75rem;
+    font-weight: 700;
+  }
+  .hero h1 .accent { color: var(--color-gold); }
+  .hero .lead {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--fg-2);
+    margin-bottom: 2rem;
+    max-width: 52ch;
+    font-weight: 500;
+  }
+  .hero .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .hero .meta-row {
+    display: flex; gap: 2rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .hero .meta-row span { display: flex; align-items: center; gap: 0.5rem; }
+  .hero .meta-row .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-gold); }
+
+  .hero-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 560px;
+    justify-self: end;
+  }
+  .hero-visual .photo-frame {
+    position: absolute; inset: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+    background: #f2f2ef;
+  }
+  .hero-visual .photo-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-visual .photo-frame::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 65%, rgba(10,10,10,0.18) 100%);
+    pointer-events: none;
+  }
+  .hero-visual .float-tag {
+    position: absolute;
+    z-index: 2;
+    background: rgba(20,20,20,0.85);
+    backdrop-filter: blur(14px);
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    padding: 0.7rem 1rem;
+    display: flex; align-items: center; gap: 0.7rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-1);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  }
+  .hero-visual .float-tag .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 12px var(--color-success);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .hero-visual .float-tag.tl { top: 8%; left: -8%; }
+  .hero-visual .float-tag.br { bottom: 12%; right: -6%; }
+  .hero-visual .float-tag.br .num { color: var(--color-gold); font-variant-numeric: tabular-nums; }
+
+  /* ── Provider showcase ──────────────────────────────────── */
+  .provider-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .provider-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+  }
+  .provider-card:hover { transform: translateY(-5px); }
+  .provider-card.claude:hover { border-color: rgba(224,122,74,0.4); box-shadow: 0 10px 40px rgba(224,122,74,0.18); }
+  .provider-card.codex:hover  { border-color: rgba(30,210,156,0.4); box-shadow: 0 10px 40px rgba(30,210,156,0.18); }
+  .provider-card.gemini:hover { border-color: rgba(90,155,255,0.4); box-shadow: 0 10px 40px rgba(90,155,255,0.18); }
+  .provider-card .header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .provider-card .device-host {
+    position: relative; width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  /* ── Features grid ──────────────────────────────────────── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-gold);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(243,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .feature-card .ghost-icon {
+    position: absolute;
+    right: -1.5rem; bottom: -1.5rem;
+    font-size: 9rem;
+    line-height: 1;
+    opacity: 0.07;
+    color: var(--color-gold);
+    pointer-events: none;
+  }
+  .feature-card h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0 0.75rem 0;
+  }
+  .feature-card p { color: var(--fg-2); font-size: 0.97rem; }
+  .feature-card .icon-svg {
+    width: 36px; height: 36px;
+    color: var(--color-gold);
+    stroke-width: 1.5;
+  }
+
+  /* ── Mini architecture diagram ──────────────────────────── */
+  .arch-mini {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    max-width: 920px;
+    margin: 2rem auto 0 auto;
+    padding: 2rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+  }
+  .arch-node {
+    flex: 1;
+    text-align: center;
+    padding: 1.25rem 0.5rem;
+  }
+  .arch-node .glyph {
+    width: 64px; height: 64px;
+    margin: 0 auto 1rem auto;
+    border-radius: 14px;
+    background: rgba(245,158,11,0.08);
+    border: var(--border-gold-2);
+    display: grid; place-items: center;
+    color: var(--color-gold);
+  }
+  .arch-node h4 {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: var(--fg-1);
+    margin: 0 0 0.5rem 0;
+  }
+  .arch-node p {
+    font-size: 0.82rem;
+    color: var(--fg-3);
+    margin: 0;
+    line-height: 1.5;
+  }
+  .arch-arrow {
+    flex: 0 0 auto;
+    color: var(--color-gold);
+    opacity: 0.5;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+  .arch-arrow .line {
+    height: 2px; width: 60px;
+    background: var(--gradient-brand);
+    margin: 0.3rem auto;
+    border-radius: 1px;
+    opacity: 0.6;
+  }
+
+  /* ── Closing CTA ────────────────────────────────────────── */
+  .close-cta {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+  }
+  .close-cta::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.10) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .close-cta h2 { position: relative; }
+  .close-cta p { position: relative; max-width: 56ch; margin: 0 auto 2rem auto; }
+  .close-cta .cta-row { position: relative; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Waitlist ───────────────────────────────────────────── */
+  .waitlist {
+    position: relative;
+    padding: 5rem 3rem;
+    background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(147,51,234,0.06) 100%), var(--color-bg-tertiary);
+    border: 1px solid rgba(245,158,11,0.20);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+  }
+  .waitlist::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(245,158,11,0.18) 0%, transparent 35%),
+      radial-gradient(circle at 80% 70%, rgba(147,51,234,0.16) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .waitlist > * { position: relative; }
+  .waitlist .badge {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-size: 0.74rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-gold);
+    background: rgba(245,158,11,0.10);
+    border: 1px solid rgba(245,158,11,0.30);
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  .waitlist .badge .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-gold);
+    box-shadow: 0 0 12px var(--color-gold);
+    animation: wl-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes wl-pulse { 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .waitlist h2 {
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+    letter-spacing: -0.5px;
+    line-height: 1.06;
+    margin-bottom: 1rem;
+    max-width: 18ch;
+  }
+  .waitlist .sub {
+    font-size: 1.1rem;
+    color: var(--fg-2);
+    max-width: 56ch;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  .waitlist-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .wl-form {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+    max-width: 560px;
+    flex-wrap: wrap;
+  }
+  .wl-form input[type="email"] {
+    flex: 1 1 240px;
+    min-width: 0;
+    background: rgba(10,10,10,0.7);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    color: var(--fg-1);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all var(--ease-snappy);
+  }
+  .wl-form input[type="email"]::placeholder { color: var(--fg-3); }
+  .wl-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(245,158,11,0.15);
+    background: rgba(10,10,10,0.85);
+  }
+  .wl-form .btn { flex-shrink: 0; }
+
+  .wl-meta {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--fg-3);
+  }
+  .wl-meta .item {
+    display: flex; flex-direction: column;
+    gap: 0.2rem;
+  }
+  .wl-meta .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.45rem;
+    color: var(--fg-1);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+  }
+  .wl-meta .lbl {
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    font-weight: 600;
+  }
+  .wl-fine {
+    font-size: 0.8rem;
+    color: var(--fg-3);
+    margin-top: 1rem;
+    max-width: 56ch;
+  }
+
+  /* Thank-you state */
+  .wl-thanks {
+    display: none;
+    padding: 1.5rem 1.75rem;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: var(--radius-md);
+    max-width: 480px;
+    margin-bottom: 1.2rem;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .wl-thanks.show { display: flex; }
+  .wl-thanks .check {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--color-success);
+    color: #0a0a0a;
+    display: grid; place-items: center;
+  }
+  .wl-thanks h4 {
+    margin: 0 0 0.3rem 0;
+    color: var(--fg-1);
+    font-size: 1rem;
+  }
+  .wl-thanks p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+
+  /* Right column: queue numbers visual */
+  .wl-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .wl-ticket {
+    position: absolute;
+    background: rgba(10,10,10,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    font-family: var(--font-display);
+  }
+  .wl-ticket .num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--color-gold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .wl-ticket .lbl {
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-top: 0.3rem;
+    font-weight: 600;
+  }
+  .wl-ticket.t1 { top: 8%;  left: 8%;  transform: rotate(-6deg); }
+  .wl-ticket.t2 { top: 38%; right: 0;  transform: rotate(4deg); border-color: rgba(147,51,234,0.30); }
+  .wl-ticket.t2 .num { color: var(--color-purple-light); }
+  .wl-ticket.t3 { bottom: 6%; left: 10%; transform: rotate(-3deg); border-color: rgba(245,158,11,0.30); }
+  .wl-ticket.t3 .num { font-size: 1.05rem; color: var(--fg-1); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 3rem; min-height: auto; padding: 2rem 0 4rem; }
+    .hero-visual { justify-self: center; max-width: 100%; }
+    .hero-visual .float-tag.tl { left: 4%; }
+    .hero-visual .float-tag.br { right: 4%; }
+    .provider-strip { grid-template-columns: 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .arch-mini { flex-direction: column; }
+    .arch-arrow .line { width: 2px; height: 30px; }
+    .waitlist { padding: 3rem 1.75rem; }
+    .waitlist-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .wl-form { flex-direction: column; }
+    .wl-visual { display: none; }
+  }
+</style>
+</head>
+<body data-page="index">
+
+<main>
+  <!-- ─── Hero ─────────────────────────────────────────────── -->
+  <section class="hero container" data-screen-label="01 Hero">
+    <div>
+      <p class="eyebrow">ESP32-S3 · 4-inch wall display</p>
+      <h1>See your <span class="accent gradient-text">AI usage</span><br>on the wall.</h1>
+      <p class="lead">A 4-inch always-on display that shows live Claude Code, Codex and Gemini usage from your laptop. Fits a standard 86&nbsp;×&nbsp;86&nbsp;mm wall switch box.</p>
+      <div class="cta-row">
+        <a href="#waitlist" class="btn btn-primary">Join the waitlist <span class="arrow">→</span></a>
+        <a href="how-it-works.html" class="btn btn-secondary">How it works</a>
+      </div>
+      <div class="meta-row">
+        <span><span class="dot"></span>LAN-only, no cloud</span>
+        <span><span class="dot"></span>HMAC + AES-CTR</span>
+        <span><span class="dot"></span>Open documentation</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="photo-frame">
+        <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch wall display in hand, showing Claude Code usage">
+      </div>
+      <div class="float-tag tl"><span class="pulse"></span>Live · poll 2.4&nbsp;s</div>
+      <div class="float-tag br">Battery <span class="num">76%</span> · <span class="num">21.6 °C</span></div>
+    </div>
+  </section>
+
+  <!-- ─── Provider showcase (3 device frames) ──────────────── -->
+  <section class="container" style="padding-top:0">
+    <div class="section-head" style="text-align:center; max-width: 720px; margin: 0 auto 2.5rem;">
+      <p class="eyebrow">Three providers, one panel</p>
+      <h2>Claude, Codex, Gemini.<br>One ambient surface.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p class="lead" style="margin: 0 auto;">Switch active provider with a tap. Each adopts brand-tinted day &amp; night themes, drawn pixel-exact at 480×480 over capacitive touch.</p>
+    </div>
+    <div class="provider-strip">
+      <div class="provider-card claude">
+        <div class="header">
+          <div class="provider-tag"><span class="swatch claude"></span>Claude Code</div>
+          <span class="fm-mono" style="color:var(--fg-3); font-size:0.78rem">claude-sonnet-4.5</span>
+        </div>
+        <div class="device-host" data-cwm-screen="claude-night"></div>
+      </div>
+      <div class="provider-card codex">
+        <div class="header">
+          <div class="provider-tag"><span class="swatch codex"></span>Codex CLI</div>
+          <span class="fm-mono" style="color:var(--fg-3); font-size:0.78rem">gpt-5.1-codex</span>
+        </div>
+        <div class="device-host" data-cwm-screen="codex-day"></div>
+      </div>
+      <div class="provider-card gemini">
+        <div class="header">
+          <div class="provider-tag"><span class="swatch gemini"></span>Gemini CLI</div>
+          <span class="fm-mono" style="color:var(--fg-3); font-size:0.78rem">gemini-2.5-pro</span>
+        </div>
+        <div class="device-host" data-cwm-screen="gemini-day"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Feature grid ─────────────────────────────────────── -->
+  <section class="container" data-screen-label="02 Features">
+    <div class="section-head">
+      <p class="eyebrow">Why a wall display</p>
+      <h2>Glance, don't query.</h2>
+      <div class="rule"></div>
+      <p class="lead">Modal-free, focus-friendly. A wall display tells you the answer before you remember to ask.</p>
+    </div>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg>
+        <h3>Three providers, one panel</h3>
+        <p>Claude · Codex · Gemini, each with brand-tinted day &amp; night themes. Enable one or all three from Settings.</p>
+        <div class="ghost-icon">◷</div>
+      </article>
+      <article class="feature-card">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M5 12a3 3 0 100 6h14a3 3 0 100-6M9 6h6M9 6a3 3 0 100-6 3 3 0 000 6zm6 0a3 3 0 100-6 3 3 0 000 6z"/></svg>
+        <h3>Works on your LAN</h3>
+        <p>No cloud, no telemetry. The device polls your laptop directly over Wi-Fi — HMAC-SHA256 auth, AES-CTR encrypted payloads.</p>
+        <div class="ghost-icon">⌬</div>
+      </article>
+      <article class="feature-card">
+        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <h3>Quiet ambient design</h3>
+        <p>Standby after 20 min. Ambient weather strip stays lit. Four hysteresis-armed alerts: battery, limit overshoot, session rollover.</p>
+        <div class="ghost-icon">∿</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── Spec strip ───────────────────────────────────────── -->
+  <section class="container" style="padding-top: 1rem; padding-bottom: 2rem">
+    <div class="spec-strip">
+      <span><span class="num">ESP32-S3</span></span>
+      <span><span class="num">16</span>MB Flash</span>
+      <span><span class="num">8</span>MB PSRAM</span>
+      <span><span class="num">480 × 480</span>capacitive</span>
+      <span><span class="num">2.4 GHz</span>Wi-Fi</span>
+      <span><span class="num">86 × 86</span>mm</span>
+    </div>
+  </section>
+
+  <!-- ─── How it works preview ─────────────────────────────── -->
+  <section class="container" data-screen-label="03 How it works preview">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Three nodes. No cloud.</h2>
+      <div class="rule"></div>
+      <p class="lead">Your laptop runs a small broker that exposes usage over your local network. The device pulls it, draws it, and goes back to standby.</p>
+    </div>
+    <div class="arch-mini">
+      <div class="arch-node">
+        <div class="glyph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 20h20"/></svg>
+        </div>
+        <h4>Laptop</h4>
+        <p>cwm-mcp broker<br>Go · Python · JS</p>
+      </div>
+      <div class="arch-arrow">
+        <div>HTTP + HMAC</div>
+        <div class="line"></div>
+        <div>over Wi-Fi LAN</div>
+      </div>
+      <div class="arch-node">
+        <div class="glyph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a7 7 0 0114 0"/><path d="M2 16a10 10 0 0120 0"/><path d="M8 10a4 4 0 018 0"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </div>
+        <h4>Wi-Fi</h4>
+        <p>2.4 GHz LAN only<br>no internet required*</p>
+      </div>
+      <div class="arch-arrow">
+        <div>poll 2.4 s</div>
+        <div class="line"></div>
+        <div>AES-CTR body</div>
+      </div>
+      <div class="arch-node">
+        <div class="glyph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>
+        </div>
+        <h4>Wall device</h4>
+        <p>4" 480 × 480<br>ESP32-S3 · capacitive</p>
+      </div>
+    </div>
+    <p class="fm-small" style="text-align:center; margin-top:1.5rem; color: var(--fg-3)">* needs internet for SNTP + weather</p>
+    <div style="text-align:center; margin-top: 2rem;">
+      <a href="how-it-works.html" class="btn btn-ghost">Read the architecture in detail →</a>
+    </div>
+  </section>
+
+  <!-- ─── Waitlist ─────────────────────────────────────────── -->
+  <section class="container" id="waitlist" data-screen-label="04 Waitlist">
+    <div class="waitlist">
+      <div class="waitlist-grid">
+        <div>
+          <span class="badge"><span class="pulse"></span>Early access · First batch Q3 2026</span>
+          <h2>Join the waitlist.<br><span class="gradient-text">Be among the first.</span></h2>
+          <p class="sub">Initial batch is hand-assembled and pre-flashed. Reserve your spot — we'll email you when units open for order, in the order people signed up.</p>
+
+          <form class="wl-form" id="wlForm" novalidate>
+            <input type="email" name="email" id="wlEmail" placeholder="you@yourdomain.com" required autocomplete="email">
+            <button type="submit" class="btn btn-primary">Reserve a spot <span class="arrow">→</span></button>
+          </form>
+
+          <div class="wl-thanks" id="wlThanks">
+            <div class="check">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+            </div>
+            <div>
+              <h4>You're on the list.</h4>
+              <p>Position <strong id="wlPosition" style="color: var(--color-gold-light); font-variant-numeric: tabular-nums;">—</strong>. We'll email <span id="wlEcho" style="color: var(--fg-1)">—</span> as soon as units open.</p>
+            </div>
+          </div>
+
+          <div class="wl-meta">
+            <div class="item">
+              <span class="num" id="wlCount">412</span>
+              <span class="lbl">On the list</span>
+            </div>
+            <div class="item">
+              <span class="num">100</span>
+              <span class="lbl">First batch</span>
+            </div>
+            <div class="item">
+              <span class="num">Q3 '26</span>
+              <span class="lbl">Ships</span>
+            </div>
+          </div>
+
+          <p class="wl-fine">No marketing emails. One transactional message when units open, one when yours ships. Email stored locally + on our Postgres; deleted on request.</p>
+        </div>
+
+        <div class="wl-visual" aria-hidden="true">
+          <div class="wl-ticket t1">
+            <div class="num">#001</div>
+            <div class="lbl">Founders batch</div>
+          </div>
+          <div class="wl-ticket t2">
+            <div class="num">#100</div>
+            <div class="lbl">Last of batch 1</div>
+          </div>
+          <div class="wl-ticket t3">
+            <div class="num">#412</div>
+            <div class="lbl">You · today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Closing micro-CTA ────────────────────────────────── -->
+  <section class="container" style="padding-top: 0">
+    <div style="text-align:center; padding: 3rem 0; color: var(--fg-3); font-size: 0.95rem;">
+      Already have a unit? <a href="setup.html" style="color: var(--color-gold-light); text-decoration: underline; text-decoration-color: rgba(245,158,11,0.4);">Jump to setup →</a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/site.js"></script>
+<script src="assets/device-screens.js"></script>
+<script>
+  // ── Waitlist signup (localStorage demo backend) ───────────
+  (function() {
+    const KEY_BASE = 412;           // visible starting count
+    const KEY = 'cwm:waitlist';
+    const form    = document.getElementById('wlForm');
+    const thanks  = document.getElementById('wlThanks');
+    const countEl = document.getElementById('wlCount');
+    const posEl   = document.getElementById('wlPosition');
+    const echoEl  = document.getElementById('wlEcho');
+
+    // Pull from localStorage. Each entry = { email, ts, pos }.
+    const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+    function paintCount() {
+      countEl.textContent = (KEY_BASE + list.length).toLocaleString();
+    }
+    paintCount();
+
+    // If user already signed up in this browser, show thanks.
+    const mine = list[list.length - 1];
+    if (mine) {
+      thanks.classList.add('show');
+      posEl.textContent = '#' + mine.pos;
+      echoEl.textContent = mine.email;
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const emailInput = document.getElementById('wlEmail');
+      const email = emailInput.value.trim();
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        emailInput.focus();
+        emailInput.style.borderColor = 'var(--color-danger)';
+        emailInput.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.18)';
+        setTimeout(() => { emailInput.style.borderColor = ''; emailInput.style.boxShadow = ''; }, 1800);
+        return;
+      }
+      const pos = KEY_BASE + list.length + 1;
+      list.push({ email, ts: Date.now(), pos });
+      localStorage.setItem(KEY, JSON.stringify(list));
+      paintCount();
+      posEl.textContent = '#' + pos;
+      echoEl.textContent = email;
+      thanks.classList.add('show');
+      form.style.display = 'none';
+
+      // Try a beacon to a hypothetical capture endpoint (no-op if missing).
+      try {
+        const blob = new Blob([JSON.stringify({ email, pos, ts: Date.now() })], { type: 'application/json' });
+        navigator.sendBeacon && navigator.sendBeacon('/api/waitlist', blob);
+      } catch (_) {}
+    });
+  })();
+</script>
+</body>
+</html>
