@@ -1,0 +1,56 @@
+/*
+ * Paleta inspirada en fractalmanifold.com (dark + gold/purple).
+ * Aplicada como override de las CSS vars de Starlight.
+ */
+
+:root {
+  --cwm-gold: #F59E0B;
+  --cwm-gold-light: #FBBF24;
+  --cwm-purple: #9333EA;
+  --cwm-purple-light: #A855F7;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #3a1a05;
+  --sl-color-accent: #F59E0B;
+  --sl-color-accent-high: #FBBF24;
+
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f4f4f5;
+  --sl-color-gray-2: #d1d5db;
+  --sl-color-gray-3: #9ca3af;
+  --sl-color-gray-4: #4b5563;
+  --sl-color-gray-5: #1f2937;
+  --sl-color-gray-6: #111827;
+  --sl-color-black: #0A0A0A;
+
+  --sl-color-bg: #0A0A0A;
+  --sl-color-bg-nav: #0A0A0A;
+  --sl-color-bg-sidebar: #0A0A0A;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #fef3c7;
+  --sl-color-accent: #b45309;
+  --sl-color-accent-high: #78350f;
+}
+
+/* Gradiente de marca para títulos hero — sólo en la home */
+.hero h1 {
+  background: linear-gradient(
+    135deg,
+    var(--cwm-gold) 0%,
+    var(--cwm-gold) 30%,
+    var(--cwm-purple) 70%,
+    var(--cwm-purple) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Sutil acento púrpura en el bloque de aviso "tip" para no apoyarnos sólo en el dorado */
+.starlight-aside--tip {
+  border-inline-start-color: var(--cwm-purple-light);
+}
