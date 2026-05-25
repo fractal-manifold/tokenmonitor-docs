@@ -207,21 +207,18 @@
           <span class="swatch claude"></span>
           <div class="label-block">
             <h3>Claude Code</h3>
-            <span class="sub">claude-sonnet-4.5</span>
           </div>
         </button>
         <button class="cli-tab codex" data-cli="codex">
           <span class="swatch codex"></span>
           <div class="label-block">
             <h3>Codex CLI</h3>
-            <span class="sub">gpt-5.1-codex</span>
           </div>
         </button>
         <button class="cli-tab gemini" data-cli="gemini">
           <span class="swatch gemini"></span>
           <div class="label-block">
             <h3>Gemini CLI</h3>
-            <span class="sub">gemini-2.5-pro</span>
           </div>
         </button>
       </div>
@@ -230,18 +227,19 @@
       <div class="cli-panel active" data-panel="claude">
         <div class="panel-head">
           <h2>Claude Code</h2>
-          <span class="marketplace">via <a href="#" target="_blank">fractal-manifold/mcp-marketplace</a></span>
+          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
         <p class="lead">Claude Code natively supports MCP marketplaces. Two commands — first you add the marketplace, then you install the plugin from it.</p>
 
         <h4>Install</h4>
 <div class="code-block"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
-<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor</div>
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor@fractalmanifold-mcp-marketplace</div>
 
         <h4>What it adds</h4>
 <div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
 /cwallmonitor:configure
 /cwallmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
+/cwallmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;key&gt;=&lt;value&gt;…</span>
 
 <span class="cmt"># Tools (Claude calls these as needed)</span>
 wall_monitor_status
@@ -257,27 +255,28 @@ wall_monitor_provision_hint</div>
       <div class="cli-panel" data-panel="codex">
         <div class="panel-head">
           <h2>Codex CLI</h2>
-          <span class="marketplace">manual MCP server entry</span>
+          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
-        <p class="lead">Codex reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. Add the cwallmonitor block; Codex will spawn it on next start.</p>
+        <p class="lead">Codex CLI shares the marketplace surface with Claude Code — the same two commands install <code class="inline-code">cwallmonitor</code>, with the broker, skills and tools wired up automatically.</p>
 
-        <h4>Config snippet</h4>
-        <span class="file-tag">~/.codex/config.toml</span>
-<div class="code-block">[<span class="kw">mcp_servers</span>.cwallmonitor]
-<span class="var">command</span> = <span class="str">"cwm-mcp"</span>
-<span class="var">args</span>    = [<span class="str">"mcp"</span>]
-<span class="var">env</span>     = { <span class="var">CWM_BROKER</span> = <span class="str">"http://localhost:9787"</span> }
+        <h4>Install</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor@fractalmanifold-mcp-marketplace</div>
 
-<span class="cmt"># Optional: pin a specific device when you have several</span>
-<span class="cmt"># [mcp_servers.cwallmonitor.env]</span>
-<span class="cmt"># CWM_DEVICE_ID = "cwm-3c7c"</span></div>
+        <h4>What it adds</h4>
+<div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
+/cwallmonitor:configure
+/cwallmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
+/cwallmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;key&gt;=&lt;value&gt;…</span>
 
-        <h4>Restart Codex</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> codex restart
-<span class="cmt"># MCP servers ready: cwallmonitor (4 tools)</span></div>
+<span class="cmt"># Tools (Codex calls these as needed)</span>
+wall_monitor_status
+wall_monitor_health
+wall_monitor_recent_logs
+wall_monitor_provision_hint</div>
 
-        <h4>Where the broker lives</h4>
-        <p style="font-size: 0.92rem; color: var(--fg-3);">Make sure <code class="inline-code">cwm-mcp</code> is on your <code class="inline-code">$PATH</code> (the broker installer puts it there). If you used the Go path, that's <code class="inline-code">$GOPATH/bin</code>.</p>
+        <h4>Where it lives</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Marketplace entries land in <code class="inline-code">~/.codex/plugins/</code>. Uninstall any time with <code class="inline-code">/plugin uninstall cwallmonitor</code>.</p>
       </div>
 
       <!-- ── Gemini CLI panel ────────────────────────────────── -->
@@ -305,12 +304,12 @@ wall_monitor_provision_hint</div>
       }
     }
   },
-  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>]
+  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>]
 }</div>
 
         <h4>Restart Gemini</h4>
 <div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini restart
-<span class="cmt"># Loaded extension: cwallmonitor (skills: configure, theme)</span></div>
+<span class="cmt"># Loaded extension: cwallmonitor (skills: configure, theme, settings)</span></div>
       </div>
 
       <!-- ── Verify (common to all three) ────────────────────── -->

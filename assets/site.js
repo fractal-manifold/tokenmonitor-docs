@@ -5,13 +5,13 @@
 (function () {
   const NAV = [
     { href: 'index.html',         label: 'Overview',      page: 'index' },
-    { href: 'how-it-works.html',  label: 'How it works',  page: 'how-it-works' },
     { href: 'setup.html',         label: 'Setup',         page: 'setup' },
     { href: 'usage.html',         label: 'Usage',         page: 'usage' },
     { href: 'plugin.html',        label: 'Plugin',        page: 'plugin' },
     { href: 'skills.html',        label: 'Skills',        page: 'skills' },
     { href: 'faq.html',           label: 'FAQ',           page: 'faq' },
   ];
+  const WAITLIST_URL = 'https://forms.gle/Yg3ZhXZJGXuvRKx49';
 
   function renderHeader(active) {
     const navLinks = NAV.map(n =>
@@ -29,7 +29,7 @@
           </a>
           <nav class="site-nav" id="siteNav">
             ${navLinks}
-            <a href="index.html#waitlist" class="nav-cta">Join waitlist</a>
+            <a href="${WAITLIST_URL}" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">Notify me when available</a>
           </nav>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
             <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -59,13 +59,12 @@
                 <span class="sub">by Fractal Manifold</span>
               </span>
             </a>
-            <p>A 4-inch always-on display that shows live AI CLI usage from your laptop. Fits a standard 86×86 mm wall switch box.</p>
+            <p>A 4-inch always-on display that shows live AI CLI usage from your laptop.</p>
           </div>
           <div>
             <h4>Product</h4>
             <ul>
               <li><a href="index.html">Overview</a></li>
-              <li><a href="how-it-works.html">How it works</a></li>
               <li><a href="setup.html">Setup</a></li>
               <li><a href="usage.html">Usage</a></li>
             </ul>
@@ -83,13 +82,11 @@
             <ul>
               <li><a href="https://fractalmanifold.com" target="_blank" rel="noopener">fractalmanifold.com</a></li>
               <li><a href="mailto:contact@fractalmanifold.com">contact@fractalmanifold.com</a></li>
-              <li><a href="https://github.com/fractal-manifold" target="_blank" rel="noopener">github.com/fractal-manifold</a></li>
             </ul>
           </div>
         </div>
         <div class="colophon">
-          <span>© 2026 Fractal Manifold S.L. · CIF B24958753 · Spain</span>
-          <span>Firmware proprietary · Documentation MIT</span>
+          <span>© 2026 <a href="https://fractalmanifold.com" target="_blank" rel="noopener">Fractal Manifold</a></span>
         </div>
       </footer>`;
   }

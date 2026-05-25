@@ -22,9 +22,12 @@
 
   .skills-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin: 3rem 0;
+  }
+  @media (max-width: 1100px) {
+    .skills-grid { grid-template-columns: 1fr 1fr; }
   }
   .skill-card {
     background: var(--color-bg-tertiary);
@@ -226,7 +229,7 @@
   <div class="container">
     <div class="page-head">
       <p class="eyebrow">Skills reference</p>
-      <h1>Two skills.<br>Four MCP tools.</h1>
+      <h1>Three skills.<br>Four MCP tools.</h1>
       <div class="rule"></div>
       <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. Both are loaded the moment the <code class="inline-code">cwallmonitor</code> plugin is installed.</p>
     </div>
@@ -278,6 +281,29 @@
         <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> auto</div>
         <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> night <span class="opt">--device</span> cwm-3c7c</div>
         <div class="syntax"><span class="arg">/cwallmonitor:theme</span> day <span class="opt">--device</span> kitchen</div>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-name">/cwallmonitor:settings</div>
+        <h3>Reconfigure a provisioned device</h3>
+        <p class="desc">Push runtime settings to an already-paired device via the control plane: city, day / night brightness, alert volume, which providers are enabled, auto-rotation, broker URL, passphrase rotation. The change applies on the device's next 60 s poll, with automatic rollback if it can't be promoted.</p>
+
+        <h4>When to use</h4>
+        <ul>
+          <li><span class="b"></span>"Set the city to Madrid"</li>
+          <li><span class="b"></span>"Lower night brightness to 15"</li>
+          <li><span class="b"></span>"Mute alerts" / "set volume to 0"</li>
+          <li><span class="b"></span>"Disable Codex on the wall monitor"</li>
+          <li><span class="b"></span>"Rotate providers every 60 s"</li>
+          <li><span class="b"></span>"Rotate the broker passphrase"</li>
+          <li><span class="b"></span>"Change the broker URL"</li>
+        </ul>
+
+        <h4>Syntax</h4>
+        <div class="syntax"><span class="arg">/cwallmonitor:settings</span> <span class="opt">&lt;natural-language change&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+        <h4>Out of scope</h4>
+        <p class="desc" style="font-size:0.88rem">WiFi SSID / password cannot be changed remotely — a bad push would brick the device. Open the on-device Settings panel (long-press the mascot) or factory-reset and re-run <code class="inline-code">/cwallmonitor:configure</code>.</p>
       </article>
     </div>
 

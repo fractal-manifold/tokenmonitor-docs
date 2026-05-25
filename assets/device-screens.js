@@ -425,19 +425,46 @@
     new ResizeObserver(apply).observe(host);
   }
 
+  // Hosts with data-cwm-theme="auto" pick the variant that matches the
+  // website theme: light → -day suffix, dark → -night. The key written
+  // in data-cwm-screen sets the *family*; the suffix gets rewritten.
+  function resolveKey(host) {
+    const key = host.getAttribute('data-cwm-screen');
+    if (!key) return null;
+    if (host.getAttribute('data-cwm-theme') !== 'auto') return key;
+    const wantNight = document.documentElement.dataset.theme === 'dark';
+    const wantSuffix = wantNight ? '-night' : '-day';
+    if (key.endsWith('-day')) return key.slice(0, -4) + wantSuffix;
+    if (key.endsWith('-night')) return key.slice(0, -6) + wantSuffix;
+    return key;  // base has no day/night variant (e.g. needs-config)
+  }
+
   function mountAll() {
     document.querySelectorAll('[data-cwm-screen]').forEach(host => {
-      const key = host.getAttribute('data-cwm-screen');
+      const key = resolveKey(host);
       const html = presets[key] ? presets[key]() : `<div style="color:#f00">Unknown screen: ${key}</div>`;
       host.innerHTML = `<div class="cwm-screen-fit">${html}</div>`;
       autoFit(host);
     });
   }
 
+  // Re-render themed hosts when the website's theme attribute flips.
+  // We MutationObserve <html> rather than relying on a custom event so
+  // any code path that flips the attribute keeps the devices in sync.
+  function watchTheme() {
+    const obs = new MutationObserver(muts => {
+      for (const m of muts) {
+        if (m.attributeName === 'data-theme') { mountAll(); break; }
+      }
+    });
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountAll);
+    document.addEventListener('DOMContentLoaded', () => { mountAll(); watchTheme(); });
   } else {
     mountAll();
+    watchTheme();
   }
 
   window.CWM = { mount: mountAll, presets };
