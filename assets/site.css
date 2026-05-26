@@ -332,6 +332,22 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
 .site-footer .brand-mark { color: var(--fg-1); }
 .site-footer p { font-size: 0.92rem; color: var(--fg-3); max-width: 36ch; }
 
+/* ─── Legal disclaimer footer ──────────────────────────────── */
+.legal-footer {
+  border-top: var(--border-faint);
+  margin-top: 4rem;
+  padding: 2rem 0 2.5rem 0;
+}
+.legal-footer .inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--fg-3);
+  text-align: center;
+}
+
 /* ─── Code blocks ──────────────────────────────────────────── */
 .code-block {
   position: relative;

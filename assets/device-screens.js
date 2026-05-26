@@ -286,7 +286,7 @@
   /* ────────────── Settings ──────────────── */
   function settingsHtml(palette) {
     const rows = [
-      ['Claude', 'On'],
+      ['Claude Code', 'On'],
       ['Codex', 'Off'],
       ['Gemini', 'Off'],
       ['City', 'Madrid, ES'],
@@ -336,7 +336,7 @@
   /* ────────────── Presets the spec calls for ──────────────── */
   const presets = {
     'claude-day': () => dashboardHtml({
-      palette: 'pal-claude-day', provider: 'claude', providerName: 'Claude',
+      palette: 'pal-claude-day', provider: 'claude', providerName: 'Claude Code',
       clock: '16:24', date: 'Thu 14 May', sunrise: '06:59', sunset: '21:23', tempC: '21.6 °C', battery: '76%',
       cards: {
         session: { pct: '18.0%', fill: 18, ghost: 44, metaLeft: 'Resets in 2h 56m  ·  at 19:20', metaRight: '→ 44%' },
@@ -346,7 +346,7 @@
       statusAst: '+', statusWord: 'Whispering', statusDots: '..'
     }),
     'claude-night': () => dashboardHtml({
-      palette: 'pal-claude-night', provider: 'claude', providerName: 'Claude',
+      palette: 'pal-claude-night', provider: 'claude', providerName: 'Claude Code',
       clock: '23:04', date: 'Thu 14 May', sunrise: '06:59', sunset: '21:23', tempC: '19.1 °C',
       cards: {
         session: { pct: '42.0%', fill: 42, ghost: 78, metaLeft: 'Resets in 3h 12m  ·  at 21:42', metaRight: '→ 78%' },
