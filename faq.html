@@ -64,7 +64,13 @@
   .faq-content { min-width: 0; }
 
   /* ── Section ─────────────────────────────────────────────── */
-  .faq-section { margin-bottom: 4rem; scroll-margin-top: 100px; }
+  .faq-section {
+    padding: 0;
+    margin-bottom: 3rem;
+    scroll-margin-top: 100px;
+  }
+  .faq-section + .faq-section { margin-top: 1rem; }
+  .faq-section .eyebrow { margin-bottom: 0.5rem; }
   .faq-section h2 {
     font-size: 1.6rem;
     letter-spacing: 0.5px;
@@ -401,7 +407,7 @@
             <span class="symptom-tag">Symptom</span>
             <h4>Audio is silent — no chimes on alerts.</h4>
             <span class="fix-tag">Fix</span>
-            <p>Settings → Alert volume; default is 30%. If it's already &gt; 0, check the piezo isn't physically blocked by the wall box gasket. Some installations end up with the speaker port pressed flat against the back plate — repositioning the case 1 mm forward fixes it.</p>
+            <p>Settings → Alert volume; default is 30%. If it's already &gt; 0, check the speaker port on the back of the case isn't pressed against the desk or its stand — that flattens the audio. Lift the unit 1 cm or reseat it on its base.</p>
           </div>
 
           <div class="ts-card symptom">
@@ -427,7 +433,7 @@
         <h3>Still stuck?</h3>
         <p>Open an issue on the marketplace repo, or email us — we read everything. Include the output of <code class="inline-code">wall_monitor_health</code> and the last 50 broker log lines if you can.</p>
       </div>
-      <a href="mailto:contact@fractalmanifold.com" class="btn btn-primary">contact@fractalmanifold.com</a>
+      <a href="mailto:cwm@fractalmanifold.com" class="btn btn-primary">cwm@fractalmanifold.com</a>
     </div>
   </div>
 </main>

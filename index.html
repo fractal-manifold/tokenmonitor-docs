@@ -2,21 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>C Wall Monitor — See your AI usage on the wall</title>
+<title>C Wall Monitor — See your AI usage on your desk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A 4-inch always-on display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta name="description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="stylesheet" href="assets/site.css">
 <script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
   /* ── Landing-specific ───────────────────────────────────── */
   .hero {
+    position: relative;
     min-height: calc(100vh - 80px);
     display: grid;
     grid-template-columns: 1.05fr 1fr;
     gap: 4rem;
     align-items: center;
     padding: 5rem 0 6rem 0;
+  }
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.85;
+    transition: opacity 0.35s ease;
+  }
+  .scroll-cue.is-hidden { opacity: 0; }
+  .scroll-cue .arrow-down {
+    width: 14px; height: 14px;
+    border-right: 2px solid var(--color-gold);
+    border-bottom: 2px solid var(--color-gold);
+    transform: rotate(45deg);
+    animation: cue-bounce 1.8s ease-in-out infinite;
+  }
+  @keyframes cue-bounce {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.55; }
+    50%      { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
   }
   .hero h1 {
     font-size: clamp(2.4rem, 5.4vw, 4.6rem);
@@ -222,6 +254,7 @@
   }
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 3rem; min-height: auto; padding: 2rem 0 4rem; }
+    .scroll-cue { display: none; }
     .hero-visual { justify-self: center; max-width: 100%; }
     .provider-strip { grid-template-columns: 1fr; }
     .feature-grid { grid-template-columns: 1fr; }
@@ -235,9 +268,9 @@
   <!-- ─── Hero ─────────────────────────────────────────────── -->
   <section class="hero container" data-screen-label="01 Hero">
     <div>
-      <p class="eyebrow">4-inch wall display</p>
-      <h1>See your <span class="accent gradient-text">AI usage</span><br>on the wall.</h1>
-      <p class="lead">A 4-inch always-on display that shows live Claude Code, Codex and Gemini usage from your laptop.</p>
+      <p class="eyebrow">4-inch desk display</p>
+      <h1>See your <span class="accent gradient-text">AI usage</span><br>on your desk.</h1>
+      <p class="lead">A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.</p>
       <div class="cta-row">
         <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Notify me when available <span class="arrow">→</span></a>
       </div>
@@ -249,8 +282,12 @@
     </div>
     <div class="hero-visual">
       <div class="photo-frame">
-        <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch wall display in hand, showing Claude Code usage">
+        <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
       </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">
+      <span>More below</span>
+      <span class="arrow-down"></span>
     </div>
   </section>
 
@@ -258,7 +295,7 @@
   <section class="container" style="padding-top:0">
     <div class="section-head" style="text-align:center; max-width: 720px; margin: 0 auto 2.5rem;">
       <p class="eyebrow">Three providers, one panel</p>
-      <h2>Claude, Codex, Gemini.<br>One ambient surface.</h2>
+      <h2>Claude Code, Codex, Gemini.<br>One ambient surface.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
       <p class="lead" style="margin: 0 auto;">Switch active provider with a tap. Each adopts brand-tinted day &amp; night themes, drawn pixel-exact at 480×480 over capacitive touch.</p>
     </div>
@@ -287,16 +324,16 @@
   <!-- ─── Feature grid ─────────────────────────────────────── -->
   <section class="container" data-screen-label="02 Features">
     <div class="section-head">
-      <p class="eyebrow">Why a wall display</p>
+      <p class="eyebrow">Why a dedicated desk display</p>
       <h2>Glance, don't query.</h2>
       <div class="rule"></div>
-      <p class="lead">Modal-free, focus-friendly. A wall display tells you the answer before you remember to ask.</p>
+      <p class="lead">Modal-free, focus-friendly. A dedicated desk display tells you the answer before you remember to ask.</p>
     </div>
     <div class="feature-grid">
       <article class="feature-card">
         <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg>
         <h3>Three providers, one panel</h3>
-        <p>Claude · Codex · Gemini, each with brand-tinted day &amp; night themes. Enable one or all three from Settings.</p>
+        <p>Claude Code · Codex · Gemini, each with brand-tinted day &amp; night themes. Enable one or all three from Settings.</p>
         <div class="ghost-icon">◷</div>
       </article>
       <article class="feature-card">
@@ -351,5 +388,17 @@
 
 <script src="assets/site.js"></script>
 <script src="assets/device-screens.js"></script>
+<script>
+  // Fade out the "More below" cue once the user has scrolled past the hero.
+  (function () {
+    const cue = document.querySelector('.scroll-cue');
+    if (!cue) return;
+    function update() {
+      cue.classList.toggle('is-hidden', window.scrollY > 40);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
 </body>
 </html>

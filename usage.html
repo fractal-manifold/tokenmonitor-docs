@@ -217,7 +217,7 @@
   <div class="container">
     <div class="page-head">
       <p class="eyebrow">Day-to-day</p>
-      <h1>How to use<br>your wall monitor.</h1>
+      <h1>How to use<br>your desk monitor.</h1>
       <div class="rule"></div>
       <p class="lead">The dashboard explained, what to expect in standby, where to find settings, what each of the four alerts means, and how themes follow your local daylight.</p>
     </div>
@@ -294,16 +294,40 @@
           <p class="eyebrow">Settings</p>
           <h2>Tap the gear, bottom-right.</h2>
           <div class="step-rule"></div>
-          <p>The gear icon on the dashboard's footer band opens Settings. Editable fields:</p>
-          <ul style="padding-left: 1.2rem; margin: 1rem 0; color: var(--fg-2)">
+          <p>The gear icon on the dashboard's footer band opens Settings. Fields are grouped into five sections so the list scans at a glance instead of becoming one long flat enumeration.</p>
+
+          <h4 style="margin: 1.4rem 0 0.4rem 0; color: var(--fg-1)">Providers</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Claude Code · Codex · Gemini (toggle each on / off)</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Display</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Auto-rotate (Enabled / Disabled)</li>
+            <li>Rotate interval (10..300 s)</li>
+            <li>Theme (Day / Night / Auto)</li>
+            <li>Day brightness · Night brightness</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Network</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
             <li>City (controls weather + Auto-theme sunrise / sunset)</li>
             <li>Wi-Fi SSID + password</li>
             <li>Broker URL (override the auto-discovered one)</li>
             <li>Passphrase (rotates PSK — broker side updates via skill)</li>
-            <li>Day brightness · Night brightness</li>
-            <li>Alert volume</li>
           </ul>
-          <p>Edits land on the editor screen with a slider + pencil for exact input. Cancel restores the previous value.</p>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Audio</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Alert volume (0..100%) with four test buttons for live preview</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">About</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Device ID · Firmware version · IP address · Broker URL (read-only diagnostics)</li>
+          </ul>
+
+          <p style="margin-top: 1.2rem">Edits land on the editor screen with a slider + pencil for exact input. Cancel restores the previous value. The About rows are not editable — they show live device state for troubleshooting.</p>
         </div>
         <div class="uv">
           <div class="theme-pair">
