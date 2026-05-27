@@ -92,10 +92,12 @@
     box-shadow: 0 40px 100px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
     background: #f2f2ef;
   }
-  .hero-visual .photo-frame img {
+  .hero-visual .photo-frame img,
+  .hero-visual .photo-frame video {
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: center;
+    display: block;
   }
   .hero-visual .photo-frame::after {
     content: '';
@@ -282,7 +284,13 @@
     </div>
     <div class="hero-visual">
       <div class="photo-frame">
-        <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
+        <video
+          autoplay muted loop playsinline preload="metadata"
+          poster="assets/prototype.png"
+          aria-label="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
+          <source src="assets/cwm.mp4" type="video/mp4">
+          <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
+        </video>
       </div>
     </div>
     <div class="scroll-cue" aria-hidden="true">
@@ -398,6 +406,21 @@
     }
     window.addEventListener('scroll', update, { passive: true });
     update();
+  })();
+
+  // If the hero video fails to load, fall back to the still image.
+  (function () {
+    const video = document.querySelector('.hero-visual .photo-frame video');
+    if (!video) return;
+    const swap = () => {
+      const img = document.createElement('img');
+      img.src = video.getAttribute('poster') || 'assets/prototype.png';
+      img.alt = video.getAttribute('aria-label') || '';
+      video.replaceWith(img);
+    };
+    video.addEventListener('error', swap);
+    const source = video.querySelector('source');
+    if (source) source.addEventListener('error', swap);
   })();
 </script>
 </body>
