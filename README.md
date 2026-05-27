@@ -33,7 +33,7 @@ assets/
   fm-tokens.css     Fractalmanifold design tokens (palette, typography)
   device-screens.js Renders the 480×480 device mockups
   logo.png, logo2.png
-  prototype.png, prototype.jpg
+  prototype.jpg     Hero product shot (1200×1200, also og:image)
 ```
 
 ## Deploy

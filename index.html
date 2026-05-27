@@ -5,7 +5,27 @@
 <title>C Wall Monitor — See your AI usage on your desk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<link rel="canonical" href="https://cwm.fractalmanifold.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://cwm.fractalmanifold.com/">
+<meta property="og:title" content="C Wall Monitor — See your AI usage on your desk">
+<meta property="og:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="C Wall Monitor — See your AI usage on your desk">
+<meta name="twitter:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
+<meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
 <script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
@@ -286,10 +306,10 @@
       <div class="photo-frame">
         <video
           autoplay muted loop playsinline preload="metadata"
-          poster="assets/prototype.png"
+          poster="assets/prototype.jpg"
           aria-label="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
           <source src="assets/cwm.mp4" type="video/mp4">
-          <img src="assets/prototype.png" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
+          <img src="assets/prototype.jpg" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
         </video>
       </div>
     </div>
@@ -414,7 +434,7 @@
     if (!video) return;
     const swap = () => {
       const img = document.createElement('img');
-      img.src = video.getAttribute('poster') || 'assets/prototype.png';
+      img.src = video.getAttribute('poster') || 'assets/prototype.jpg';
       img.alt = video.getAttribute('aria-label') || '';
       video.replaceWith(img);
     };
