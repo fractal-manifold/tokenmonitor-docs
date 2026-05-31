@@ -23,7 +23,7 @@ CLI and Gemini CLI on the user's laptop. Designed to fit a standard
   - Codex — green
   - Gemini — blue / purple
 - Reuse the pixel-exact dashboard mockups from
-  `docs/design/cwm-redesign.html` (8 screen states already designed:
+  `docs/cwm-design.html` (8 screen states already designed:
   Dashboard day/night for each provider, Standby, Connecting,
   Saving, Needs Config / pairing, Provisioning, Settings, Settings
   editor). Render them inside a device frame (round-cornered 480×480
@@ -100,7 +100,7 @@ Bullet list of key properties:
 ## 3. Setup tutorial (`/setup`) — **the main tutorial page**
 
 5 steps, each with screenshot. Use the mockups in
-`docs/design/cwm-redesign.html`, cropped to the relevant screen.
+`docs/cwm-design.html`, cropped to the relevant screen.
 
 ### Step 1 — Install the broker on your laptop
 
@@ -292,7 +292,7 @@ English. Key entries:
 ## Assets available
 
 - `docs/images/prototype.jpg` — real-unit hero shot (2000×2000)
-- `docs/design/cwm-redesign.html` — all UI screens pixel-exact
+- `docs/cwm-design.html` — all UI screens pixel-exact
   (480×480 each). Open in a browser and screenshot / export each
   `<section>`.
 - Provider logos (Claude / Codex / Gemini) exist as LVGL C arrays
