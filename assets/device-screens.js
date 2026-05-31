@@ -31,12 +31,12 @@
     .cwm-screen-fit > .cwm-screen { transform: scale(var(--cwm-scale,1)); }
 
     /* Palettes (mirrors firmware ui_theme.c) */
-    .pal-claude-day  { --bg:#f5efe2; --card:#fffaf0; --card-alt:#ecdfca; --text:#1e1a14; --text-dim:#5b4a36; --divider:#d8cdb5; --accent:#c15f3c; --accent-text:#7a331a; }
-    .pal-claude-night{ --bg:#1a1410; --card:#221a14; --card-alt:#2c2018; --text:#f0e6d2; --text-dim:#a89880; --divider:#3a2c20; --accent:#e07a4a; --accent-text:#f0956a; }
-    .pal-codex-day   { --bg:#fafafa; --card:#ffffff; --card-alt:#eef3f0; --text:#131a17; --text-dim:#4a5a52; --divider:#d4dcd8; --accent:#10a37f; --accent-text:#075a46; }
-    .pal-codex-night { --bg:#0e1311; --card:#161d1a; --card-alt:#1d2723; --text:#e2efe9; --text-dim:#88a098; --divider:#2a3530; --accent:#1ed29c; --accent-text:#3ce0b0; }
-    .pal-gemini-day  { --bg:#f3f7ff; --card:#ffffff; --card-alt:#e6edf9; --text:#0f1a30; --text-dim:#4a5670; --divider:#c7d2e6; --accent:#1a73e8; --accent-text:#0a428e; }
-    .pal-gemini-night{ --bg:#0a1224; --card:#121a2e; --card-alt:#1a233d; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#24335a; --accent:#5a9bff; --accent-text:#7eb1ff; }
+    .pal-claude-day  { --bg:#e9dcc2; --card:#fffdf8; --card-alt:#d8c7a4; --text:#1e1a14; --text-dim:#5b4a36; --divider:#c4b288; --accent:#c15f3c; --accent-text:#7a331a; }
+    .pal-claude-night{ --bg:#120d09; --card:#2a2017; --card-alt:#3a2c1c; --text:#f0e6d2; --text-dim:#a89880; --divider:#503c28; --accent:#e07a4a; --accent-text:#f0956a; }
+    .pal-codex-day   { --bg:#e3e9e6; --card:#ffffff; --card-alt:#d3ded8; --text:#131a17; --text-dim:#4a5a52; --divider:#bacbc3; --accent:#10a37f; --accent-text:#075a46; }
+    .pal-codex-night { --bg:#090e0c; --card:#1a231f; --card-alt:#26332c; --text:#e2efe9; --text-dim:#88a098; --divider:#3a4d44; --accent:#1ed29c; --accent-text:#3ce0b0; }
+    .pal-gemini-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#1a73e8; --accent-text:#0a428e; }
+    .pal-gemini-night{ --bg:#070d1c; --card:#161f37; --card-alt:#22304e; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#324568; --accent:#5a9bff; --accent-text:#7eb1ff; }
     .pal-fm          { --bg:#000000; --card:#141413; --card-alt:#292621; --text:#faf9f5; --text-dim:#888680; --divider:#2a2825; --accent:#a855f7; --accent2:#f59e0b; --accent-text:#f59e0b; }
     .cwm-screen { background: var(--bg); color: var(--text); }
 
@@ -88,7 +88,11 @@
 
     /* battery is now an inline SVG (icoBattery) — level-coloured, matches firmware */
 
-    .card-box { background: var(--card); border-radius: 12px; box-sizing: border-box; }
+    /* 1px divider edge mirrors the firmware card border so the card reads
+       against the bg (the fill delta alone is too low-contrast). Scoped off
+       for pal-fm screens, whose firmware counterparts have no card border. */
+    .card-box { background: var(--card); border: 1px solid var(--divider); border-radius: 12px; box-sizing: border-box; }
+    .pal-fm .card-box { border-color: transparent; }
     .pill { background: var(--card-alt); border-radius: 999px; padding: 2px 10px; }
     .bar { background: var(--card-alt); border-radius: 6px; overflow: hidden; }
     .bar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
