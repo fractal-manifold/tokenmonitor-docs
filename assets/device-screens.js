@@ -37,7 +37,7 @@
     .pal-codex-night { --bg:#090e0c; --card:#1a231f; --card-alt:#26332c; --text:#e2efe9; --text-dim:#88a098; --divider:#3a4d44; --accent:#1ed29c; --accent-text:#3ce0b0; }
     .pal-gemini-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#1a73e8; --accent-text:#0a428e; }
     .pal-gemini-night{ --bg:#070d1c; --card:#161f37; --card-alt:#22304e; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#324568; --accent:#5a9bff; --accent-text:#7eb1ff; }
-    .pal-fm          { --bg:#000000; --card:#141413; --card-alt:#292621; --text:#faf9f5; --text-dim:#888680; --divider:#2a2825; --accent:#a855f7; --accent2:#f59e0b; --accent-text:#f59e0b; }
+    .pal-fm          { --bg:#000000; --card:#1f1f1c; --card-alt:#34302a; --text:#faf9f5; --text-dim:#9a978f; --divider:#38352e; --accent:#a855f7; --accent2:#f59e0b; --accent-text:#f59e0b; }
     .cwm-screen { background: var(--bg); color: var(--text); }
 
     .t14sb  { font-size: 14px; line-height: 18px; font-weight: 600; }
@@ -89,10 +89,9 @@
     /* battery is now an inline SVG (icoBattery) — level-coloured, matches firmware */
 
     /* 1px divider edge mirrors the firmware card border so the card reads
-       against the bg (the fill delta alone is too low-contrast). Scoped off
-       for pal-fm screens, whose firmware counterparts have no card border. */
+       against the bg (the fill delta alone is too low-contrast). FM screens
+       (settings/needs-config/etc.) get it too — their rows sit on pure black. */
     .card-box { background: var(--card); border: 1px solid var(--divider); border-radius: 12px; box-sizing: border-box; }
-    .pal-fm .card-box { border-color: transparent; }
     .pill { background: var(--card-alt); border-radius: 999px; padding: 2px 10px; }
     .bar { background: var(--card-alt); border-radius: 6px; overflow: hidden; }
     .bar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
