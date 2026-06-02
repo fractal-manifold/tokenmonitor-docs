@@ -32,7 +32,7 @@
 
     /* Palettes (mirrors firmware ui_theme.c) */
     .pal-claude-day  { --bg:#e9dcc2; --card:#fffdf8; --card-alt:#d8c7a4; --text:#1e1a14; --text-dim:#5b4a36; --divider:#c4b288; --accent:#c15f3c; --accent-text:#7a331a; }
-    .pal-claude-night{ --bg:#120d09; --card:#2a2017; --card-alt:#3a2c1c; --text:#f0e6d2; --text-dim:#a89880; --divider:#503c28; --accent:#e07a4a; --accent-text:#f0956a; }
+    .pal-claude-night{ --bg:#120d09; --card:#2a2017; --card-alt:#3a2c1c; --text:#f0e6d2; --text-dim:#a89880; --divider:#503c28; --accent:#e07a4a; --accent-text:#e07a4a; }
     .pal-codex-day   { --bg:#e3e9e6; --card:#ffffff; --card-alt:#d3ded8; --text:#131a17; --text-dim:#4a5a52; --divider:#bacbc3; --accent:#10a37f; --accent-text:#075a46; }
     .pal-codex-night { --bg:#090e0c; --card:#1a231f; --card-alt:#26332c; --text:#e2efe9; --text-dim:#88a098; --divider:#3a4d44; --accent:#1ed29c; --accent-text:#3ce0b0; }
     .pal-gemini-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#1a73e8; --accent-text:#0a428e; }
