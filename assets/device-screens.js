@@ -256,6 +256,13 @@
                  broker is unreachable. The dedicated "Connecting" screen
                  is retired; this loading splash replaces it. */
   function standbyHtml(palette, clock = '12:34', date = 'Tue 13 May', tempC = '22.4 °C', loading = false) {
+    /* LOADING lifts the lower cluster (clock/date/status/spinner + ambient
+       strip) so the bottom edge is free for the server-down toast; before this
+       the red banner overlapped the ambient row and clipped the spinner.
+       STANDBY keeps the strip pinned to the very bottom. */
+    const clockTop    = loading ? 214 : 222;
+    const dateTop     = loading ? 274 : 292;
+    const stripBottom = loading ?  60 :  14;
     return `
     <div class="cwm-screen ${palette}">
       ${loading
@@ -266,13 +273,13 @@
       </div>
       <div class="t30 c-text abs" style="left:0; right:0; top:144px; text-align:center">C Wall Monitor</div>
       <div class="t18 c-text-dim abs" style="left:0; right:0; top:182px; text-align:center; line-height:22px">by Fractal Manifold</div>
-      <div class="t48 c-text abs" style="left:0; right:0; top:222px; text-align:center; line-height:52px">${clock}</div>
-      <div class="t22sb c-text-dim abs" style="left:0; right:0; top:292px; text-align:center; line-height:26px">${date}</div>
+      <div class="t48 c-text abs" style="left:0; right:0; top:${clockTop}px; text-align:center; line-height:52px">${clock}</div>
+      <div class="t22sb c-text-dim abs" style="left:0; right:0; top:${dateTop}px; text-align:center; line-height:26px">${date}</div>
       ${loading ? `
-      <div class="t18sb c-text-dim abs" style="left:0; right:0; top:336px; text-align:center">Querying usage…</div>
-      <div class="abs" style="left:50%; transform:translateX(-50%); bottom:78px"><div class="cwm-spinner"></div></div>
+      <div class="t18sb c-text-dim abs" style="left:0; right:0; top:308px; text-align:center">Searching for server…</div>
+      <div class="abs" style="left:50%; transform:translateX(-50%); bottom:114px"><div class="cwm-spinner"></div></div>
       ` : ''}
-      <div class="abs" style="left:14px; right:14px; bottom:14px; height:48px; background:var(--card); border-radius:10px; display:flex; align-items:center; justify-content:space-around; padding:0 16px; box-sizing:border-box">
+      <div class="abs" style="left:14px; right:14px; bottom:${stripBottom}px; height:48px; background:var(--card); border-radius:10px; display:flex; align-items:center; justify-content:space-around; padding:0 16px; box-sizing:border-box">
         <span class="amb-row"><span class="amb-ico">${icoSun()}</span><span class="t18sb c-text-dim">07:14</span></span>
         <span class="amb-row"><span class="amb-ico">${icoMoon()}</span><span class="t18sb c-text-dim">21:42</span></span>
         <span class="amb-row"><span class="amb-ico">${icoThermo()}</span><span class="t18sb c-text-dim">${tempC}</span></span>
@@ -281,6 +288,9 @@
           <span class="t18sb c-text-dim">87%</span>
         </span>
       </div>
+      ${loading ? `
+      <div class="toast abs t18sb" style="left:50%; transform:translateX(-50%); bottom:24px; width:380px; height:30px; display:flex; align-items:center; justify-content:center">Server unavailable</div>
+      ` : ''}
     </div>`;
   }
 
