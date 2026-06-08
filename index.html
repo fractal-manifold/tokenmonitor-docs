@@ -28,6 +28,8 @@
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
 <script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>/* Currency: Americas → USD, rest of world → EUR. Browser timezone/locale only — no IP geolocation. */
+try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}var lang=(navigator.language||'').toLowerCase();c=(/^America\//.test(tz)||/-(us|ca)$/.test(lang))?'usd':'eur';}document.documentElement.dataset.cur=c;}catch(e){document.documentElement.dataset.cur='eur';}</script>
 <style>
   /* ── Landing-specific ───────────────────────────────────── */
   .hero {
@@ -274,6 +276,156 @@
     margin-bottom: 2rem;
     line-height: 1.6;
   }
+  /* ── Why a device ───────────────────────────────────────── */
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .why-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+  }
+  .why-card .k {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 0.7rem; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-gold); margin-bottom: 0.7rem;
+  }
+  .why-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .why-card p { font-size: 0.92rem; color: var(--fg-2); margin: 0; }
+  .why-note {
+    margin-top: 2rem; text-align: center; color: var(--fg-3);
+    font-size: 0.98rem;
+  }
+  .why-note strong { color: var(--fg-2); }
+
+  /* ── What it shows ──────────────────────────────────────── */
+  .shows-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .shows-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-gold);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+  }
+  .shows-card .metric {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 1.6rem; color: var(--color-gold); line-height: 1;
+  }
+  .shows-card .src {
+    font-family: var(--font-display); font-size: 0.6rem;
+    letter-spacing: 1.4px; text-transform: uppercase; color: var(--fg-3);
+    display: block; margin: 0.7rem 0 0.5rem;
+  }
+  .shows-card h3 { font-size: 1.05rem; margin: 0 0 0.5rem; }
+  .shows-card p { font-size: 0.88rem; color: var(--fg-2); margin: 0; }
+
+  /* ── How it works (compact) ─────────────────────────────── */
+  .hiw-mini { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0.75rem; align-items: stretch; margin-top: 2.5rem; }
+  .hiw-mini .node {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.3rem;
+  }
+  .hiw-mini .node.accent { border: var(--border-gold); }
+  .hiw-mini .node .k {
+    font-family: var(--font-display); font-size: 0.58rem;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-gold);
+    display: block; margin-bottom: 0.5rem;
+  }
+  .hiw-mini .node h3 { font-size: 1rem; margin: 0 0 0.4rem; }
+  .hiw-mini .node p { font-size: 0.84rem; color: var(--fg-2); margin: 0; }
+  .hiw-mini .arr {
+    align-self: center; color: var(--color-gold); font-size: 1.3rem;
+    display: grid; place-items: center;
+  }
+  .hiw-foot { text-align: center; margin-top: 1.75rem; }
+
+  /* ── Trust / privacy band ───────────────────────────────── */
+  .trust {
+    margin-top: 1rem;
+    padding: 3rem 2.5rem;
+    background: linear-gradient(135deg, rgba(16,185,129,0.05) 0%, rgba(245,158,11,0.05) 100%), var(--color-bg-tertiary);
+    border: 1px solid rgba(16,185,129,0.18);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+  }
+  .trust h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+  .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 2.5rem; margin-top: 1.75rem; }
+  .trust-grid .pt { display: flex; gap: 0.8rem; align-items: flex-start; }
+  .trust-grid .pt .ck {
+    flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+    border-radius: 50%; display: grid; place-items: center;
+    background: rgba(16,185,129,0.12); color: #10b981;
+    font-size: 0.8rem; font-weight: 700;
+  }
+  .trust-grid .pt p { margin: 0; font-size: 0.94rem; color: var(--fg-2); }
+  .trust-grid .pt strong { color: var(--fg-1); }
+  .trust-links { margin-top: 1.75rem; display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.9rem; }
+  .trust-links a { color: var(--color-gold-light); text-decoration: underline; text-decoration-color: rgba(245,158,11,0.4); }
+
+  /* ── Common concerns ────────────────────────────────────── */
+  .concerns { max-width: 820px; margin: 2.5rem auto 0; }
+  .concerns .acc-body a { color: var(--color-gold-light); text-decoration: underline; text-decoration-color: rgba(245,158,11,0.4); }
+
+  /* ── Theme lab (interactive) ────────────────────────────── */
+  .theme-lab { display: grid; grid-template-columns: 1fr 360px; gap: 3rem; align-items: center; max-width: 940px; margin: 0 auto; }
+  .theme-controls { display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  .theme-controls .seg-group { display: flex; flex-direction: column; gap: 0.6rem; }
+  .theme-controls .seg-cap {
+    font-family: var(--font-display); font-size: 0.62rem;
+    letter-spacing: 1.6px; text-transform: uppercase; color: var(--fg-3);
+  }
+  .theme-lab .tabs { flex-wrap: wrap; }
+  .theme-lab .tab { display: inline-flex; align-items: center; gap: 7px; }
+  .theme-hint {
+    font-size: 0.92rem; color: var(--fg-3); margin: 0.2rem 0 0;
+    min-height: 3.4em; max-width: 38ch; line-height: 1.55;
+  }
+  .theme-hint code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.18);
+    color: var(--color-gold-light); padding: 1px 6px; border-radius: 4px;
+  }
+  .theme-device { justify-self: center; width: 100%; max-width: 340px; }
+  .theme-device .device-frame { max-width: 340px; margin: 0 auto; }
+
+  /* ── Currency-aware pricing ─────────────────────────────── */
+  html[data-cur="usd"] .cur-eur { display: none; }
+  html[data-cur="eur"] .cur-usd { display: none; }
+  html:not([data-cur]) .cur-eur { display: none; }
+
+  .hero-price { margin-top: 1.1rem; font-size: 0.92rem; color: var(--fg-3); }
+  .hero-price .now { color: var(--color-gold); font-weight: 700; }
+  .hero-price .was { color: var(--fg-3); text-decoration: line-through; margin: 0 0.15rem; }
+
+  /* Price-in-button: stacks a small label over a large price */
+  .hero .cta-row { align-items: stretch; }
+  .btn-buy { flex-direction: column; gap: 0.2rem; padding: 11px 30px; align-items: center; }
+  .btn-buy .buy-label { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.74rem; opacity: 0.92; }
+  .btn-buy .buy-price { display: inline-flex; align-items: baseline; gap: 0.5rem; text-transform: none; letter-spacing: 0; }
+  .btn-buy .buy-price .amt { font-size: 1.75rem; font-weight: 800; letter-spacing: 0.4px; }
+  .btn-buy .buy-price .old { font-size: 0.95rem; font-weight: 600; opacity: 0.72; text-decoration: line-through; }
+  .hero .cta-row .btn-ghost { align-self: stretch; }
+
+  .proto-tag {
+    position: absolute; left: 14px; bottom: 14px; z-index: 3;
+    font-family: var(--font-display); font-size: 0.56rem; letter-spacing: 1.4px; text-transform: uppercase;
+    color: #f6f3ec; background: rgba(10,10,10,0.66); border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 11px; border-radius: 999px; backdrop-filter: blur(6px);
+  }
+
+  .midcta { text-align: center; margin-top: 2.5rem; }
+
+  .price-block { display: flex; align-items: baseline; justify-content: flex-start; gap: 0.8rem; flex-wrap: wrap; margin: 0.25rem 0 0.4rem; }
+  .price-now { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; color: var(--color-gold); line-height: 1; }
+  .price-was { font-size: 1.25rem; color: var(--fg-3); text-decoration: line-through; }
+  .cur-toggle { display: inline-flex; gap: 2px; align-self: center; border: var(--border-faint); border-radius: 999px; padding: 2px; }
+  .cur-toggle button { font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; padding: 4px 11px; border-radius: 999px; border: none; background: transparent; color: var(--fg-3); cursor: pointer; transition: all var(--ease-snappy); }
+  .cur-toggle button.active { background: rgba(245,158,11,0.15); color: var(--color-gold); }
+  .price-meta { font-size: 0.92rem; color: var(--fg-2); margin: 0.4rem 0 1.4rem; }
+  .price-note { font-size: 0.78rem; color: var(--fg-3); max-width: 60ch; margin: 1.5rem 0 0; line-height: 1.6; }
+
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 3rem; min-height: auto; padding: 2rem 0 4rem; }
     .scroll-cue { display: none; }
@@ -281,6 +433,14 @@
     .provider-strip { grid-template-columns: 1fr; }
     .feature-grid { grid-template-columns: 1fr; }
     .waitlist { padding: 3rem 1.75rem; }
+    .why-grid, .shows-grid { grid-template-columns: 1fr; }
+    .hiw-mini { grid-template-columns: 1fr; }
+    .hiw-mini .arr { transform: rotate(90deg); padding: 0.2rem 0; }
+    .trust { padding: 2.25rem 1.5rem; }
+    .trust-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .theme-lab { grid-template-columns: 1fr; gap: 2.25rem; }
+    .theme-device { order: -1; }
+    .theme-hint { min-height: 0; }
   }
 </style>
 </head>
@@ -292,15 +452,23 @@
     <div>
       <p class="eyebrow">4-inch desk display</p>
       <h1>See your <span class="accent gradient-text">AI usage</span><br>on your desk.</h1>
-      <p class="lead">A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.</p>
+      <p class="lead">A 4-inch always-on desk display that shows your live Claude Code, Codex and Gemini usage — straight from the machine you already work on, with the logins you already have.</p>
       <div class="cta-row">
-        <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Notify me when available <span class="arrow">→</span></a>
+        <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary btn-buy">
+          <span class="buy-label">Get early access <span class="arrow">→</span></span>
+          <span class="buy-price">
+            <span class="amt"><span class="cur cur-usd">$110</span><span class="cur cur-eur">99&euro;</span></span>
+            <span class="old"><span class="cur cur-usd">$150</span><span class="cur cur-eur">130&euro;</span></span>
+          </span>
+        </a>
+        <a href="how-it-works.html" class="btn btn-ghost">How it works</a>
       </div>
       <div class="meta-row">
-        <span><span class="dot"></span>LAN-only, no cloud</span>
-        <span><span class="dot"></span>HMAC + AES-CTR</span>
-        <span><span class="dot"></span>Open documentation</span>
+        <span><span class="dot"></span>Real provider limits</span>
+        <span><span class="dot"></span>No new API key</span>
+        <span><span class="dot"></span>Open-source broker</span>
       </div>
+      <p class="hero-price">Ships worldwide &middot; delivery expected before Q4&nbsp;2026 &middot; <span class="now">early-access price locked for the first 100</span></p>
     </div>
     <div class="hero-visual">
       <div class="photo-frame">
@@ -312,6 +480,7 @@
           <img src="assets/prototype.jpg" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
         </video>
       </div>
+      <span class="proto-tag">Working prototype</span>
     </div>
     <div class="scroll-cue" aria-hidden="true">
       <span>More below</span>
@@ -319,63 +488,191 @@
     </div>
   </section>
 
-  <!-- ─── Provider showcase (3 device frames) ──────────────── -->
-  <section class="container" style="padding-top:0">
-    <div class="section-head" style="text-align:center; max-width: 720px; margin: 0 auto 2.5rem;">
-      <p class="eyebrow">Three providers, one panel</p>
-      <h2>Claude Code, Codex, Gemini.<br>One ambient surface.</h2>
-      <div class="rule" style="margin: 1.5rem auto;"></div>
-      <p class="lead" style="margin: 0 auto;">Switch active provider with a tap. Each adopts brand-tinted day &amp; night themes, drawn pixel-exact at 480×480 over capacitive touch.</p>
+  <!-- ─── What it shows ────────────────────────────────────── -->
+  <section class="container">
+    <div class="section-head">
+      <p class="eyebrow">What's on screen</p>
+      <h2>Three numbers, three sources.</h2>
+      <div class="rule"></div>
+      <p class="lead">No invented metrics. Each number has a real source — and we're upfront about
+      which is measured and which is estimated.</p>
     </div>
-    <div class="provider-strip">
-      <div class="provider-card claude">
-        <div class="header">
-          <div class="provider-tag"><span class="swatch claude"></span>Claude Code</div>
-        </div>
-        <div class="device-host" data-cwm-screen="claude-night"></div>
+    <div class="shows-grid">
+      <article class="shows-card">
+        <div class="metric">%</div>
+        <span class="src">Real — from the provider</span>
+        <h3>Usage limits</h3>
+        <p>Your provider's own reported quota, fetched live from its usage API. The bars are real, not a local guess.</p>
+      </article>
+      <article class="shows-card">
+        <div class="metric">tok</div>
+        <span class="src">Local — from your machine</span>
+        <h3>Token counts</h3>
+        <p>Totalled from the CLI logs on the computer running the broker. No API key, and reading them costs you nothing.</p>
+      </article>
+      <article class="shows-card">
+        <div class="metric">$</div>
+        <span class="src">Estimated — list prices</span>
+        <h3>Spend</h3>
+        <p>Token counts × a public price list. A useful estimate, not a bill — on a subscription plan it's notional, not money charged.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── How it works (compact) ───────────────────────────── -->
+  <section class="container" style="padding-top: 5rem">
+    <div class="section-head">
+      <p class="eyebrow">How it fits together</p>
+      <h2>Device. Broker. Plugin.</h2>
+      <div class="rule"></div>
+      <p class="lead">A small open-source server on your laptop reads your CLI usage; the device
+      polls it over your Wi-Fi; a one-line marketplace plugin pairs the two from your AI.</p>
+    </div>
+    <div class="hiw-mini">
+      <div class="node">
+        <span class="k">On your laptop</span>
+        <h3>The broker</h3>
+        <p>The <code class="inline-code">cwm-mcp</code> server reads your Claude Code / Codex / Gemini logs and serves the numbers.</p>
       </div>
-      <div class="provider-card codex">
-        <div class="header">
-          <div class="provider-tag"><span class="swatch codex"></span>Codex CLI</div>
-        </div>
-        <div class="device-host" data-cwm-screen="codex-day"></div>
+      <div class="arr">⇄</div>
+      <div class="node accent">
+        <span class="k">On your desk</span>
+        <h3>The device</h3>
+        <p>Polls the broker over your LAN and draws the dashboard. Holds no provider logins of its own.</p>
       </div>
-      <div class="provider-card gemini">
-        <div class="header">
-          <div class="provider-tag"><span class="swatch gemini"></span>Gemini CLI</div>
-        </div>
-        <div class="device-host" data-cwm-screen="gemini-day"></div>
+      <div class="arr">+</div>
+      <div class="node">
+        <span class="k">In your AI</span>
+        <h3>The plugin</h3>
+        <p>Installed from the marketplace. You pair the device by asking your AI to run <a href="plugin.html#skills"><code class="inline-code">/cwallmonitor:configure</code></a>.</p>
+      </div>
+    </div>
+    <div class="hiw-foot">
+      <a href="how-it-works.html" class="btn btn-ghost">See the full data path <span class="arrow">→</span></a>
+      <a href="plugin.html#skills" class="btn btn-ghost">Skills &amp; MCP tools <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ─── Trust / privacy band ─────────────────────────────── -->
+  <section class="container">
+    <div class="trust">
+      <p class="eyebrow" style="color:#10b981">Is it safe?</p>
+      <h2>Your code stays yours.</h2>
+      <p class="lead" style="max-width:60ch">The specific version — not a "trust us" badge.</p>
+      <div class="trust-grid">
+        <div class="pt"><span class="ck">✓</span><p><strong>It isn't built to read or send your prompts or code.</strong> The broker parses usage and token counts out of your local logs — there's no path that ships their contents anywhere, and it's open source so you can verify that.</p></div>
+        <div class="pt"><span class="ck">✓</span><p><strong>The server is open source (Apache-2.0).</strong> The part that runs on your laptop and touches your logs is yours to read, line by line.</p></div>
+        <div class="pt"><span class="ck">✓</span><p><strong>No inbound exposure.</strong> The broker only listens on your LAN for the device (port 8765) — nothing to forward from the internet, no telemetry, no analytics. Its outbound calls go to your providers and a price list, nowhere else.</p></div>
+        <div class="pt"><span class="ck">✓</span><p><strong>The device doesn't phone home to us.</strong> Its only direct internet calls are a public clock server and the weather — never an AI provider, never your usage data.</p></div>
+        <div class="pt"><span class="ck">✓</span><p><strong>No account with us, no cloud lock-in.</strong> You use the provider logins you already have. There's no Fractal Manifold sign-up.</p></div>
+        <div class="pt"><span class="ck">✓</span><p><strong>Signed requests &amp; signed firmware.</strong> Device polls are HMAC-signed and replay-protected; updates are Ed25519-signed with automatic rollback.</p></div>
+      </div>
+      <div class="trust-links">
+        <a href="how-it-works.html#security">Read the full security model →</a>
+        <a href="faq.html#security">Security &amp; privacy FAQ →</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── Feature grid ─────────────────────────────────────── -->
-  <section class="container" data-screen-label="02 Features">
+  <!-- ─── Theme lab (interactive — providers + themes) ─────── -->
+  <section class="container" id="themes">
+    <div class="section-head" style="text-align:center; max-width:780px; margin:0 auto 2.5rem;">
+      <p class="eyebrow">Three providers · day, night &amp; auto</p>
+      <h2>One panel, dressed for the model.</h2>
+      <div class="rule" style="margin:1.5rem auto;"></div>
+      <p class="lead" style="margin:0 auto;">Claude Code, Codex and Gemini each get their own brand-tinted palette in a day and a night flavour — six looks, drawn pixel-exact at 480×480. Auto follows your city's real sunrise and sunset; or lock one with a tap, or set it from your CLI. Try it:</p>
+    </div>
+    <div class="theme-lab">
+      <div class="theme-controls">
+        <div class="seg-group">
+          <span class="seg-cap">Provider</span>
+          <div class="tabs" data-seg="provider">
+            <button type="button" class="tab active" data-provider="claude"><span class="swatch claude"></span>Claude</button>
+            <button type="button" class="tab" data-provider="codex"><span class="swatch codex"></span>Codex</button>
+            <button type="button" class="tab" data-provider="gemini"><span class="swatch gemini"></span>Gemini</button>
+          </div>
+        </div>
+        <div class="seg-group">
+          <span class="seg-cap">Theme</span>
+          <div class="tabs" data-seg="mode">
+            <button type="button" class="tab active" data-mode="day">Day</button>
+            <button type="button" class="tab" data-mode="night">Night</button>
+            <button type="button" class="tab" data-mode="auto">Auto</button>
+          </div>
+        </div>
+        <p class="theme-hint" id="themeHint"></p>
+      </div>
+      <div class="theme-device">
+        <div class="device-frame">
+          <div class="screen" data-cwm-screen="claude-day" id="themeScreen"></div>
+        </div>
+      </div>
+    </div>
+    <div class="midcta">
+      <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ─── Why a device (merged with features) ──────────────── -->
+  <section class="container" data-screen-label="02 Why a device">
     <div class="section-head">
-      <p class="eyebrow">Why a dedicated desk display</p>
+      <p class="eyebrow">Why a dedicated display</p>
       <h2>Glance, don't query.</h2>
       <div class="rule"></div>
-      <p class="lead">Modal-free, focus-friendly. A dedicated desk display tells you the answer before you remember to ask.</p>
+      <p class="lead">You can type a command or open a menubar widget — but the moment you're deep in a task is exactly when you won't. An always-on panel tells you the answer before you remember to ask.</p>
     </div>
-    <div class="feature-grid">
-      <article class="feature-card">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg>
-        <h3>Three providers, one panel</h3>
-        <p>Claude Code · Codex · Gemini, each with brand-tinted day &amp; night themes. Enable one or all three from Settings.</p>
-        <div class="ghost-icon">◷</div>
+    <div class="why-grid">
+      <article class="why-card">
+        <div class="k">Always-on</div>
+        <h3>No window to open</h3>
+        <p>It just sits there, lit. No command, no tab, no notch widget fighting for your menubar — you glance and you know.</p>
       </article>
-      <article class="feature-card">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M5 12a3 3 0 100 6h14a3 3 0 100-6M9 6h6M9 6a3 3 0 100-6 3 3 0 000 6zm6 0a3 3 0 100-6 3 3 0 000 6z"/></svg>
-        <h3>Works on your LAN</h3>
-        <p>No cloud, no telemetry. The device polls your laptop directly over Wi-Fi — HMAC-SHA256 auth, AES-CTR encrypted payloads.</p>
-        <div class="ghost-icon">⌬</div>
+      <article class="why-card">
+        <div class="k">Off your screen</div>
+        <h3>Frees your pixels</h3>
+        <p>Usage lives on the desk, not in your editor. Nothing to dismiss, nothing covering your code.</p>
       </article>
-      <article class="feature-card">
-        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <h3>Quiet ambient design</h3>
-        <p>Standby after 20 min. Ambient weather strip stays lit. Four hysteresis-armed alerts: battery, limit overshoot, session rollover.</p>
-        <div class="ghost-icon">∿</div>
+      <article class="why-card">
+        <div class="k">Calm by design</div>
+        <h3>Ambient, never nagging</h3>
+        <p>Standby after 20 min, day/night dimming, alert volume you set. The few alerts that fire — low battery, limit overshoot, session rollover — are debounced so they never spam you.</p>
       </article>
+    </div>
+    <p class="why-note"><strong>Not a CLI replacement.</strong> It's the at-a-glance layer on top of the tools you already run.</p>
+  </section>
+
+  <!-- ─── Common concerns ──────────────────────────────────── -->
+  <section class="container">
+    <div class="section-head" style="text-align:center; max-width:680px; margin:0 auto 1rem;">
+      <p class="eyebrow">Before you ask</p>
+      <h2>Common concerns.</h2>
+      <div class="rule" style="margin:1.5rem auto;"></div>
+    </div>
+    <div class="accordion concerns">
+      <details class="acc-item">
+        <summary class="acc-summary">Does it cost me tokens or money to run? <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>No. There's no new API key and no extra tokens spent. Token counts are read from logs already on your machine, and the limit percentages come from each provider's usage API — a read, not a request that bills you. The dollar figure is an <em>estimate</em> from public list prices, not a charge. <a href="faq.html#general">More in the FAQ →</a></p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary class="acc-summary">Do I have to flash firmware or use a terminal? <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>No flashing — units ship pre-flashed. You plug in USB-C, join the device's Wi-Fi once to enter your network, then pair it by asking your AI to run a skill. On your computer you install the <code class="inline-code">cwm-mcp</code> broker (one command) plus the marketplace plugin that runs it — nothing is flashed. <a href="setup.html">See the 5-step setup →</a></p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary class="acc-summary">What if I only use one provider — or not Claude Code? <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>Enable one or all three. It works with Claude Code, Codex CLI and Gemini CLI; a provider whose CLI you don't run simply doesn't appear on the device. The pairing plugin installs into whichever of those you use. <a href="faq.html#general">Provider details →</a></p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary class="acc-summary">It's indie hardware — what if you disappear? <span class="plus">+</span></summary>
+        <div class="acc-body">
+          <p>The broker and plugin are open source (Apache-2.0), so the device keeps working whether or not we're around — you can run, audit and fork the server yourself. The limit, plainly: new hardware, repairs and future firmware signing depend on us continuing. <a href="faq.html#firmware">Firmware &amp; longevity →</a></p>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -391,12 +688,22 @@
   <!-- ─── Waitlist ─────────────────────────────────────────── -->
   <section class="container" id="waitlist" data-screen-label="04 Waitlist">
     <div class="waitlist">
-      <span class="badge"><span class="pulse"></span>Early access</span>
-      <h2>Notify me when available.</h2>
-      <p class="sub">Initial batch is hand-assembled and pre-flashed. Leave your email and we'll reach out as soon as units open. Discounts may apply to early joiners.</p>
-      <div class="cta-row" style="display:flex; gap:1rem; flex-wrap:wrap;">
-        <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Notify me when available <span class="arrow">→</span></a>
+      <span class="badge"><span class="pulse"></span>Early access · first 100</span>
+      <h2>Get early access.</h2>
+      <div class="price-block">
+        <span class="price-now"><span class="cur cur-usd">$110</span><span class="cur cur-eur">99&euro;</span></span>
+        <span class="price-was"><span class="cur cur-usd">$150</span><span class="cur cur-eur">130&euro;</span></span>
+        <span class="cur-toggle" role="group" aria-label="Currency">
+          <button type="button" data-cur="usd" aria-pressed="false">$ USD</button>
+          <button type="button" data-cur="eur" aria-pressed="false">&euro; EUR</button>
+        </span>
       </div>
+      <p class="price-meta"><span class="cur cur-usd">Save $40<sup>*</sup></span><span class="cur cur-eur">Save 31&euro;<sup>*</sup></span> &middot; ships worldwide &middot; delivery expected before Q4&nbsp;2026</p>
+      <p class="sub">The first run is a small, carefully assembled batch — each unit pre-flashed and tested, ready to pair out of the box. We're finalising production with a manufacturing partner now; join the waitlist to lock the early-access price and we'll email you the moment units open.</p>
+      <div class="cta-row" style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Join the waitlist <span class="arrow">→</span></a>
+      </div>
+      <p class="price-note"><sup>*</sup>The early-access price (<span class="cur cur-usd">$110</span><span class="cur cur-eur">99&euro;</span>) is locked for the first 100 people to join the waitlist. The standard price may change before launch; the early-access price for those first 100 won't. Shown in USD across the Americas and EUR elsewhere — switch above.</p>
     </div>
   </section>
 
@@ -441,6 +748,63 @@
     video.addEventListener('error', swap);
     const source = video.querySelector('source');
     if (source) source.addEventListener('error', swap);
+  })();
+
+  // Interactive theme lab: provider × (day | night | auto) → live device preview.
+  (function () {
+    const screen = document.getElementById('themeScreen');
+    const hint = document.getElementById('themeHint');
+    if (!screen || !window.CWM) return;
+    let provider = 'claude', mode = 'day';
+    const hints = {
+      day:   'Day palette — bright and high-contrast for a lit desk.',
+      night: "Night palette — dimmed and warm so it doesn't glare after dark.",
+      auto:  "Auto follows your city's real sunrise & sunset. In this preview it tracks the page's light/dark toggle (top-right)."
+    };
+    function apply() {
+      if (mode === 'auto') {
+        screen.setAttribute('data-cwm-screen', provider + '-day');
+        screen.setAttribute('data-cwm-theme', 'auto');
+      } else {
+        screen.setAttribute('data-cwm-screen', provider + '-' + mode);
+        screen.removeAttribute('data-cwm-theme');
+      }
+      if (hint) hint.textContent = hints[mode];
+      window.CWM.mount();
+    }
+    function wire(sel, set) {
+      document.querySelectorAll(sel + ' .tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          set(btn);
+          btn.parentElement.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === btn));
+          apply();
+        });
+      });
+    }
+    wire('[data-seg="provider"]', b => { provider = b.getAttribute('data-provider'); });
+    wire('[data-seg="mode"]',     b => { mode = b.getAttribute('data-mode'); });
+    apply();
+  })();
+
+  // Currency toggle ($ / €) — persists the choice; default set by the head bootstrap.
+  (function () {
+    const btns = document.querySelectorAll('.cur-toggle button');
+    if (!btns.length) return;
+    function sync() {
+      const c = document.documentElement.dataset.cur;
+      btns.forEach(b => {
+        const on = b.getAttribute('data-cur') === c;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+    btns.forEach(b => b.addEventListener('click', () => {
+      const c = b.getAttribute('data-cur');
+      document.documentElement.dataset.cur = c;
+      try { localStorage.setItem('cwm:cur', c); } catch (e) {}
+      sync();
+    }));
+    sync();
   })();
 </script>
 </body>

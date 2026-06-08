@@ -231,7 +231,7 @@
       <p class="eyebrow">FAQ &amp; troubleshooting</p>
       <h1>Common questions.<br>Common fixes.</h1>
       <div class="rule"></div>
-      <p class="lead">Accounts, encryption, multi-device setup, and a troubleshooting guide for the seven situations that account for ~95% of support tickets.</p>
+      <p class="lead">Accounts, encryption, multi-device setup, and a troubleshooting guide for the seven things most likely to trip you up.</p>
     </div>
 
     <div class="faq-layout">
@@ -258,29 +258,59 @@
               <summary class="acc-summary">Do I need an Anthropic, OpenAI or Google account? <span class="plus">+</span></summary>
               <div class="acc-body">
                 <p><strong>Yes — for the CLI side. Not for the device.</strong> Each CLI (Claude Code, Codex, Gemini) authenticates against its own provider as it normally does. The wall monitor itself never talks to any of them.</p>
-                <p>The device only talks to the broker on your laptop, and the broker reads from the CLIs' local on-disk logs. If you don't already have a CLI installed for a given provider, that provider's card will simply not show on the device.</p>
+                <p>The device only talks to the broker on your laptop for usage (plus a public clock and weather service); the broker reads from the CLIs' local on-disk logs. If you don't already have a CLI installed for a given provider, that provider's card will simply not show on the device.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">Is the data real, or just a decorative gauge? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p><strong>Real, with one caveat.</strong> The usage <strong>percentages</strong> are your provider's own reported quota, fetched live from its usage API — not a local estimate. The <strong>token counts</strong> are totalled from the CLI logs on the machine running the broker, so they reflect what that machine actually used.</p>
+                <p>The <strong>dollar figure is an estimate</strong>: token counts multiplied by a public model-price list. It's a useful sense of scale, not a bill — on a Pro/Max subscription it's a notional list-price value, not money charged to you.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">Does it use my API key, or cost me tokens or money? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>No new API key, and no extra spend. The broker reuses the login your CLI already has. Token totals come from logs already on disk; the limit percentages come from each provider's <em>usage</em> endpoint — a read, not a billable completion. Running the wall monitor doesn't consume tokens or add charges.</p>
               </div>
             </details>
 
             <details class="acc-item">
               <summary class="acc-summary">Does it work offline? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>LAN traffic: <strong>yes</strong>. The device + broker poll each other over your local network with no internet involved.</p>
-                <p>Internet is needed for two specific things: <code>SNTP</code> (clock sync, once at boot and hourly thereafter) and <code>Open-Meteo</code> (weather + sunrise/sunset for your city, once an hour). If both are unreachable the dashboard still works — the ambient strip just freezes at its last values and the clock drifts.</p>
+                <p>The LAN link keeps working with <strong>no internet</strong>: the device polls the broker over your local network, and your <strong>local token totals keep updating</strong>.</p>
+                <p>Internet is needed for three things: the <strong>live provider percentages</strong> (the broker reads them from each provider's usage API), <code>SNTP</code> (clock), and <code>Open-Meteo</code> (weather + sunrise/sunset for your city). Without it, those three simply hold their last values — the rest of the dashboard carries on.</p>
               </div>
             </details>
 
             <details class="acc-item">
               <summary class="acc-summary">How fast does the dashboard update? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>The device polls every <strong>2.4 seconds</strong> by default. The broker reads CLI logs on every poll (cheap — it's tailing files) and recomputes percentages on the fly. End-to-end latency from "Claude completes a turn" to "the bar moves" is typically &lt; 3 seconds.</p>
+                <p>The screen itself refreshes constantly (the device polls the broker every couple of seconds), but the underlying figures update on their own cadences: <strong>token totals</strong> from your local logs are near-instant, the <strong>provider quota percentages</strong> refresh about every <strong>90 seconds</strong>, and the <strong>spend estimate</strong> recomputes about every <strong>5 minutes</strong>. It's an ambient gauge, not a millisecond ticker.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">Which CLIs are supported — what if I only use one? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>Claude Code, Codex CLI and Gemini CLI. Enable one or all three from Settings; a provider whose CLI isn't installed simply doesn't appear. The pairing plugin installs into whichever of the three you use.</p>
+                <p>The "magic" pairing skill is most polished in Claude Code, but the broker is a standard local server — you can configure a device against it manually (broker URL + key) from any of the supported CLIs, or by hand.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">What does it need to work? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>A machine that runs your AI CLI with the <code>cwm-mcp</code> broker running on it; the device and that machine on the same 2.4&nbsp;GHz Wi-Fi / reachable LAN (port <code>8765</code> between them); and internet for the live percentages, weather and clock. If the broker's machine sleeps, the dashboard freezes; if only the internet drops, your local token totals keep updating while the live percentages and weather hold their last values.</p>
               </div>
             </details>
 
             <details class="acc-item">
               <summary class="acc-summary">Can I run it without a battery? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Yes. The battery is optional and only there to ride out brief power cuts (~3 hours). Without it the device behaves identically when powered — it just power-cycles if the wall power drops.</p>
+                <p>Yes. The battery is optional and only there to ride out a brief power cut. Without it the device behaves identically when powered — it just power-cycles if the wall power drops. If no battery gauge is present the screen shows <code>--</code> rather than a faked reading.</p>
               </div>
             </details>
           </div>
@@ -294,29 +324,46 @@
 
           <div class="accordion">
             <details class="acc-item">
-              <summary class="acc-summary">Where is my passphrase stored? <span class="plus">+</span></summary>
+              <summary class="acc-summary">Where are the keys stored? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Two places, both encrypted at rest, never sent in clear:</p>
+                <p>Each device has its own key, generated at pairing (you can also set a passphrase, which is hashed into the key and itself never stored or sent). It lives in two places:</p>
                 <ul>
-                  <li>The device: in ESP32 <code>NVS</code> (non-volatile storage), encrypted with the chip's per-unit flash key.</li>
-                  <li>Your laptop: in <code>~/.cwm/devices.json</code>, mode 0600, encrypted with your OS keychain.</li>
+                  <li>The device: in ESP32 <code>NVS</code>, encrypted at rest on production units.</li>
+                  <li>Your laptop: in a <code>0600</code> file under <code>~/.config/claude-wall-monitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
                 </ul>
-                <p>The passphrase never travels over the LAN. Only the derived PSK is sent, once, at pairing time.</p>
+                <p>This device key is exchanged exactly once, during pairing, over your LAN — authorised by the 6-digit code shown on the device (with a lockout after repeated wrong attempts). After that it never leaves either side again: it's only used locally to sign each request and decrypt config pushes.</p>
+                <p>Your <strong>provider logins are a separate thing entirely</strong>. The Anthropic, Codex and Gemini credentials the broker uses to read your usage never reach the device — they stay on your computer, in your own CLI's config, and are only ever sent to each provider directly over HTTPS, exactly as your CLI already does.</p>
               </div>
             </details>
 
             <details class="acc-item">
-              <summary class="acc-summary">What's actually encrypted on the wire? <span class="plus">+</span></summary>
+              <summary class="acc-summary">How is the device ↔ broker link protected? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Every request from device → broker carries an <code>X-CWM-HMAC</code> header — HMAC-SHA256 over the URL path + body + timestamp, signed with the PSK. The broker rejects anything with a stale timestamp (&gt; 30 s skew) to prevent replay.</p>
-                <p>The body itself is AES-CTR encrypted with the same PSK. A passive sniffer on your LAN sees only ciphertext.</p>
+                <p>Each request the device sends carries <code>X-Cwm-Timestamp</code>, <code>X-Cwm-Nonce</code> and <code>X-Cwm-Signature</code> — an HMAC-SHA256 over the method, path, timestamp and one-time nonce, signed with the device key. The broker rejects a stale timestamp (&gt; 60&nbsp;s skew) or a reused nonce, so a captured request can't be replayed.</p>
+                <p>Sensitive control-plane payloads — key rotation and settings pushed to the device — are AES-256-CTR encrypted with the device key. The signature covers the request headers rather than every body, so we don't claim the whole link is confidential; the part that carries secrets is the part that's encrypted, and nothing is exposed beyond your LAN.</p>
               </div>
             </details>
 
             <details class="acc-item">
-              <summary class="acc-summary">Does any usage data leave my machine? <span class="plus">+</span></summary>
+              <summary class="acc-summary">Can the cwm-mcp server see my code or prompts? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>No. The broker reads CLI logs locally and serves them only to devices on your LAN that present a valid HMAC. There is no telemetry endpoint, no crash reporter, no usage analytics. The firmware's only outbound calls are SNTP and Open-Meteo, both of which receive zero AI-related data.</p>
+                <p>The broker parses the token-count fields out of your CLI transcripts to total your usage. It isn't built to read or transmit the prompt and code inside those logs, and it has no endpoint that would send them anywhere. Because it's open source (Apache-2.0) and runs on your own machine, you can verify that for yourself.</p>
+                <p>Put plainly: the broker runs with your user permissions and can read what you can read — which is exactly why it's open and auditable rather than a black box.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">What does the broker send out — and does anything phone home? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>No telemetry, analytics or crash reporting — none. The broker's outbound calls are all functional: each provider's <em>usage</em> API (using the login your CLI already has, to read your real quota), a public model-price list, and GitHub to check for firmware updates. Your prompts and code are never part of any of those.</p>
+                <p>The <strong>device</strong> itself only ever contacts your broker on the LAN plus a public clock server and Open-Meteo (weather + sunrise/sunset for your city). It never talks to an AI provider and never carries usage data off your network.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">What's stored on my laptop, and how do I remove it? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>Everything the broker keeps lives under <code>~/.config/claude-wall-monitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; reset the device from its Settings screen to clear its side. There's no server-side account to close.</p>
               </div>
             </details>
           </div>
@@ -332,8 +379,15 @@
             <details class="acc-item">
               <summary class="acc-summary">Multiple devices in the same house? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Yes. Each device has its own <code>device_id</code> (last 4 hex of MAC) and announces itself on mDNS as <code>cwm-&lt;device_id&gt;.local</code>. The configure skill picks them up individually.</p>
-                <p>The broker can serve any number of devices on the same LAN. Each gets its own PSK; per-device keys are independent.</p>
+                <p>Yes. Each device has its own <code>device_id</code> (the last 4 bytes of its MAC — 8 hex characters) and announces itself on mDNS as <code>cwm-&lt;device_id&gt;.local</code>. The configure skill picks them up individually.</p>
+                <p>The broker can serve any number of devices on the same LAN. Each gets its own key; per-device keys are independent.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">I have two laptops / a work and a personal machine. <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>One broker reads one machine's usage — the machine it runs on. To track a second laptop, run a broker there too; a device points at one broker at a time, and you can re-point it (broker URL is editable in Settings or via the configure skill). There's no built-in aggregation of two machines into a single combined number.</p>
               </div>
             </details>
 
@@ -363,14 +417,22 @@
             <details class="acc-item">
               <summary class="acc-summary">Can I modify the firmware? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>The firmware is <strong>proprietary</strong>. Only the documentation, broker (<code>cwm-mcp</code>) and the MCP plugin are public and MIT-licensed. You can absolutely build your own client against the broker's HTTP API — that's the integration point we support — but the device's flash is signed.</p>
+                <p>The firmware is <strong>proprietary</strong>, and updates are distributed only as Ed25519-signed images the device verifies before installing. The broker (<code>cwm-mcp</code>), the MCP plugin and the documentation are public and <strong>Apache-2.0</strong>. You can absolutely build your own client against the broker's HTTP API — that's the integration point we support.</p>
               </div>
             </details>
 
             <details class="acc-item">
               <summary class="acc-summary">How are firmware updates delivered? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>OTA, over the LAN, via the broker. When a new release lands, your CLI surfaces a notice; <code>/cwallmonitor:update</code> downloads + flashes after you confirm. Updates are signed (Ed25519) and verified by the bootloader before any flash erase.</p>
+                <p>OTA, over your LAN, via the broker. When a new release is available, <code>/cwallmonitor:firmware</code> stages it; the device downloads it, verifies an <strong>Ed25519-signed manifest on-device</strong>, switches the boot slot and reboots. If the new image doesn't come up healthy and check in, the bootloader <strong>rolls back automatically</strong>, and a version floor blocks downgrades.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">What happens to it if Fractal Manifold disappears? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>The device keeps working — it talks to the broker on your LAN, and the broker and plugin are open source (Apache-2.0). You can keep running, auditing and even forking the server indefinitely, with no account or cloud dependency on us.</p>
+                <p>The limits, plainly: new firmware releases, signed OTA images, hardware repairs and replacement units depend on us continuing. The software side is yours to keep; the hardware roadmap isn't guaranteed.</p>
               </div>
             </details>
           </div>
@@ -381,7 +443,7 @@
           <p class="eyebrow">Troubleshooting</p>
           <h2>Troubleshooting</h2>
           <div class="step-rule"></div>
-          <p class="lead">Seven situations that cover ~95% of "it's not working" cases. Symptom on the top, fix on the bottom.</p>
+          <p class="lead">The seven situations most likely to trip you up. Symptom on the top, fix on the bottom.</p>
 
           <div class="ts-card symptom">
             <span class="symptom-tag">Symptom</span>
@@ -417,8 +479,8 @@
             <span class="fix-tag">Fix</span>
             <p>The broker isn't being reached. Check, in order:</p>
             <ol>
-              <li>Is <code>cwm-mcp</code> actually running on your laptop? <code>curl localhost:9787/health</code></li>
-              <li>Is your laptop on the same Wi-Fi as the device? (different SSIDs / VLANs / guest networks fail silently)</li>
+              <li>Is <code>cwm-mcp</code> actually running on your laptop? Ask your CLI <em>"check my wall monitor broker health"</em> — it calls <code>wall_monitor_health</code> and reports PASS/FAIL per component.</li>
+              <li>Is your laptop on the same Wi-Fi as the device, with port <code>8765</code> reachable between them? (different SSIDs / VLANs / guest networks fail silently)</li>
               <li>Ask your CLI <em>"tail the last 20 lines of the broker log"</em> — it'll call <code>wall_monitor_recent_logs</code> and you'll see the rejected polls, if any.</li>
             </ol>
           </div>
@@ -454,6 +516,15 @@
         <p>Open an issue on the marketplace repo, or email us — we read everything. Include the output of <code class="inline-code">wall_monitor_health</code> and the last 50 broker log lines if you can.</p>
       </div>
       <a href="mailto:cwm@fractalmanifold.com" class="btn btn-primary">cwm@fractalmanifold.com</a>
+    </div>
+
+    <!-- ── Waitlist nudge (for prospects, not owners) ──────────── -->
+    <div class="close-cta" style="text-align:center; padding: 3.5rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px); margin-top: 2rem;">
+      <p class="eyebrow">Don't have one yet?</p>
+      <h2 style="margin-bottom: 1rem">Reserve early access.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">Early-access units are a small first batch, shipping worldwide before Q4&nbsp;2026. The waitlist locks the launch price for the first 100 to join.</p>
+      <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
     </div>
   </div>
 </main>

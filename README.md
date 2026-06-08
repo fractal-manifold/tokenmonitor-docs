@@ -23,8 +23,7 @@ index.html          Landing
 how-it-works.html
 setup.html          5-step tutorial
 usage.html
-plugin.html         Per-CLI install (Claude / Codex / Gemini)
-skills.html
+plugin.html         Per-CLI install (Claude / Codex / Gemini) + skills & MCP-tool reference (#skills)
 faq.html
 
 assets/

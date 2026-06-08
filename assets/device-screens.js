@@ -409,16 +409,16 @@
       ['f', 'City', 'Madrid, ES'],
       ['f', 'WiFi SSID', 'FractalHome'],
       ['f', 'WiFi password', '••••••••'],
-      ['f', 'Service URL', 'http://192.168.1.50:8787'],
+      ['f', 'Service URL', 'http://192.168.1.50:8765'],
       ['f', 'Passphrase', '••••••••••'],
       ['h', 'AUDIO'],
       ['f', 'Alert volume', '70%'],
       ['h', 'ABOUT'],
       ['r', 'Serial', 'CWM-A1-K3F-2622-000042-7'],
       ['r', 'Device ID', 'a1b2c3d4'],
-      ['r', 'Firmware', 'v0.3.1'],
+      ['r', 'Firmware', 'v1.0.0'],
       ['r', 'IP address', '192.168.1.42'],
-      ['r', 'Broker URL', 'http://192.168.1.50:8787'],
+      ['r', 'Broker URL', 'http://192.168.1.50:8765'],
     ];
   }
 

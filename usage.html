@@ -269,6 +269,13 @@
               <div><h4>Last-sync indicator</h4>
                 <p>The status word at the bottom (Whispering · Generating · Synthesizing) animates only while the broker has fresh data. Stale &gt; 60 s → fades to dim.</p></div></li>
           </ol>
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Percentages or dollars?</strong>
+              <span>Depends on how you pay. On a <strong style="color: var(--fg-1)">Pro / Max subscription</strong> the cards show the <strong style="color: var(--fg-1)">percentage</strong> of your plan quota used — the number that actually matters when there's no per-token bill. On a <strong style="color: var(--fg-1)">pay-as-you-go API key</strong> there's no quota to fill, so the device shows an <strong style="color: var(--fg-1)">estimated&nbsp;$</strong> instead — your local token counts priced at public list rates (an estimate, not the invoice).</span>
+            </div>
+          </div>
         </div>
         <div class="uv">
           <div class="device-frame">
@@ -469,7 +476,7 @@
       <h2 style="margin-bottom: 1rem">Two skills do the heavy lifting.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
       <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/cwallmonitor:configure</code> pairs and provisions. <code class="inline-code">/cwallmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
-      <a href="skills.html" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
+      <a href="plugin.html#skills" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
     </div>
   </section>
 </main>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How it works — C Wall Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How the C Wall Monitor works end to end: the device, the local cwm-mcp broker, the marketplace plugin, exactly what data goes where, and the security model.">
+<link rel="canonical" href="https://cwm.fractalmanifold.com/how-it-works.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://cwm.fractalmanifold.com/how-it-works.html">
+<meta property="og:title" content="How it works — C Wall Monitor">
+<meta property="og:description" content="The device, the local broker, the marketplace plugin — and exactly what data goes where.">
+<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How it works — C Wall Monitor">
+<meta name="twitter:description" content="The device, the local broker, the marketplace plugin — and exactly what data goes where.">
+<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
+<meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<style>
+  .page-head { padding: 4rem 0 2rem 0; }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: -0.5px;
+    line-height: 1.08;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 64ch; font-size: 1.18rem; }
+
+  /* ── Architecture diagram ───────────────────────────────── */
+  .arch {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: stretch;
+    gap: 1rem;
+    margin: 2.5rem 0 1rem;
+  }
+  .arch-node {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1.4rem;
+    backdrop-filter: blur(8px);
+  }
+  .arch-node.device  { border: var(--border-gold); }
+  .arch-node h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .arch-node .tag {
+    font-family: var(--font-display);
+    font-size: 0.6rem; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-gold); display: block; margin-bottom: 0.7rem;
+  }
+  .arch-node p { font-size: 0.86rem; margin: 0; color: var(--fg-2); }
+  .arch-node ul { margin: 0.6rem 0 0; padding-left: 1.05rem; }
+  .arch-node li { font-size: 0.82rem; color: var(--fg-2); margin: 0.25rem 0; }
+  .arch-link {
+    align-self: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+    color: var(--color-gold);
+    font-family: var(--font-display); font-size: 0.58rem;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    min-width: 90px; text-align: center;
+  }
+  .arch-link .wire {
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    position: relative;
+  }
+  .arch-link .wire::after {
+    content: '⇄'; position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 1rem; color: var(--color-gold);
+    background: var(--color-bg); padding: 0 4px;
+  }
+  .arch-link .lbl-sub { color: var(--fg-3); letter-spacing: 1px; }
+
+  .arch-foot {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    margin-top: 1rem;
+  }
+  .arch-foot .out {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-left: 3px solid var(--color-gold);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+  }
+  .arch-foot .out h4 { font-size: 0.82rem; letter-spacing: 0.3px; margin: 0 0 0.4rem; }
+  .arch-foot .out p { font-size: 0.84rem; margin: 0; color: var(--fg-2); }
+
+  /* ── Generic content sections ───────────────────────────── */
+  .hiw-section { padding: 3.5rem 0; border-top: var(--border-faint); }
+  .hiw-section > .eyebrow { margin-bottom: 0.5rem; }
+  .three {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .three .card h3 { margin-top: 0.4rem; }
+  .three .card p { font-size: 0.92rem; margin-bottom: 0; }
+
+  .data-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2rem; }
+  .data-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+  }
+  .data-card .metric {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 1.5rem; color: var(--color-gold); margin-bottom: 0.2rem;
+  }
+  .data-card h3 { font-size: 1.05rem; margin: 0 0 0.6rem; }
+  .data-card .src {
+    font-family: var(--font-display); font-size: 0.6rem;
+    letter-spacing: 1.4px; text-transform: uppercase; color: var(--fg-3);
+    display: block; margin-bottom: 0.7rem;
+  }
+  .data-card p { font-size: 0.88rem; margin: 0; }
+
+  .sec-list { margin-top: 2rem; display: grid; gap: 0.85rem; }
+  .sec-row {
+    display: grid; grid-template-columns: 200px 1fr; gap: 1.5rem;
+    padding: 1.1rem 1.4rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+  }
+  .sec-row h4 { font-size: 0.92rem; margin: 0; color: var(--fg-1); }
+  .sec-row p { font-size: 0.9rem; margin: 0; color: var(--fg-2); }
+  .sec-note {
+    margin-top: 1.5rem; padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(245,158,11,0.22);
+    background: rgba(245,158,11,0.05);
+    border-radius: var(--radius-lg);
+    font-size: 0.92rem; color: var(--fg-2);
+  }
+  .sec-note strong { color: var(--fg-1); }
+
+  .req-list { margin-top: 1.5rem; padding-left: 1.2rem; }
+  .req-list li { margin: 0.5rem 0; color: var(--fg-2); }
+
+  .hiw-cta {
+    text-align: center; padding: 3.5rem 2rem; margin-top: 1rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+  }
+  .hiw-cta .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+
+  @media (max-width: 980px) {
+    .arch { grid-template-columns: 1fr; }
+    .arch-link { flex-direction: row; min-width: 0; padding: 0.5rem 0; }
+    .arch-link .wire { width: 40px; height: 2px; }
+    .arch-foot { grid-template-columns: 1fr; }
+    .three, .data-grid { grid-template-columns: 1fr; }
+    .sec-row { grid-template-columns: 1fr; gap: 0.4rem; }
+  }
+</style>
+</head>
+<body data-page="how-it-works">
+
+<main>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">How it works</p>
+      <h1>Three parts, all on your&nbsp;side.</h1>
+      <div class="rule"></div>
+      <p class="lead">A desk display, a small server that runs on your own laptop, and a one-line
+      plugin that ties them together. Here's the whole data path — and exactly what leaves your
+      machine and what never does.</p>
+    </div>
+
+    <!-- ── Architecture diagram ─────────────────────────────── -->
+    <div class="arch">
+      <div class="arch-node">
+        <span class="tag">On your laptop</span>
+        <h3>Your CLIs + the broker</h3>
+        <p>Claude Code, Codex and Gemini already log usage locally. The <code class="inline-code">cwm-mcp</code> broker reads those logs and serves a tiny JSON dashboard.</p>
+      </div>
+      <div class="arch-link">
+        <span>Wi-Fi LAN</span>
+        <span class="wire"></span>
+        <span class="lbl-sub">signed&nbsp;requests</span>
+      </div>
+      <div class="arch-node device">
+        <span class="tag">On your desk</span>
+        <h3>The device</h3>
+        <p>The 4″ panel polls the broker over your network and draws the numbers. It holds no provider credentials of its own.</p>
+      </div>
+      <div class="arch-link">
+        <span>Internet</span>
+        <span class="wire"></span>
+        <span class="lbl-sub">read-only</span>
+      </div>
+      <div class="arch-node">
+        <span class="tag">Ambient only</span>
+        <h3>Time &amp; weather</h3>
+        <p>The device's only direct internet calls: a public time server and Open-Meteo for the weather strip + sunrise/sunset.</p>
+      </div>
+    </div>
+
+    <div class="arch-foot">
+      <div class="out">
+        <h4>What the broker reaches out to</h4>
+        <p>Each provider's own usage API (using the login your CLI already has), a public model-price list, and GitHub to check for firmware updates. No analytics, no telemetry, no phone-home.</p>
+      </div>
+      <div class="out">
+        <h4>What the device reaches out to</h4>
+        <p>Your broker on the LAN, plus <code class="inline-code">pool.ntp.org</code> (clock) and <code class="inline-code">open-meteo.com</code> (weather for your city). It never contacts an AI provider.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Three parts ──────────────────────────────────────── -->
+  <div class="container">
+    <section class="hiw-section">
+      <p class="eyebrow">The pieces</p>
+      <h2>What you actually install.</h2>
+      <div class="rule"></div>
+      <div class="three">
+        <article class="card gold-edge">
+          <span class="chip">Hardware</span>
+          <h3>The device</h3>
+          <p>An ESP32-S3 with a 480×480 capacitive panel. Ships pre-flashed. No soldering, no terminal — plug in USB-C and it boots to a setup screen.</p>
+        </article>
+        <article class="card gold-edge">
+          <span class="chip">Local server</span>
+          <h3>The cwm-mcp broker</h3>
+          <p>A small open-source (Apache-2.0) server you run on your laptop. It reads your CLI logs and answers the device's polls. Pick the Go, Python or JS build — they're interchangeable.</p>
+        </article>
+        <article class="card gold-edge">
+          <span class="chip">Marketplace plugin</span>
+          <h3>The MCP plugin</h3>
+          <p>Installed into Claude Code, Codex or Gemini from the public marketplace. It registers the broker and adds the <code class="inline-code">/cwallmonitor:configure</code> and theme skills, so you pair and manage the device by just asking your AI.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── What data goes where ─────────────────────────────── -->
+  <div class="container">
+    <section class="hiw-section">
+      <p class="eyebrow">Transparency</p>
+      <h2>What data goes where.</h2>
+      <div class="rule"></div>
+      <p class="lead">The full picture. The broker talks to the same provider APIs your CLI already
+      uses, with the login you already have — it doesn't hand your data to anyone new. It <em>is</em>
+      a new local service on your machine, which is exactly why it's open source and auditable.</p>
+      <table class="tool-table" style="margin-top:2rem">
+        <thead>
+          <tr><th>Path</th><th>What's sent</th><th>What's never sent</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Broker → provider usage API</td>
+            <td>Your existing CLI login token, plus an account / project id where the provider needs it, to read your real quota.</td>
+            <td>Your prompts, your code, your files.</td>
+          </tr>
+          <tr>
+            <td>Broker → price list</td>
+            <td>A plain request for a public model-price table (LiteLLM). Cached locally for a day.</td>
+            <td>Anything identifying you.</td>
+          </tr>
+          <tr>
+            <td>Broker → GitHub</td>
+            <td>A version check for firmware releases.</td>
+            <td>Any usage or account data.</td>
+          </tr>
+          <tr>
+            <td>Device → broker (LAN)</td>
+            <td>A signed poll asking for the current dashboard numbers.</td>
+            <td>Leaves your network — it doesn't.</td>
+          </tr>
+          <tr>
+            <td>Device → time / weather</td>
+            <td>The clock request, and your city's coordinates for the weather strip.</td>
+            <td>Any AI usage, tokens or account data.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="sec-note">
+        <strong>On your logs:</strong> the broker parses the token-count fields out of your CLI
+        transcripts to total your usage. It isn't built to read or transmit the prompt and code
+        inside those logs — and it has no endpoint that would send them anywhere. It's open source,
+        so you don't have to take our word for it.
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Data model ───────────────────────────────────────── -->
+  <div class="container">
+    <section class="hiw-section">
+      <p class="eyebrow">The three numbers</p>
+      <h2>Real, local, and estimated.</h2>
+      <div class="rule"></div>
+      <div class="data-grid">
+        <div class="data-card">
+          <div class="metric">%</div>
+          <span class="src">Real — from the provider</span>
+          <h3>Usage limits</h3>
+          <p>The percentage bars are your provider's own reported quota, fetched live from its usage API (about every 90&nbsp;seconds). Not a guess.</p>
+        </div>
+        <div class="data-card">
+          <div class="metric">tok</div>
+          <span class="src">Local — from your machine</span>
+          <h3>Token counts</h3>
+          <p>Totalled from the CLI logs on the computer running the broker. They reflect what that machine actually used.</p>
+        </div>
+        <div class="data-card">
+          <div class="metric">$</div>
+          <span class="src">Estimated — list prices</span>
+          <h3>Spend</h3>
+          <p>Token counts × a public price list — a useful <em>estimate</em>, not a bill. On a Pro/Max plan it's a notional list-price value, not money charged to you.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Security model ───────────────────────────────────── -->
+  <div class="container">
+    <section class="hiw-section" id="security">
+      <p class="eyebrow">Security model</p>
+      <h2>What protects it — precisely.</h2>
+      <div class="rule"></div>
+      <p class="lead">No hand-waving. Here's what the link actually does, and where the limits are.</p>
+      <div class="sec-list">
+        <div class="sec-row">
+          <h4>Authenticated requests</h4>
+          <p>Every device → broker request is signed with HMAC-SHA256 (a per-device key) over the method, path, timestamp and a one-time nonce. Stale timestamps (&gt; 60&nbsp;s) and reused nonces are rejected, so a captured request can't be replayed.</p>
+        </div>
+        <div class="sec-row">
+          <h4>Encrypted config</h4>
+          <p>Sensitive control-plane payloads — key rotation, settings pushed to the device — are AES-256-CTR encrypted with your device key. (The signature covers request headers, not bodies; we don't claim the whole link is confidential, because it isn't.)</p>
+        </div>
+        <div class="sec-row">
+          <h4>Not internet-exposed</h4>
+          <p>The broker listens on your LAN so the device can reach it — there's no port to forward and nothing is published to the internet. Pairing won't accept a loopback-only address by mistake.</p>
+        </div>
+        <div class="sec-row">
+          <h4>Keys at rest</h4>
+          <p>On the device, the key lives in NVS (encrypted at rest on production units). On your laptop it's stored in a <code class="inline-code">0600</code> file under <code class="inline-code">~/.config/claude-wall-monitor/</code> — readable only by you.</p>
+        </div>
+        <div class="sec-row">
+          <h4>Signed firmware</h4>
+          <p>OTA updates arrive over your LAN through the broker. Each is an Ed25519-signed manifest, verified on the device before the boot slot switches; if a new image doesn't check in healthy, the bootloader rolls back automatically. A version floor blocks downgrades.</p>
+        </div>
+        <div class="sec-row">
+          <h4>Open &amp; auditable</h4>
+          <p>The broker and plugin are Apache-2.0 and public. The part that runs on your machine and touches your logs is the part you can read line by line.</p>
+        </div>
+      </div>
+      <div class="sec-note">
+        <strong>The limit, stated plainly:</strong> the broker runs as you, with your permissions, and uses
+        your CLI's login to read your real usage. That's the price of accurate numbers without a
+        second API key. Open source is how you keep that honest — not a claim that it's risk-free.
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Requirements ─────────────────────────────────────── -->
+  <div class="container">
+    <section class="hiw-section">
+      <p class="eyebrow">Before you buy</p>
+      <h2>What it needs to work.</h2>
+      <div class="rule"></div>
+      <ul class="req-list">
+        <li>A laptop or always-on machine that runs your AI CLI, with the <code class="inline-code">cwm-mcp</code> broker running on it (it can sleep with the machine — the dashboard simply freezes until it's back).</li>
+        <li>The device and that machine on the same 2.4&nbsp;GHz Wi-Fi / reachable LAN (port <code class="inline-code">8765</code> open between them).</li>
+        <li>Internet for the live percentages, the weather strip and clock sync. Without it, the LAN dashboard still draws your local token totals.</li>
+        <li>A supported runtime for the broker (one of Go / Python / Node — pick whichever you already have).</li>
+        <li>One broker reads one machine's usage. Two laptops means two brokers; the device can point at whichever you configure.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- ── CTA ──────────────────────────────────────────────── -->
+  <div class="container">
+    <div class="hiw-cta">
+      <h2>Like how it's built?</h2>
+      <p class="lead" style="margin:0 auto">Early-access units are a small first batch — the waitlist locks the launch price for the first 100. Setup is five steps, mostly waiting for it to boot.</p>
+      <div class="cta-row">
+        <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
+        <a href="setup.html" class="btn btn-ghost">Setup guide</a>
+        <a href="faq.html#security" class="btn btn-ghost">Security FAQ</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="legal-footer">
+  <div class="inner">
+    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

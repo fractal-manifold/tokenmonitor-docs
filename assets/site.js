@@ -5,10 +5,10 @@
 (function () {
   const NAV = [
     { href: 'index.html',         label: 'Overview',      page: 'index' },
+    { href: 'how-it-works.html',  label: 'How it works',  page: 'how-it-works' },
     { href: 'setup.html',         label: 'Setup',         page: 'setup' },
     { href: 'usage.html',         label: 'Usage',         page: 'usage' },
-    { href: 'plugin.html',        label: 'Plugin',        page: 'plugin' },
-    { href: 'skills.html',        label: 'Skills',        page: 'skills' },
+    { href: 'plugin.html',        label: 'Plugin & skills', page: 'plugin' },
     { href: 'faq.html',           label: 'FAQ',           page: 'faq' },
   ];
   const WAITLIST_URL = 'https://forms.gle/Yg3ZhXZJGXuvRKx49';
@@ -29,7 +29,7 @@
           </a>
           <nav class="site-nav" id="siteNav">
             ${navLinks}
-            <a href="${WAITLIST_URL}" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">Notify me when available</a>
+            <a href="${WAITLIST_URL}" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">Get early access</a>
           </nav>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
             <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -65,6 +65,7 @@
             <h4>Product</h4>
             <ul>
               <li><a href="index.html">Overview</a></li>
+              <li><a href="how-it-works.html">How it works</a></li>
               <li><a href="setup.html">Setup</a></li>
               <li><a href="usage.html">Usage</a></li>
             </ul>
@@ -73,7 +74,7 @@
             <h4>Developers</h4>
             <ul>
               <li><a href="plugin.html">Plugin install</a></li>
-              <li><a href="skills.html">Skills reference</a></li>
+              <li><a href="plugin.html#skills">Skills reference</a></li>
               <li><a href="faq.html">Troubleshooting</a></li>
             </ul>
           </div>

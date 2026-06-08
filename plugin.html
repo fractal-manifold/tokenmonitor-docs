@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Plugin install — C Wall Monitor</title>
+<title>Plugin &amp; skills — C Wall Monitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI.">
+<meta name="description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
 <link rel="canonical" href="https://cwm.fractalmanifold.com/plugin.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="C Wall Monitor">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://cwm.fractalmanifold.com/plugin.html">
-<meta property="og:title" content="Plugin install — C Wall Monitor">
-<meta property="og:description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI.">
+<meta property="og:title" content="Plugin &amp; skills — C Wall Monitor">
+<meta property="og:description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
 <meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
 <meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Plugin install — C Wall Monitor">
-<meta name="twitter:description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI.">
+<meta name="twitter:title" content="Plugin &amp; skills — C Wall Monitor">
+<meta name="twitter:description" content="Install the cwallmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
 <meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
 <meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
@@ -39,6 +39,19 @@
     margin-bottom: 1.25rem;
   }
   .page-head .lead { max-width: 62ch; font-size: 1.18rem; }
+
+  /* ── Section divider heading (between install + reference) ── */
+  .part-head {
+    margin-top: 5rem;
+    padding-top: 3.5rem;
+    border-top: var(--border-faint);
+  }
+  .part-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: 0.5px;
+    margin: 0.5rem 0 0 0;
+  }
+  .part-head .lead { max-width: 60ch; font-size: 1.08rem; margin-top: 1rem; }
 
   /* ── Big tab switcher ───────────────────────────────────── */
   .cli-tabs {
@@ -164,6 +177,180 @@
   .verify .head p { margin: 0.2rem 0 0 0; font-size: 0.88rem; color: var(--fg-3); }
   .verify p { color: var(--fg-2); }
 
+  /* ── Skills grid ────────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+  .skill-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(245,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    top: -20%; right: -20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--color-gold-light);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .skill-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 1rem 0;
+  }
+  .skill-card .desc {
+    color: var(--fg-2);
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+  .skill-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 1.75rem 0 0.6rem 0;
+  }
+  .skill-card .syntax {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    color: var(--fg-2);
+    background: #07070a;
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+  }
+  .skill-card .syntax .opt { color: var(--color-purple-light); }
+  .skill-card .syntax .arg { color: var(--color-gold-light); }
+  .skill-card ul {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .skill-card ul li {
+    padding: 0.5rem 0;
+    border-bottom: var(--border-faint);
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.92rem;
+    color: var(--fg-2);
+  }
+  .skill-card ul li:last-child { border-bottom: none; }
+  .skill-card ul li .b {
+    flex-shrink: 0;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    margin-top: 0.65rem;
+  }
+
+  /* ── Tool cards (the 4 MCP tools) ───────────────────────── */
+  .tools-section {
+    margin-top: 4rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .tool-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .tool-card:hover {
+    border-color: rgba(245,158,11,0.25);
+    transform: translateY(-2px);
+  }
+  .tool-card .tool-name {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--color-gold-light);
+    margin-bottom: 0.6rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tool-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    color: var(--fg-1);
+    margin: 0 0 0.6rem 0;
+  }
+  .tool-card p {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+  .tool-card .returns {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+  .tool-card .returns span {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--fg-3);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── Example flow ───────────────────────────────────────── */
+  .flow {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(147,51,234,0.05) 0%, rgba(245,158,11,0.04) 100%);
+    border: 1px solid rgba(147,51,234,0.18);
+    border-radius: var(--radius-xl);
+  }
+  .flow h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.4rem 0;
+  }
+  .flow .lead-sm { color: var(--fg-2); margin-bottom: 2rem; }
+  .flow-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  /* ── Chat bubbles (shared by verify + flow) ─────────────── */
   .chat-bubble {
     background: rgba(20,20,20,0.6);
     border: var(--border-faint);
@@ -206,9 +393,17 @@
     border-radius: 4px;
     font-size: 0.86rem;
   }
+  /* tighter bubbles inside the example flow */
+  .flow .chat-bubble { padding: 0.9rem 1.1rem; margin: 0 0 1.25rem 0; border-radius: var(--radius-md); font-size: 0.92rem; }
+  .flow .chat-bubble:last-child { margin-bottom: 0; }
+  .flow .chat-bubble.cli::before { content: 'CLAUDE'; }
 
   @media (max-width: 900px) {
     .cli-tabs { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow { padding: 1.75rem; }
   }
 </style>
 </head>
@@ -217,10 +412,10 @@
 <main>
   <div class="container">
     <div class="page-head">
-      <p class="eyebrow">Plugin install</p>
+      <p class="eyebrow">Plugin · skills · tools</p>
       <h1>One MCP plugin.<br>Three CLIs.</h1>
       <div class="rule"></div>
-      <p class="lead">The <code class="inline-code">cwallmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Same skill catalogue, same tool surface — only the install command differs.</p>
+      <p class="lead">The <code class="inline-code">cwallmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Same skill catalogue, same tool surface — only the install command differs. Install it below, then jump to the <a href="#skills" style="color:var(--color-gold-light)">skills &amp; tools reference</a>.</p>
 
       <div class="cli-tabs">
         <button class="cli-tab claude active" data-cli="claude">
@@ -259,9 +454,11 @@
 <div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
 /cwallmonitor:configure
 /cwallmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
-/cwallmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;key&gt;=&lt;value&gt;…</span>
+/cwallmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;change&gt;…</span>
+/cwallmonitor:firmware
 
-<span class="cmt"># Tools (Claude calls these as needed)</span>
+<span class="cmt"># Tools the model calls as needed — the diagnostic four,</span>
+<span class="cmt"># plus control-plane tools the skills drive for you</span>
 wall_monitor_status
 wall_monitor_health
 wall_monitor_recent_logs
@@ -275,35 +472,33 @@ wall_monitor_provision_hint</div>
       <div class="cli-panel" data-panel="codex">
         <div class="panel-head">
           <h2>Codex CLI</h2>
-          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
+          <span class="marketplace">registers <code class="inline-code">cwm-mcp</code> as an MCP server</span>
         </div>
-        <p class="lead">Codex CLI shares the marketplace surface with Claude Code — the same two commands install <code class="inline-code">cwallmonitor</code>, with the broker, skills and tools wired up automatically.</p>
+        <p class="lead">Codex reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. One command registers the broker so Codex can call the <code class="inline-code">wall_monitor_*</code> tools — install the <code class="inline-code">cwm-mcp</code> broker first (see <a href="setup.html" style="color:var(--color-gold-light)">Setup</a>).</p>
 
-        <h4>Install</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
-<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor@fractalmanifold-mcp-marketplace</div>
+        <h4>Register the broker</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> codex mcp add cwm-mcp -- "$(command -v cwm-mcp)"</div>
+        <p style="font-size: 0.92rem; color: var(--fg-3); margin-top: -0.4rem;">Adds an <code class="inline-code">[mcp_servers.cwm-mcp]</code> entry to <code class="inline-code">~/.codex/config.toml</code>.</p>
 
-        <h4>What it adds</h4>
-<div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
-/cwallmonitor:configure
-/cwallmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
-/cwallmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;key&gt;=&lt;value&gt;…</span>
-
-<span class="cmt"># Tools (Codex calls these as needed)</span>
+        <h4>What you get</h4>
+<div class="code-block"><span class="cmt"># Tools Codex can call as needed</span>
 wall_monitor_status
 wall_monitor_health
 wall_monitor_recent_logs
-wall_monitor_provision_hint</div>
+wall_monitor_provision_hint
 
-        <h4>Where it lives</h4>
-        <p style="font-size: 0.92rem; color: var(--fg-3);">Marketplace entries land in <code class="inline-code">~/.codex/plugins/</code>. Uninstall any time with <code class="inline-code">/plugin uninstall cwallmonitor</code>.</p>
+<span class="cmt"># Pair &amp; reconfigure by asking Codex in plain language —</span>
+<span class="cmt"># it drives the provisioning + control-plane tools for you.</span></div>
+
+        <h4>Remove it</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Drop the server any time with <code class="inline-code">codex mcp remove cwm-mcp</code>.</p>
       </div>
 
       <!-- ── Gemini CLI panel ────────────────────────────────── -->
       <div class="cli-panel" data-panel="gemini">
         <div class="panel-head">
           <h2>Gemini CLI</h2>
-          <span class="marketplace">via <a href="#" target="_blank">fractal-manifold/mcp-marketplace</a></span>
+          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
         <p class="lead">Gemini reads extensions from <code class="inline-code">~/.gemini/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually.</p>
 
@@ -314,22 +509,22 @@ wall_monitor_provision_hint</div>
         <span class="file-tag">~/.gemini/extensions/cwallmonitor/gemini-extension.json</span>
 <div class="code-block">{
   <span class="str">"name"</span>:    <span class="str">"cwallmonitor"</span>,
-  <span class="str">"version"</span>: <span class="str">"0.3.1"</span>,
+  <span class="str">"version"</span>: <span class="str">"0.4.0"</span>,
   <span class="str">"mcpServers"</span>: {
     <span class="str">"cwallmonitor"</span>: {
       <span class="str">"command"</span>: <span class="str">"cwm-mcp"</span>,
       <span class="str">"args"</span>:    [<span class="str">"mcp"</span>],
       <span class="str">"env"</span>: {
-        <span class="str">"CWM_BROKER"</span>: <span class="str">"http://localhost:9787"</span>
+        <span class="str">"CWM_BROKER"</span>: <span class="str">"http://localhost:8765"</span>
       }
     }
   },
-  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>]
+  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>, <span class="str">"firmware"</span>]
 }</div>
 
         <h4>Restart Gemini</h4>
 <div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini restart
-<span class="cmt"># Loaded extension: cwallmonitor (skills: configure, theme, settings)</span></div>
+<span class="cmt"># Loaded extension: cwallmonitor (skills: configure, theme, settings, firmware)</span></div>
       </div>
 
       <!-- ── Verify (common to all three) ────────────────────── -->
@@ -347,9 +542,173 @@ wall_monitor_provision_hint</div>
           What's the status of my wall monitor broker?
         </div>
         <div class="chat-bubble cli">
-          The broker is running with role <code>broker</code> on <code>localhost:9787</code>. It has served <strong style="color: var(--color-gold-light);">2,847 requests</strong> across <strong style="color: var(--color-gold-light);">1 device</strong> (<code>cwm-3c7c</code>) since it started 4&nbsp;hours ago. Health: <strong style="color: var(--color-success);">PASS</strong>.
+          The broker is running with role <code>leader</code> on <code>localhost:8765</code>. It last served <code>cwm-3c7c9a02</code> a few seconds ago and has handled <strong style="color: var(--color-gold-light);">2,847 requests</strong> since it started 4&nbsp;hours ago. Health: <strong style="color: var(--color-success);">PASS</strong>.
         </div>
         <p style="margin-top: 1.5rem; font-size: 0.92rem; color: var(--fg-3);">If the answer comes back with a different broker role, an empty request count, or the CLI says it can't find the tool — head to the <a href="faq.html" style="color: var(--color-gold-light);">troubleshooting page</a>.</p>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- ── Skills & tools reference ────────────────────────── -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="part-head" id="skills">
+        <p class="eyebrow">Skills &amp; MCP tools</p>
+        <h2>Four skills. Four core tools.</h2>
+        <div class="rule"></div>
+        <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. Both are loaded the moment the <code class="inline-code">cwallmonitor</code> plugin is installed — nothing else to wire up.</p>
+      </div>
+
+      <!-- ── Skills (pulled from SKILL.md frontmatter) ────────── -->
+      <div class="skills-grid">
+        <article class="skill-card">
+          <div class="skill-name">/cwallmonitor:configure</div>
+          <h3>Pair or reconfigure a device</h3>
+          <p class="desc">Provision a new device, or reconfigure an existing one, from the LAN. Discovers via mDNS, prompts for the 6-digit pairing code, pushes broker URL + auto-generated PSK, registers the device locally.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>New device showing "Waiting for setup" / pairing code on screen</li>
+            <li><span class="b"></span>Moving the broker to a different machine</li>
+            <li><span class="b"></span>Rotating the passphrase / PSK</li>
+            <li><span class="b"></span>Re-establishing trust after a device factory reset</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/cwallmonitor:configure</span></div>
+
+          <h4>What it does, step by step</h4>
+          <ul>
+            <li><span class="b"></span>Scans <code class="inline-code">_cwm._tcp.local</code> for advertised devices</li>
+            <li><span class="b"></span>Prompts you to confirm the pairing code on the device</li>
+            <li><span class="b"></span>Generates a random per-device key (or hashes a passphrase you set)</li>
+            <li><span class="b"></span>POSTs the broker URL + key to the device over the LAN</li>
+            <li><span class="b"></span>Writes the device entry under <code class="inline-code">~/.config/claude-wall-monitor/devices/</code></li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/cwallmonitor:theme</div>
+          <h3>Switch themes remotely</h3>
+          <p class="desc">Flip a device between Day, Night or Auto themes from the comfort of your CLI. Auto follows sunrise/sunset for the device's configured city with a ±90 s hysteresis.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>Force Day mode for a screenshot</li>
+            <li><span class="b"></span>Force Night mode when you're working late and the sensor lags</li>
+            <li><span class="b"></span>Reset to Auto after manual overrides</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/cwallmonitor:theme</span> <span class="opt">&lt;day | night | auto&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Examples</h4>
+          <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> auto</div>
+          <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/cwallmonitor:theme</span> night <span class="opt">--device</span> cwm-3c7c9a02</div>
+          <div class="syntax"><span class="arg">/cwallmonitor:theme</span> day <span class="opt">--device</span> kitchen</div>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/cwallmonitor:settings</div>
+          <h3>Reconfigure a provisioned device</h3>
+          <p class="desc">Push runtime settings to an already-paired device via the control plane: city, day / night brightness, alert volume, which providers are enabled, auto-rotation, broker URL, passphrase rotation. The change applies on the device's next 60 s poll, with automatic rollback if it can't be promoted.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>"Set the city to Madrid"</li>
+            <li><span class="b"></span>"Lower night brightness to 15"</li>
+            <li><span class="b"></span>"Mute alerts" / "set volume to 0"</li>
+            <li><span class="b"></span>"Disable Codex on the wall monitor"</li>
+            <li><span class="b"></span>"Rotate providers every 60 s"</li>
+            <li><span class="b"></span>"Rotate the broker passphrase"</li>
+            <li><span class="b"></span>"Change the broker URL"</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/cwallmonitor:settings</span> <span class="opt">&lt;natural-language change&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Out of scope</h4>
+          <p class="desc" style="font-size:0.88rem">WiFi SSID / password cannot be changed remotely — a bad push would brick the device. Open the on-device Settings panel (long-press the mascot) or factory-reset and re-run <code class="inline-code">/cwallmonitor:configure</code>.</p>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/cwallmonitor:firmware</div>
+          <h3>Stage a signed firmware update</h3>
+          <p class="desc">Stage an over-the-air firmware update to the device across your LAN, through the broker. Each image is an Ed25519-signed manifest the device verifies before the boot slot switches — with automatic rollback if the new build doesn't check in healthy, and an anti-rollback floor against downgrades.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>A new firmware release is available for your device</li>
+            <li><span class="b"></span>You want to move a device onto the dev / canary channel</li>
+            <li><span class="b"></span>Re-applying after an automatic rollback</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/cwallmonitor:firmware</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Safe by design</h4>
+          <p class="desc" style="font-size:0.88rem">Updates only ever flow over your own LAN, and the device installs nothing it can't cryptographically verify. If a build won't boot cleanly, it reverts itself.</p>
+        </article>
+      </div>
+
+      <!-- ── 4 MCP tools (table-style) ────────────────────────── -->
+      <div class="tools-section">
+        <p class="eyebrow">MCP tools</p>
+        <h2>What the model can call directly.</h2>
+        <div class="rule"></div>
+        <p class="lead" style="max-width: 64ch;">These are the four you'll reach for directly — your AI agent calls them in response to natural-language questions, no slash-skill needed. The skills drive a larger set of control-plane tools (device registry, discovery, firmware publish / revert) behind the scenes.</p>
+
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-name">wall_monitor_status</div>
+            <h4>Runtime, role + request count</h4>
+            <p>Returns the broker's runtime, its role (<code class="inline-code">leader</code> or <code class="inline-code">follower</code>), when it last served the device, and the total requests handled since startup.</p>
+            <div class="returns">
+              <span>runtime</span><span>role: leader|follower</span><span>last_request_at</span><span>requests_total</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">wall_monitor_health</div>
+            <h4>PASS / FAIL diagnostic per check</h4>
+            <p>Runs a PASS/FAIL check across your provider credentials (present, parseable, not expired), a signed self-ping to the broker, and recently observed device traffic.</p>
+            <div class="returns">
+              <span>ok</span><span>credentials</span><span>self_ping</span><span>observed_traffic</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">wall_monitor_recent_logs</div>
+            <h4>Tail the broker log</h4>
+            <p>Returns the last N lines (default 50) of the broker's structured log. Useful when a device shows stale data and you want to see whether the broker even received the poll.</p>
+            <div class="returns">
+              <span>lines: int</span><span>level?: warn|err</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">wall_monitor_provision_hint</div>
+            <h4>Suggests laptop LAN URLs</h4>
+            <p>Lists candidate broker URLs (your laptop's LAN interfaces) ranked by reachability. The captive portal uses this to populate the broker-URL field when you'd rather not run the configure skill.</p>
+            <div class="returns">
+              <span>urls[]</span><span>preferred: string</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Example end-to-end flow ──────────────────────────── -->
+      <div class="flow">
+        <p class="eyebrow" style="color: var(--color-purple-light);">Example</p>
+        <h3>A new device, end to end.</h3>
+        <p class="lead-sm">Powered on, pairing code visible, plugin installed. From here:</p>
+        <div class="flow-row">
+          <div>
+            <div class="chat-bubble user">I just powered on a new wall monitor. It's showing pairing code <code>428 715</code>.</div>
+            <div class="chat-bubble cli">I'll configure it. Running <code>/cwallmonitor:configure</code>… Found <code>cwm-3c7c9a02</code> at <code>192.168.1.42</code> via mDNS. Generated a device key and pushed it over the LAN. It's rebooting now — give it ~10 s.</div>
+          </div>
+          <div>
+            <div class="chat-bubble user">Is my broker actually serving it?</div>
+            <div class="chat-bubble cli">Called <code>wall_monitor_status</code>. Broker is running with role <code>leader</code>; it last served <code>cwm-3c7c9a02</code> seconds ago, <strong style="color: var(--color-gold-light);">12 requests</strong> so far. Health <strong style="color: var(--color-success);">PASS</strong>.</div>
+            <div class="chat-bubble user">Switch to night mode.</div>
+            <div class="chat-bubble cli">Ran <code>/cwallmonitor:theme night</code>. Device acknowledged in 110 ms.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -361,7 +720,7 @@ wall_monitor_provision_hint</div>
       <h2 style="margin-bottom: 1rem">Configure your device.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
       <p style="max-width: 56ch; margin: 0 auto 2rem auto;">With the plugin loaded, <code class="inline-code">/cwallmonitor:configure</code> takes over from here. It discovers the device on your LAN, prompts for the pairing code, pushes the PSK.</p>
-      <a href="skills.html" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
+      <a href="setup.html" class="btn btn-primary">Full setup walkthrough <span class="arrow">→</span></a>
     </div>
   </section>
 </main>

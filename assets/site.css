@@ -49,8 +49,10 @@ img { display: block; max-width: 100%; }
   position: absolute;
   width: 500px; height: 500px;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.28;
+  /* Desaturated so the canvas reads as neutral gray, not warm —
+     keeps faint depth/motion without a yellow cast. */
+  filter: blur(100px) grayscale(78%);
+  opacity: 0.16;
   will-change: transform;
 }
 .orb.gold   { background: radial-gradient(circle, var(--color-gold) 0%, transparent 70%); }
@@ -58,7 +60,7 @@ img { display: block; max-width: 100%; }
 .orb.warm   { background: radial-gradient(circle, #F97316 0%, transparent 70%); }
 .orb-1 { top: -10%; left: -10%;  animation: float-1 14s ease-in-out infinite; }
 .orb-2 { top: 30%;  right: -12%; animation: float-2 16s ease-in-out infinite; }
-.orb-3 { bottom: -15%; left: 30%; animation: float-3 18s ease-in-out infinite; opacity: 0.22; }
+.orb-3 { bottom: -15%; left: 30%; animation: float-3 18s ease-in-out infinite; opacity: 0.12; }
 @keyframes float-1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px, 40px); } }
 @keyframes float-2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px, 60px); } }
 @keyframes float-3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, -40px); } }
@@ -633,7 +635,7 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
    art is "content", not chrome).
    ============================================================ */
 [data-theme="light"] {
-  --color-bg:            #faf8f3;
+  --color-bg:            #f3f4f6;
   --color-bg-secondary:  #ffffff;
   --color-bg-tertiary:   rgba(255,255,255,0.72);
 
@@ -667,11 +669,11 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
   filter: grayscale(100%);
   opacity: 0.05;
 }
-[data-theme="light"] .orb { opacity: 0.10; }
+[data-theme="light"] .orb { opacity: 0.07; }
 
 /* Header / nav */
 [data-theme="light"] .site-header {
-  background: rgba(250,248,243,0.78);
+  background: rgba(243,244,246,0.80);
   border-bottom: 1px solid rgba(20,17,11,0.08);
 }
 [data-theme="light"] .site-nav a { color: var(--fg-3); }
