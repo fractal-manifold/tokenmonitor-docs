@@ -1,4 +1,4 @@
-# Brief — Claude Wall Monitor marketing + docs site
+# Brief — C Wall Monitor marketing + docs site
 
 > Hand this brief to Claude Design (or any designer) to rebuild the
 > public site from scratch. The current Astro/Starlight scaffold in
