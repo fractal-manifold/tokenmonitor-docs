@@ -1,6 +1,6 @@
-# Claude Wall Monitor — public site
+# C Wall Monitor — public site
 
-Public landing + tutorial site for the Claude Wall Monitor ESP32
+Public landing + tutorial site for the C Wall Monitor ESP32
 wall display. Source for <https://fractal-manifold.github.io/c-wall-monitor-docs/>.
 
 ## Stack
