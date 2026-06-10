@@ -329,7 +329,7 @@
                 <p>Each device has its own key, generated at pairing (you can also set a passphrase, which is hashed into the key and itself never stored or sent). It lives in two places:</p>
                 <ul>
                   <li>The device: in ESP32 <code>NVS</code>, encrypted at rest on production units.</li>
-                  <li>Your laptop: in a <code>0600</code> file under <code>~/.config/claude-wall-monitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
+                  <li>Your laptop: in a <code>0600</code> file under <code>~/.config/cwallmonitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
                 </ul>
                 <p>This device key is exchanged exactly once, during pairing, over your LAN — authorised by the 6-digit code shown on the device (with a lockout after repeated wrong attempts). After that it never leaves either side again: it's only used locally to sign each request and decrypt config pushes.</p>
                 <p>Your <strong>provider logins are a separate thing entirely</strong>. The Anthropic, Codex and Gemini credentials the broker uses to read your usage never reach the device — they stay on your computer, in your own CLI's config, and are only ever sent to each provider directly over HTTPS, exactly as your CLI already does.</p>
@@ -363,7 +363,7 @@
             <details class="acc-item">
               <summary class="acc-summary">What's stored on my laptop, and how do I remove it? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Everything the broker keeps lives under <code>~/.config/claude-wall-monitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; reset the device from its Settings screen to clear its side. There's no server-side account to close.</p>
+                <p>Everything the broker keeps lives under <code>~/.config/cwallmonitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; reset the device from its Settings screen to clear its side. There's no server-side account to close.</p>
               </div>
             </details>
           </div>
