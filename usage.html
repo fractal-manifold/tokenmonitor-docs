@@ -295,7 +295,7 @@
           <h2>Quiet after 20 minutes.</h2>
           <div class="step-rule"></div>
           <p>Backlight ramps to 0% after 20 min of no touch. The last values persist in framebuffer along with the ambient strip — at 0% backlight they're invisible but the panel doesn't blank.</p>
-          <p>Tap anywhere to wake. The dashboard fades back in over 600 ms.</p>
+          <p>Tap anywhere — or press the <strong>PWR</strong> side button — to wake. The dashboard fades back in over 600 ms. A short PWR press also sends it back to standby on demand.</p>
           <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
             <div>
@@ -313,8 +313,48 @@
     </div>
   </section>
 
-  <!-- ── Settings ───────────────────────────────────────────── -->
+  <!-- ── Buttons ────────────────────────────────────────────── -->
   <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Buttons</p>
+          <h2>Two side buttons.</h2>
+          <div class="step-rule"></div>
+          <p>Everything day-to-day is touch, but the two physical side buttons cover the moments the screen can't help you — sleeping, restarting, and starting over.</p>
+
+          <h4 style="margin: 1.4rem 0 0.4rem 0; color: var(--fg-1)">PWR — sleep, wake &amp; restart</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li><strong>Short press</strong> — toggle standby: blank the screen, or wake it.</li>
+            <li><strong>Hold ~2 s</strong> — restart the device. Nothing is erased — it just reboots, the way you'd power-cycle anything that's acting up. Wi-Fi, city, theme and pairing all come back exactly as they were.</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">BOOT — factory reset</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li><strong>Hold ~10 s</strong> — start a factory reset. A confirmation screen appears first; nothing is erased until you tap <strong>Erase</strong> (or <strong>Cancel</strong> to back out).</li>
+            <li>Confirming wipes your settings and pairing — Wi-Fi, city, brightness, providers, alert volume and the broker passphrase — then reboots into first-boot setup, ready to provision again.</li>
+            <li>The device's own identity and security state (its ID and update anti-rollback floor) are preserved, so it re-pairs cleanly without losing its place in the update chain.</li>
+          </ul>
+
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Restart first, reset last</strong>
+              <span>If something looks wrong, hold PWR to restart before reaching for BOOT — a reboot fixes most transient glitches and keeps your setup intact. Factory reset is the clean-slate option. (Holding BOOT <em>while powering on</em> is a separate developer mode — see the <a href="faq.html#troubleshooting">FAQ</a>.)</span>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-cwm-screen="saving" data-cwm-theme="auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Settings ───────────────────────────────────────────── -->
+  <section class="usage-block reverse">
     <div class="container">
       <div class="usage-inner">
         <div class="ut">
@@ -373,7 +413,7 @@
   </section>
 
   <!-- ── Alerts ─────────────────────────────────────────────── -->
-  <section class="usage-block reverse">
+  <section class="usage-block">
     <div class="container">
       <div class="usage-inner">
         <div class="ut">
@@ -414,7 +454,7 @@
   </section>
 
   <!-- ── Themes ─────────────────────────────────────────────── -->
-  <section class="usage-block">
+  <section class="usage-block reverse">
     <div class="container">
       <div class="usage-inner">
         <div class="ut">

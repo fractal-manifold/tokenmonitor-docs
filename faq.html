@@ -363,7 +363,7 @@
             <details class="acc-item">
               <summary class="acc-summary">What's stored on my laptop, and how do I remove it? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Everything the broker keeps lives under <code>~/.config/cwallmonitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; reset the device from its Settings screen to clear its side. There's no server-side account to close.</p>
+                <p>Everything the broker keeps lives under <code>~/.config/cwallmonitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; factory-reset the device (hold the <strong>BOOT</strong> button ~10 s, confirm on screen) to clear its side. There's no server-side account to close.</p>
               </div>
             </details>
           </div>
@@ -425,6 +425,18 @@
               <summary class="acc-summary">How are firmware updates delivered? <span class="plus">+</span></summary>
               <div class="acc-body">
                 <p>OTA, over your LAN, via the broker. When a new release is available, <code>/cwallmonitor:firmware</code> stages it; the device downloads it, verifies an <strong>Ed25519-signed manifest on-device</strong>, switches the boot slot and reboots. If the new image doesn't come up healthy and check in, the bootloader <strong>rolls back automatically</strong>, and a version floor blocks downgrades.</p>
+              </div>
+            </details>
+
+            <details class="acc-item">
+              <summary class="acc-summary">How do I restart or factory-reset the device? <span class="plus">+</span></summary>
+              <div class="acc-body">
+                <p>Both live on the two side buttons, no tools needed:</p>
+                <ul>
+                  <li><strong>Restart</strong> — hold <strong>PWR</strong> for ~2 s. It just reboots; nothing is erased. This is the first thing to try if it ever acts up. (A short PWR press toggles standby instead.)</li>
+                  <li><strong>Factory reset</strong> — hold <strong>BOOT</strong> for ~10 s. A confirmation screen appears; tap <strong>Erase</strong> to wipe Wi-Fi, city, display settings and the broker passphrase and reboot into first-boot setup, or <strong>Cancel</strong> to back out. The device's identity and update anti-rollback floor are preserved, so it re-pairs cleanly.</li>
+                </ul>
+                <p>After a factory reset, also delete the device's <code>0600</code> key file under <code>~/.config/cwallmonitor/devices/</code> on the laptop (or just re-run <code>/cwallmonitor:configure</code>) so the broker re-pairs with the fresh passphrase.</p>
               </div>
             </details>
 
