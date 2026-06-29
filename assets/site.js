@@ -82,7 +82,7 @@
             <h4>Fractal Manifold</h4>
             <ul>
               <li><a href="https://fractalmanifold.com" target="_blank" rel="noopener">fractalmanifold.com</a></li>
-              <li><a href="mailto:cwm@fractalmanifold.com">cwm@fractalmanifold.com</a></li>
+              <li><a href="mailto:tokenmonitor@fractalmanifold.com">tokenmonitor@fractalmanifold.com</a></li>
             </ul>
           </div>
         </div>
