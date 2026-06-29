@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Setup — C Wall Monitor</title>
+<title>Setup — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Five-step setup tutorial for the C Wall Monitor.">
-<link rel="canonical" href="https://cwm.fractalmanifold.com/setup.html">
+<meta name="description" content="Five-step setup tutorial for the TokenMonitor.">
+<link rel="canonical" href="https://tokenmonitor.dev/setup.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://cwm.fractalmanifold.com/setup.html">
-<meta property="og:title" content="Setup — C Wall Monitor">
-<meta property="og:description" content="Five-step setup tutorial for the C Wall Monitor.">
-<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:url" content="https://tokenmonitor.dev/setup.html">
+<meta property="og:title" content="Setup — TokenMonitor">
+<meta property="og:description" content="Five-step setup tutorial for the TokenMonitor.">
+<meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Setup — C Wall Monitor">
-<meta name="twitter:description" content="Five-step setup tutorial for the C Wall Monitor.">
-<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
-<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:title" content="Setup — TokenMonitor">
+<meta name="twitter:description" content="Five-step setup tutorial for the TokenMonitor.">
+<meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
 <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
-<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
   .page-head {
     padding: 4rem 0 2rem 0;
@@ -339,7 +339,7 @@
           <div class="step-num">01</div>
           <h2>Install the MCP plugin on your AI agent.</h2>
           <div class="step-rule"></div>
-          <p>The <code class="inline-code">cwallmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Installing it registers the local broker (<code class="inline-code">cwm-mcp</code>) plus the configure / theme / settings / firmware skills — same surface across every supported CLI.</p>
+          <p>The <code class="inline-code">tokenmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Installing it registers the local broker (<code class="inline-code">tokenmonitor-mcp</code>) plus the configure / theme / settings / firmware skills — same surface across every supported CLI.</p>
 
           <div class="install-tabs">
             <div class="tabs" role="tablist">
@@ -350,16 +350,16 @@
             <div class="install-panel active" data-panel="claude" style="margin-top: 1rem">
 <div class="code-block"><span class="cmt"># Add the marketplace, then install the plugin</span>
 <span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
-<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor@fractalmanifold-mcp-marketplace</div>
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install tokenmonitor@fractalmanifold-mcp-marketplace</div>
             </div>
             <div class="install-panel" data-panel="codex" style="margin-top: 1rem">
 <div class="code-block"><span class="cmt"># Same marketplace as Claude Code</span>
 <span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
-<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install cwallmonitor@fractalmanifold-mcp-marketplace</div>
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install tokenmonitor@fractalmanifold-mcp-marketplace</div>
             </div>
             <div class="install-panel" data-panel="gemini" style="margin-top: 1rem">
 <div class="code-block"><span class="cmt"># Gemini extension shipped via the same marketplace</span>
-<span class="prompt" style="color:var(--color-gold)">$</span> <span class="kw">gemini</span> extensions install fractal-manifold/mcp-marketplace/plugins/cwallmonitor</div>
+<span class="prompt" style="color:var(--color-gold)">$</span> <span class="kw">gemini</span> extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
             </div>
           </div>
 
@@ -367,7 +367,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
             <div>
               <strong>Verify it's loaded</strong>
-              <span>Ask your agent <em>"What's the status of my wall monitor broker?"</em> — it should call <code class="inline-code">wall_monitor_status</code> and report the broker role + request count.</span>
+              <span>Ask your agent <em>"What's the status of my wall monitor broker?"</em> — it should call <code class="inline-code">tokenmonitor_status</code> and report the broker role + request count.</span>
             </div>
           </div>
         </div>
@@ -381,10 +381,10 @@
             <div><span class="prompt">&gt;</span> <span class="input-line">/plugin marketplace add fractal-manifold/mcp-marketplace</span></div>
             <div class="out">Added marketplace <span class="accent">fractalmanifold-mcp-marketplace</span></div>
             <div>&nbsp;</div>
-            <div><span class="prompt">&gt;</span> <span class="input-line">/plugin install cwallmonitor@fractalmanifold-mcp-marketplace</span></div>
-            <div class="out">Fetching plugin <span class="accent">cwallmonitor</span>…</div>
+            <div><span class="prompt">&gt;</span> <span class="input-line">/plugin install tokenmonitor@fractalmanifold-mcp-marketplace</span></div>
+            <div class="out">Fetching plugin <span class="accent">tokenmonitor</span>…</div>
             <div class="out">Loaded skills: <span class="accent">configure</span>, <span class="accent">theme</span>, <span class="accent">settings</span></div>
-            <div class="out">MCP server <span class="accent">cwallmonitor</span> ready (4 tools)</div>
+            <div class="out">MCP server <span class="accent">tokenmonitor</span> ready (4 tools)</div>
             <div><span class="ok">[ok]</span> plugin installed · waiting for devices</div>
           </div>
         </div>
@@ -412,7 +412,7 @@
         </div>
         <div class="step-visual-col">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="provisioning"></div>
+            <div class="screen" data-tmon-screen="provisioning"></div>
           </div>
         </div>
       </div>
@@ -429,7 +429,7 @@
           <div class="step-rule"></div>
           <p>The device exposes an open Wi-Fi SSID — your phone or laptop auto-opens the portal at <code class="inline-code">192.168.4.1</code>.</p>
           <ul>
-            <li>SSID: <code class="inline-code">ClaudeWallMonitor-XXXX</code> (last 4 = MAC suffix)</li>
+            <li>SSID: <code class="inline-code">TokenMonitor-XXXX</code> (last 4 = MAC suffix)</li>
             <li>Pick (or type) your home Wi-Fi SSID + password</li>
             <li>Submit → device reboots and shows its IP + 6-digit pairing code</li>
           </ul>
@@ -452,7 +452,7 @@
               <div class="portal-mascot">
                 <img src="assets/logo.png" alt="">
                 <div class="title-block">
-                  <h3>C Wall Monitor</h3>
+                  <h3>TokenMonitor</h3>
                   <p class="sub">Setup</p>
                 </div>
               </div>
@@ -468,7 +468,7 @@
                 <input type="password" value="••••••••••••" readonly>
               </div>
               <button class="portal-submit" type="button">Save and reboot</button>
-              <div class="portal-note">After saving, the device reboots and shows its IP and a <strong>6-digit pairing code</strong> on screen. Then run <code>/cwallmonitor:configure</code> from your AI agent on the same LAN and enter the code to finish setup (broker URL, key and city).</div>
+              <div class="portal-note">After saving, the device reboots and shows its IP and a <strong>6-digit pairing code</strong> on screen. Then run <code>/tokenmonitor:configure</code> from your AI agent on the same LAN and enter the code to finish setup (broker URL, key and city).</div>
               <p class="portal-byline">by Fractal Manifold</p>
             </div>
           </div>
@@ -486,7 +486,7 @@
           <h2 style="color: var(--color-gold)">Pair from your AI agent. <span style="color:var(--fg-1)">The magic moment.</span></h2>
           <div class="step-rule"></div>
           <p>Install the plugin (one line — see the <a href="plugin.html" style="color: var(--color-gold-light); text-decoration: underline; text-decoration-color: rgba(245,158,11,0.4);">plugin page</a>), then ask Claude Code, Codex or Gemini to configure your device:</p>
-<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /cwallmonitor:configure</div>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:configure</div>
           <p>The agent does the rest:</p>
           <ul>
             <li>Discovers your device on the LAN via mDNS</li>
@@ -504,7 +504,7 @@
         </div>
         <div class="step-visual-col">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="needs-config"></div>
+            <div class="screen" data-tmon-screen="needs-config"></div>
           </div>
         </div>
       </div>
@@ -536,7 +536,7 @@
         </div>
         <div class="step-visual-col">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="claude-day" data-cwm-theme="auto"></div>
+            <div class="screen" data-tmon-screen="claude-day" data-tmon-theme="auto"></div>
           </div>
         </div>
       </div>
@@ -546,7 +546,7 @@
 
 <footer class="legal-footer">
   <div class="inner">
-    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

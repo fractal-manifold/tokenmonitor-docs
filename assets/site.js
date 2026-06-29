@@ -1,5 +1,5 @@
 /* ============================================================
-   C Wall Monitor — site chrome
+   TokenMonitor — site chrome
    Renders the header + footer based on data-page on <body>.
    ============================================================ */
 (function () {
@@ -23,7 +23,7 @@
           <a href="index.html" class="brand-mark">
             <img src="assets/logo.png" alt="Fractal Manifold">
             <span class="name">
-              <span>C Wall Monitor</span>
+              <span>TokenMonitor</span>
               <span class="sub">by Fractal Manifold</span>
             </span>
           </a>
@@ -55,7 +55,7 @@
             <a href="index.html" class="brand-mark" style="margin-bottom:1rem">
               <img src="assets/logo.png" alt="">
               <span class="name">
-                <span>C Wall Monitor</span>
+                <span>TokenMonitor</span>
                 <span class="sub">by Fractal Manifold</span>
               </span>
             </a>
@@ -103,7 +103,7 @@
 
   function applySavedTheme() {
     try {
-      const t = localStorage.getItem('cwm:theme');
+      const t = localStorage.getItem('tmon:theme');
       if (t === 'light' || t === 'dark') {
         document.documentElement.dataset.theme = t;
       }
@@ -121,7 +121,7 @@
       const current = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
       const next = current === 'light' ? 'dark' : 'light';
       document.documentElement.dataset.theme = next;
-      try { localStorage.setItem('cwm:theme', next); } catch (_) {}
+      try { localStorage.setItem('tmon:theme', next); } catch (_) {}
     });
   }
 

@@ -1,7 +1,7 @@
 /* ============================================================
-   C Wall Monitor — Device screens (pixel-exact, reusable)
+   TokenMonitor — Device screens (pixel-exact, reusable)
    480×480 LVGL screens reproduced in HTML for the website.
-   Pulled straight from the docs/cwm-design.html mockups.
+   Pulled straight from the docs/tokenmonitor-design.html mockups.
    Brand + UI icons are crisp SVG recreations of the firmware's
    on-device assets (provider logos, ambient sun/moon/thermo, gear,
    pencil, battery) rather than letter/emoji placeholders. The one
@@ -10,9 +10,9 @@
    ============================================================ */
 (function () {
   /* ────────────── Inject device-only CSS once ─────────────── */
-  if (!document.getElementById('cwm-device-styles')) {
+  if (!document.getElementById('tmon-device-styles')) {
     const css = `
-    .cwm-screen {
+    .tmon-screen {
       width: 480px; height: 480px;
       position: absolute; top: 0; left: 0;
       overflow: hidden;
@@ -23,12 +23,12 @@
       transform-origin: top left;
     }
     /* Scaled wrapper so it can live in a parent of any size.
-       Caller sets the parent's size; .cwm-screen-fit autoscales. */
-    .cwm-screen-fit {
+       Caller sets the parent's size; .tmon-screen-fit autoscales. */
+    .tmon-screen-fit {
       position: absolute; inset: 0;
       overflow: hidden;
     }
-    .cwm-screen-fit > .cwm-screen { transform: scale(var(--cwm-scale,1)); }
+    .tmon-screen-fit > .tmon-screen { transform: scale(var(--tmon-scale,1)); }
 
     /* Palettes (mirrors firmware ui_theme.c) */
     .pal-claude-day  { --bg:#e9dcc2; --card:#fffdf8; --card-alt:#d8c7a4; --text:#1e1a14; --text-dim:#5b4a36; --divider:#c4b288; --accent:#c15f3c; --accent-text:#7a331a; }
@@ -38,7 +38,7 @@
     .pal-gemini-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#1a73e8; --accent-text:#0a428e; }
     .pal-gemini-night{ --bg:#070d1c; --card:#161f37; --card-alt:#22304e; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#324568; --accent:#5a9bff; --accent-text:#7eb1ff; }
     .pal-fm          { --bg:#000000; --card:#1f1f1c; --card-alt:#34302a; --text:#faf9f5; --text-dim:#9a978f; --divider:#38352e; --accent:#a855f7; --accent2:#f59e0b; --accent-text:#f59e0b; }
-    .cwm-screen { background: var(--bg); color: var(--text); }
+    .tmon-screen { background: var(--bg); color: var(--text); }
 
     .t14sb  { font-size: 14px; line-height: 18px; font-weight: 600; }
     .t18    { font-size: 18px; line-height: 22px; font-weight: 500; }
@@ -97,13 +97,13 @@
     .bar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
     .bar .ghost { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); opacity: 0.28; }
 
-    .cwm-spinner { width: 28px; height: 28px; border: 3px solid var(--card-alt);
-      border-top-color: var(--accent2, var(--accent)); border-radius: 50%; animation: cwm-spin 1s linear infinite; }
-    @keyframes cwm-spin { to { transform: rotate(360deg); } }
+    .tmon-spinner { width: 28px; height: 28px; border: 3px solid var(--card-alt);
+      border-top-color: var(--accent2, var(--accent)); border-radius: 50%; animation: tmon-spin 1s linear infinite; }
+    @keyframes tmon-spin { to { transform: rotate(360deg); } }
     .toast { background: rgba(20,20,20,0.92); border-radius: 8px; color: #fff; padding: 6px 14px; }
     `;
     const style = document.createElement('style');
-    style.id = 'cwm-device-styles';
+    style.id = 'tmon-device-styles';
     style.textContent = css;
     document.head.appendChild(style);
   }
@@ -120,12 +120,12 @@
        · gear = LV_SYMBOL_SETTINGS (FA cog), pencil = LV_SYMBOL_EDIT (FA pen)
        · battery = the 14×8 level-coloured icon (GREEN≥50 / WARN≥20 / BAD)
      Gradient ids are unique per call so repeated frames never collide. */
-  var _cwmGid = 0;
-  function cwmGid(p) { return p + '-' + (++_cwmGid); }
+  var _tmonGid = 0;
+  function tmonGid(p) { return p + '-' + (++_tmonGid); }
 
   function providerLogo(p) {
     if (p === 'codex') {
-      var g = cwmGid('cdx');
+      var g = tmonGid('cdx');
       return '<svg viewBox="0 0 56 56" width="48" height="48" aria-label="Codex" xmlns="http://www.w3.org/2000/svg">'
         + '<defs><linearGradient id="' + g + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7b9eff"/><stop offset="1" stop-color="#9b7bff"/></linearGradient></defs>'
         + '<rect x="6" y="6" width="44" height="44" rx="13" fill="url(#' + g + ')"/>'
@@ -133,7 +133,7 @@
         + '<line x1="29" y1="37" x2="38" y2="37" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg>';
     }
     if (p === 'gemini') {
-      var gg = cwmGid('gem');
+      var gg = tmonGid('gem');
       return '<svg viewBox="0 0 56 56" width="46" height="46" aria-label="Gemini" xmlns="http://www.w3.org/2000/svg">'
         + '<defs><linearGradient id="' + gg + '" x1="0.1" y1="0.1" x2="0.9" y2="0.9">'
         + '<stop offset="0" stop-color="#1ba1e3"/><stop offset="0.3" stop-color="#5489d6"/><stop offset="0.55" stop-color="#9b72cb"/><stop offset="0.8" stop-color="#d96570"/><stop offset="1" stop-color="#f49c46"/></linearGradient></defs>'
@@ -218,7 +218,7 @@
       </div>`;
     const cs = cards.session, cw = cards.weekly, cd = cards.design;
     return `
-    <div class="cwm-screen ${palette}">
+    <div class="tmon-screen ${palette}">
       <div class="logo-box abs" style="left:14px; top:22px">${providerLogo(provider)}</div>
       <div class="t30 c-text abs" style="left:0; right:0; top:24px; text-align:center">${providerName}</div>
       <div class="t30 c-text abs" style="right:14px; top:18px; text-align:right; line-height:34px; width:140px">${clock}</div>
@@ -264,20 +264,20 @@
     const dateTop     = loading ? 274 : 292;
     const stripBottom = loading ?  60 :  14;
     return `
-    <div class="cwm-screen ${palette}">
+    <div class="tmon-screen ${palette}">
       ${loading
         ? `<div class="abs c-text-dim" style="right:10px; top:8px">${icoGear(30)}</div>`
         : `<div class="t18sb c-text-dim abs" style="left:14px; top:12px">Tap to wake</div>`}
       <div class="abs" style="left:50%; transform:translateX(-50%); top:50px; width:84px; height:84px; border-radius:14px; background:var(--card); display:flex; align-items:center; justify-content:center">
         ${fmMark(60)}
       </div>
-      <div class="t30 c-text abs" style="left:0; right:0; top:144px; text-align:center">C Wall Monitor</div>
+      <div class="t30 c-text abs" style="left:0; right:0; top:144px; text-align:center">TokenMonitor</div>
       <div class="t18 c-text-dim abs" style="left:0; right:0; top:182px; text-align:center; line-height:22px">by Fractal Manifold</div>
       <div class="t48 c-text abs" style="left:0; right:0; top:${clockTop}px; text-align:center; line-height:52px">${clock}</div>
       <div class="t22sb c-text-dim abs" style="left:0; right:0; top:${dateTop}px; text-align:center; line-height:26px">${date}</div>
       ${loading ? `
       <div class="t18sb c-text-dim abs" style="left:0; right:0; top:308px; text-align:center">Searching for server…</div>
-      <div class="abs" style="left:50%; transform:translateX(-50%); bottom:114px"><div class="cwm-spinner"></div></div>
+      <div class="abs" style="left:50%; transform:translateX(-50%); bottom:114px"><div class="tmon-spinner"></div></div>
       ` : ''}
       <div class="abs" style="left:14px; right:14px; bottom:${stripBottom}px; height:48px; background:var(--card); border-radius:10px; display:flex; align-items:center; justify-content:space-around; padding:0 16px; box-sizing:border-box">
         <span class="amb-row"><span class="amb-ico">${icoSun()}</span><span class="t18sb c-text-dim">07:14</span></span>
@@ -297,9 +297,9 @@
   /* ────────────── Needs Config (pairing) ──────────────── */
   function needsConfigHtml() {
     return `
-    <div class="cwm-screen pal-fm">
+    <div class="tmon-screen pal-fm">
       <div class="abs" style="left:14px; top:14px; width:56px; height:56px; border-radius:10px; background:var(--card-alt); display:flex; align-items:center; justify-content:center">${fmMark(44)}</div>
-      <div class="t22sb c-text abs" style="left:84px; top:18px">C Wall Monitor</div>
+      <div class="t22sb c-text abs" style="left:84px; top:18px">TokenMonitor</div>
       <div class="t18 c-text-dim abs" style="left:84px; top:48px">Pair from your AI agent</div>
       <div class="card-box abs" style="left:14px; top:84px; width:452px; height:66px; padding:10px 14px">
         <div class="t18 c-text-dim abs" style="left:14px; top:8px">IP address</div>
@@ -310,11 +310,11 @@
         <div class="t48 c-accent abs" style="left:0; right:0; bottom:6px; text-align:center; letter-spacing:0.08em">428 715</div>
       </div>
       <div class="card-box abs" style="left:14px; top:294px; width:452px; height:76px; padding:10px 14px">
-        <div class="t18 c-text abs" style="left:14px; top:8px">On your AI agent run <b style="font-weight:600">/cwallmonitor:configure</b></div>
+        <div class="t18 c-text abs" style="left:14px; top:8px">On your AI agent run <b style="font-weight:600">/tokenmonitor:configure</b></div>
         <div class="t18 c-text-dim abs" style="left:14px; bottom:8px">Plugin: github.com/fractal-manifold/mcp-marketplace</div>
       </div>
       <div class="abs" style="left:14px; right:14px; bottom:38px; height:32px; display:flex; align-items:center; justify-content:center; gap:10px">
-        <div class="cwm-spinner" style="width:24px; height:24px"></div>
+        <div class="tmon-spinner" style="width:24px; height:24px"></div>
         <span class="t18sb c-text-dim">Waiting for setup…</span>
       </div>
       <div class="t18 c-text-dim abs" style="left:0; right:0; bottom:10px; text-align:center">by Fractal Manifold</div>
@@ -324,9 +324,9 @@
   /* ────────────── Provisioning (captive) ──────────────── */
   function provisioningHtml() {
     return `
-    <div class="cwm-screen pal-fm">
+    <div class="tmon-screen pal-fm">
       <div class="abs" style="left:14px; top:14px; width:50px; height:50px; border-radius:10px; background:var(--card-alt); display:flex; align-items:center; justify-content:center">${fmMark(40)}</div>
-      <div class="t22sb c-text abs" style="left:76px; top:18px">C Wall Monitor</div>
+      <div class="t22sb c-text abs" style="left:76px; top:18px">TokenMonitor</div>
       <div class="t18 c-text-dim abs" style="left:76px; top:44px">Setup</div>
       <div class="card-box abs" style="left:14px; top:72px; width:452px; height:64px; padding:10px 12px">
         <div class="abs" style="left:12px; top:12px; width:40px; height:40px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center">
@@ -369,7 +369,7 @@
         </svg>
       </div>
       <div class="abs" style="left:14px; right:14px; bottom:38px; height:32px; display:flex; align-items:center; justify-content:center; gap:10px">
-        <div class="cwm-spinner" style="width:24px; height:24px"></div>
+        <div class="tmon-spinner" style="width:24px; height:24px"></div>
         <span class="t18sb c-text-dim">Waiting for Wi-Fi credentials…</span>
       </div>
       <div class="t18 c-text-dim abs" style="left:0; right:0; bottom:10px; text-align:center">by Fractal Manifold</div>
@@ -379,11 +379,11 @@
   /* ────────────── Connecting / Saving ──────────────── */
   function statusScreenHtml(title, sub) {
     return `
-    <div class="cwm-screen pal-fm">
+    <div class="tmon-screen pal-fm">
       <div class="abs" style="left:50%; transform:translateX(-50%); top:140px; width:80px; height:80px; border-radius:14px; background:var(--card-alt); display:flex; align-items:center; justify-content:center">${fmMark(58)}</div>
       <div class="t30 c-text abs" style="left:0; right:0; top:240px; text-align:center; line-height:34px">${title}</div>
       <div class="t22sb c-text-dim abs" style="left:0; right:0; top:282px; text-align:center; line-height:26px">${sub}</div>
-      <div class="abs" style="left:50%; transform:translateX(-50%); top:320px"><div class="cwm-spinner"></div></div>
+      <div class="abs" style="left:50%; transform:translateX(-50%); top:320px"><div class="tmon-spinner"></div></div>
       <div class="t18 c-text-dim abs" style="left:0; right:0; bottom:14px; text-align:center">by Fractal Manifold</div>
     </div>`;
   }
@@ -452,7 +452,7 @@
     const thumbH = Math.max(40, trackH * (480 - 64) / total);
     const thumbTop = trackTop + (trackH - thumbH) * (scroll / Math.max(1, total - (480 - 64)));
     return `
-    <div class="cwm-screen ${palette}">
+    <div class="tmon-screen ${palette}">
       ${rowHtml}
       <div class="abs" style="right:3px; top:${trackTop}px; width:4px; height:${trackH}px; background:var(--card-alt); border-radius:2px; opacity:0.5"></div>
       <div class="abs" style="right:3px; top:${thumbTop}px; width:4px; height:${thumbH}px; background:var(--text-dim); border-radius:2px; opacity:0.7"></div>
@@ -467,7 +467,7 @@
   /* ────────────── Settings editor ──────────────── */
   function editorHtml(palette, title, val, fill) {
     return `
-    <div class="cwm-screen ${palette}">
+    <div class="tmon-screen ${palette}">
       <div class="t22sb c-text abs" style="left:0; right:0; top:18px; text-align:center">${title}</div>
       <div class="abs" style="left:50%; transform:translateX(-50%); top:90px; display:flex; align-items:center; gap:24px">
         <div class="t48 c-accent-tx">${val}</div>
@@ -572,7 +572,7 @@
 
   /* ────────────── Mount API ──────────────── */
   function autoFit(host) {
-    const screen = host.querySelector('.cwm-screen');
+    const screen = host.querySelector('.tmon-screen');
     if (!screen) return;
     const apply = () => {
       // Fit-by-width: host becomes a perfect square sized to its width,
@@ -580,20 +580,20 @@
       const w = host.clientWidth;
       if (!w) return;
       const scale = w / 480;
-      screen.style.setProperty('--cwm-scale', scale);
+      screen.style.setProperty('--tmon-scale', scale);
       host.style.height = w + 'px';
     };
     apply();
     new ResizeObserver(apply).observe(host);
   }
 
-  // Hosts with data-cwm-theme="auto" pick the variant that matches the
+  // Hosts with data-tmon-theme="auto" pick the variant that matches the
   // website theme: light → -day suffix, dark → -night. The key written
-  // in data-cwm-screen sets the *family*; the suffix gets rewritten.
+  // in data-tmon-screen sets the *family*; the suffix gets rewritten.
   function resolveKey(host) {
-    const key = host.getAttribute('data-cwm-screen');
+    const key = host.getAttribute('data-tmon-screen');
     if (!key) return null;
-    if (host.getAttribute('data-cwm-theme') !== 'auto') return key;
+    if (host.getAttribute('data-tmon-theme') !== 'auto') return key;
     const wantNight = document.documentElement.dataset.theme === 'dark';
     const wantSuffix = wantNight ? '-night' : '-day';
     if (key.endsWith('-day')) return key.slice(0, -4) + wantSuffix;
@@ -602,10 +602,10 @@
   }
 
   function mountAll() {
-    document.querySelectorAll('[data-cwm-screen]').forEach(host => {
+    document.querySelectorAll('[data-tmon-screen]').forEach(host => {
       const key = resolveKey(host);
       const html = presets[key] ? presets[key]() : `<div style="color:#f00">Unknown screen: ${key}</div>`;
-      host.innerHTML = `<div class="cwm-screen-fit">${html}</div>`;
+      host.innerHTML = `<div class="tmon-screen-fit">${html}</div>`;
       autoFit(host);
     });
   }
@@ -629,5 +629,5 @@
     watchTheme();
   }
 
-  window.CWM = { mount: mountAll, presets };
+  window.TMON = { mount: mountAll, presets };
 })();

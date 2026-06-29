@@ -1,7 +1,7 @@
-# C Wall Monitor — public site
+# TokenMonitor — public site
 
-Public landing + tutorial site for the C Wall Monitor ESP32
-wall display. Source for <https://fractal-manifold.github.io/c-wall-monitor-docs/>.
+Public landing + tutorial site for the TokenMonitor ESP32
+wall display. Source for <https://fractal-manifold.github.io/tokenmonitor-docs/>.
 
 ## Stack
 
@@ -50,7 +50,7 @@ publish (proprietary firmware repo, secrets, etc.).
 ## Relationship with the firmware repo
 
 This repo is public and is mounted as a submodule at `website/`
-inside the private firmware repo (`fractal-manifold/claude-wall-monitor`).
+inside the private firmware repo (`fractal-manifold/tokenmonitor`).
 The firmware itself stays private; only the user-facing site lives
 here.
 

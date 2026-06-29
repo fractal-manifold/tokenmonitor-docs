@@ -1,7 +1,7 @@
-# Claude Wall Monitor — public website (notes for AI assistants)
+# TokenMonitor — public website (notes for AI assistants)
 
 You are working inside the **public** marketing + docs site for the
-Claude Wall Monitor product. The firmware repo is private; this is
+TokenMonitor product. The firmware repo is private; this is
 the only public surface. Everything you write here is visible to
 end users.
 
@@ -12,7 +12,7 @@ that shows live usage of Claude Code, Codex CLI and Gemini CLI on
 the user's laptop. The device is 86×86 mm (the original "wall
 switch box" form factor) but the current product positioning is
 desk-top: USB-C powered, sits on the desk with its own base.
-"Wall Monitor" stays as the brand name; copy should describe the
+"TokenMonitor" stays as the brand name; copy should describe the
 use as desk-mounted, not wall-mounted.
 
 ## Language
@@ -30,7 +30,7 @@ an international audience and is English-only.
   - Codex — green
   - Gemini — blue / purple
 - Reuse the pixel-exact UI mockups from
-  `../docs/cwm-design.html` — 8 screen states already
+  `../docs/tokenmonitor-design.html` — 8 screen states already
   designed (Dashboard day/night per provider, Standby, Connecting,
   Saving, Needs Config / pairing, Provisioning, Settings, Settings
   editor). Render inside a round-cornered 480×480 device frame.
@@ -77,7 +77,7 @@ ESP32-S3 · 16 MB Flash · 8 MB PSRAM · 480×480 capacitive touch ·
 2.4 GHz Wi-Fi · 86×86 mm
 
 **"How it works" preview** — 3-step diagram:
-`Laptop (cwm-mcp broker) → Wi-Fi LAN → Wall device`
+`Laptop (tokenmonitor-mcp broker) → Wi-Fi LAN → Wall device`
 
 **Closing CTA** — "Plug it in. Pair it from Claude Code. Done."
 → /setup
@@ -85,7 +85,7 @@ ESP32-S3 · 16 MB Flash · 8 MB PSRAM · 480×480 capacitive touch ·
 ### 2. How it works (`/how-it-works`)
 
 Architecture diagram (Mermaid is fine):
-- Laptop (Claude Code / Codex / Gemini) → `cwm-mcp` broker
+- Laptop (Claude Code / Codex / Gemini) → `tokenmonitor-mcp` broker
   (Go / Python / JS, user's choice) → HTTP + HMAC over LAN →
   ESP32-S3 device.
 - Side branch: device → Open-Meteo (weather + day/night) over
@@ -102,18 +102,18 @@ Key properties:
 ### 3. Setup tutorial (`/setup`) — the main tutorial page
 
 5 steps, each with mockup screenshot from
-`../docs/cwm-design.html`.
+`../docs/tokenmonitor-design.html`.
 
 **Step 1 — Install the broker on your laptop**
 
 ```bash
 # Pick one
-go install github.com/fractal-manifold/cwm-mcp/cmd/cwm-mcp@latest
-pipx install cwm-mcp-py
-npm install -g cwm-mcp-js
+go install github.com/fractal-manifold/tokenmonitor-mcp/cmd/tokenmonitor-mcp@latest
+pipx install tokenmonitor-mcp-py
+npm install -g tokenmonitor-mcp-js
 
 # Then the launcher shim (one-time)
-curl -fsSL https://github.com/fractal-manifold/cwm-mcp/raw/main/cwm-mcp-launcher/install.sh | sh
+curl -fsSL https://github.com/fractal-manifold/tokenmonitor-mcp/raw/main/tokenmonitor-mcp-launcher/install.sh | sh
 ```
 
 **Step 2 — Power the device**
@@ -121,14 +121,14 @@ USB-C, 5 V / 1 A. First boot → *Needs Config* screen showing IP +
 6-digit pairing code. → mockup **5 · Needs Config (pairing)**.
 
 **Step 3 — Connect to its captive portal**
-- SSID `ClaudeWallMonitor-XXXX`, open.
+- SSID `TokenMonitor-XXXX`, open.
 - Browser auto-opens `192.168.4.1`.
 - Form: Wi-Fi SSID + password, city.
 - Submit → device reboots into "Waiting for setup".
 
 **Step 4 — Pair from Claude Code** *(the magic moment)*
 - Install plugin (see /plugin).
-- In Claude Code: `/cwallmonitor:configure`.
+- In Claude Code: `/tokenmonitor:configure`.
 - Claude discovers the device via mDNS, asks for the 6-digit code,
   generates the PSK, pushes it. Device reboots.
 → mockup **6 · Provisioning**.
@@ -155,7 +155,7 @@ Each section with the matching mockup:
   4. 5-h session window rollover — ascending C-major arpeggio
 - **Themes** — Day / Night / Auto. Auto follows sunrise/sunset for
   your city, ±90 s hysteresis. Switch with
-  `/cwallmonitor:theme day|night|auto`.
+  `/tokenmonitor:theme day|night|auto`.
 
 ### 5. Plugin install (`/plugin`)
 
@@ -164,30 +164,30 @@ Three tabs (or stacked cards) — one per CLI.
 **Claude Code**
 ```text
 /plugin marketplace add fractal-manifold/mcp-marketplace
-/plugin install cwallmonitor
+/plugin install tokenmonitor
 ```
 
 **Codex CLI** — reads `~/.codex/config.toml`:
 ```toml
-[mcp_servers.cwallmonitor]
-command = "cwm-mcp"
+[mcp_servers.tokenmonitor]
+command = "tokenmonitor-mcp"
 args = ["mcp"]
 ```
 
 **Gemini CLI** — reads `~/.gemini/extensions/`:
 ```bash
-gemini extensions install fractal-manifold/mcp-marketplace/plugins/cwallmonitor
+gemini extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
 ```
 
 Extension JSON (same shape for all three):
 ```json
 {
-  "name": "cwallmonitor",
+  "name": "tokenmonitor",
   "version": "0.4.0",
-  "description": "Registers cwm-mcp, the local broker for the C Wall Monitor ESP32 device.",
+  "description": "Registers tokenmonitor-mcp, the local broker for the TokenMonitor ESP32 device.",
   "mcpServers": {
-    "cwallmonitor": {
-      "command": "cwm-mcp",
+    "tokenmonitor": {
+      "command": "tokenmonitor-mcp",
       "args": ["mcp"]
     }
   }
@@ -195,29 +195,29 @@ Extension JSON (same shape for all three):
 ```
 
 **Verify** — ask the model: *"What's the status of my wall monitor
-broker?"* — it should call `wall_monitor_status` and return broker
+broker?"* — it should call `tokenmonitor_status` and return broker
 role + request count. On `"no working implementation found"`, run
-`cwm-mcp --probe` to see which runtime got picked.
+`tokenmonitor-mcp --probe` to see which runtime got picked.
 
 ### 6. Skills + tools reference (`/skills`)
 
-**`/cwallmonitor:configure`** — Provision or reconfigure a device
+**`/tokenmonitor:configure`** — Provision or reconfigure a device
 from the LAN. Discovers via mDNS, prompts for the 6-digit pairing
 code, pushes broker URL + auto-generated PSK, registers the device
 locally. Use when a new device shows "Waiting for setup".
 
-**`/cwallmonitor:theme`** — Switch a device between Day / Night /
+**`/tokenmonitor:theme`** — Switch a device between Day / Night /
 Auto remotely. Auto follows sunrise/sunset for the configured
-city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
+city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
 
 **MCP tools** the model can call directly:
 
 | Tool                          | What it does                                                       |
 |-------------------------------|--------------------------------------------------------------------|
-| `wall_monitor_status`         | Broker role (leader/follower), last ESP32 request, request count. |
-| `wall_monitor_health`         | PASS/FAIL diagnostic per component (creds, self-ping, traffic).    |
-| `wall_monitor_recent_logs`    | In-memory tail of the broker log.                                  |
-| `wall_monitor_provision_hint` | Laptop LAN URLs ready to type into the portal.                     |
+| `tokenmonitor_status`         | Broker role (leader/follower), last ESP32 request, request count. |
+| `tokenmonitor_health`         | PASS/FAIL diagnostic per component (creds, self-ping, traffic).    |
+| `tokenmonitor_recent_logs`    | In-memory tail of the broker log.                                  |
+| `tokenmonitor_provision_hint` | Laptop LAN URLs ready to type into the portal.                     |
 
 ### 7. FAQ (`/faq`)
 
@@ -230,7 +230,7 @@ city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
 - Offline? — LAN traffic with the broker, yes. Needs internet for
   SNTP and Open-Meteo (weather + sunrise/sunset).
 - Multiple devices in one house? — Yes. Each has an 8-hex
-  `device_id` and mDNS hostname `cwm-<device_id>`.
+  `device_id` and mDNS hostname `tmon-<device_id>`.
 - 5 GHz Wi-Fi? — No. ESP32-S3 is 2.4 GHz only.
 - Can I modify the firmware? — Firmware is proprietary; only the
   docs are public.
@@ -253,7 +253,7 @@ city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
 ## Assets
 
 - `../docs/images/prototype.jpg` — real-unit hero shot (2000×2000).
-- `../docs/cwm-design.html` — all UI screens pixel-exact.
+- `../docs/tokenmonitor-design.html` — all UI screens pixel-exact.
   Open in a browser and screenshot / export each `<section>`.
 - Provider + UI icons are already recreated as crisp, device-matched
   SVG inside `assets/device-screens.js` (Claude pixel-mascot, Codex `>_`
@@ -269,8 +269,8 @@ city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
 ## Tech constraints
 
 - Static site. Deploys to GitHub Pages on
-  `fractal-manifold/c-wall-monitor-docs`, base path
-  `/c-wall-monitor-docs`.
+  `fractal-manifold/tokenmonitor-docs`, base path
+  `/tokenmonitor-docs`.
 - Wired up as a submodule at `website/` in the main repo.
 - Existing Astro/Starlight scaffolding can be wiped if you build
   with something else (Next.js static export, Astro vanilla, plain
@@ -289,11 +289,11 @@ city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
 - OTA firmware updates **are** a real, shipped feature and may be
   promoted: Ed25519-signed manifest, verified on-device before the
   boot-slot switch, automatic rollback, anti-rollback floor, staged
-  over the LAN via the broker (`/cwallmonitor:firmware`). (This
+  over the LAN via the broker (`/tokenmonitor:firmware`). (This
   reverses earlier guidance — OTA is now a longevity selling point.)
 - Don't link to the private firmware repo
-  (`fractal-manifold/claude-wall-monitor`). Public-facing links go
-  to `fractal-manifold/cwm-mcp` and
+  (`fractal-manifold/tokenmonitor`). Public-facing links go
+  to `fractal-manifold/tokenmonitor-mcp` and
   `fractal-manifold/mcp-marketplace`.
 
 ## Source-of-truth facts (verified against firmware + broker — do not regress)
@@ -301,15 +301,15 @@ city. Usage: `/cwallmonitor:theme <day|night|auto> [--device <device_id>]`.
 These were corrected sitewide after a source audit. Earlier copy got
 several of them wrong; keep them right.
 
-- **License**: broker `cwm-mcp` + plugin are **Apache-2.0** (not MIT).
+- **License**: broker `tokenmonitor-mcp` + plugin are **Apache-2.0** (not MIT).
 - **Broker port**: device-facing HTTP on **`8765`**, LAN-reachable
   (the configure skill rejects a loopback-only bind). Not `9787`,
   not `127.0.0.1`-only.
-- **Broker config**: `~/.config/cwallmonitor/cwm.toml`, with
+- **Broker config**: `~/.config/tokenmonitor/tokenmonitor.toml`, with
   per-device keys in `…/devices/` as `0600` files (filesystem perms,
   **not** an OS keychain). Not `~/.cwm/devices.json`.
-- **Auth headers**: `X-Cwm-Timestamp` / `X-Cwm-Nonce` /
-  `X-Cwm-Signature` — HMAC-SHA256 over method+path+timestamp+nonce
+- **Auth headers**: `X-Tmon-Timestamp` / `X-Tmon-Nonce` /
+  `X-Tmon-Signature` — HMAC-SHA256 over method+path+timestamp+nonce
   +device+version (**signed headers, not the body, not responses**).
   Replay window 60 s. Not `X-CWM-HMAC`, not 30 s.
 - **Encryption**: only the AES-256-CTR **pending-config blob** (key
@@ -320,7 +320,7 @@ several of them wrong; keep them right.
 - **Data**: % is provider-reported quota (live, ~90 s); tokens are
   local from CLI logs; $ is an **estimate** (list prices, not money
   billed — notional on subscriptions).
-- **OTA trigger skill**: `/cwallmonitor:firmware` (not `:update`).
+- **OTA trigger skill**: `/tokenmonitor:firmware` (not `:update`).
 
 ## Claims we will NOT make (honest-by-design; this audience checks)
 
@@ -337,6 +337,6 @@ several of them wrong; keep them right.
 
 ## Public links to use
 
-- Broker + MCP server: `https://github.com/fractal-manifold/cwm-mcp`
-- Marketplace (plugin source): `https://github.com/fractal-manifold/mcp-marketplace` → `plugins/cwallmonitor/`
-- This site's repo: `https://github.com/fractal-manifold/c-wall-monitor-docs`
+- Broker + MCP server: `https://github.com/fractal-manifold/tokenmonitor-mcp`
+- Marketplace (plugin source): `https://github.com/fractal-manifold/mcp-marketplace` → `plugins/tokenmonitor/`
+- This site's repo: `https://github.com/fractal-manifold/tokenmonitor-docs`

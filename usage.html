@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Usage — C Wall Monitor</title>
+<title>Usage — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Day-to-day usage guide for the C Wall Monitor — dashboard, standby, settings, alerts, themes.">
-<link rel="canonical" href="https://cwm.fractalmanifold.com/usage.html">
+<meta name="description" content="Day-to-day usage guide for the TokenMonitor — dashboard, standby, settings, alerts, themes.">
+<link rel="canonical" href="https://tokenmonitor.dev/usage.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://cwm.fractalmanifold.com/usage.html">
-<meta property="og:title" content="Usage — C Wall Monitor">
-<meta property="og:description" content="Day-to-day usage guide for the C Wall Monitor — dashboard, standby, settings, alerts, themes.">
-<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:url" content="https://tokenmonitor.dev/usage.html">
+<meta property="og:title" content="Usage — TokenMonitor">
+<meta property="og:description" content="Day-to-day usage guide for the TokenMonitor — dashboard, standby, settings, alerts, themes.">
+<meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Usage — C Wall Monitor">
-<meta name="twitter:description" content="Day-to-day usage guide for the C Wall Monitor — dashboard, standby, settings, alerts, themes.">
-<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
-<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:title" content="Usage — TokenMonitor">
+<meta name="twitter:description" content="Day-to-day usage guide for the TokenMonitor — dashboard, standby, settings, alerts, themes.">
+<meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
 <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
-<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
   .page-head {
     padding: 4rem 0 3rem 0;
@@ -279,7 +279,7 @@
         </div>
         <div class="uv">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="claude-day" data-cwm-theme="auto"></div>
+            <div class="screen" data-tmon-screen="claude-day" data-tmon-theme="auto"></div>
           </div>
         </div>
       </div>
@@ -306,7 +306,7 @@
         </div>
         <div class="uv">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="standby-day" data-cwm-theme="auto"></div>
+            <div class="screen" data-tmon-screen="standby-day" data-tmon-theme="auto"></div>
           </div>
         </div>
       </div>
@@ -346,7 +346,7 @@
         </div>
         <div class="uv">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="saving" data-cwm-theme="auto"></div>
+            <div class="screen" data-tmon-screen="saving" data-tmon-theme="auto"></div>
           </div>
         </div>
       </div>
@@ -399,11 +399,11 @@
         <div class="uv">
           <div class="theme-pair">
             <div>
-              <div class="device-frame"><div class="screen" data-cwm-screen="settings-day" data-cwm-theme="auto"></div></div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="settings-day" data-tmon-theme="auto"></div></div>
               <div class="lbl">Settings list</div>
             </div>
             <div>
-              <div class="device-frame"><div class="screen" data-cwm-screen="editor-day" data-cwm-theme="auto"></div></div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="editor-day" data-tmon-theme="auto"></div></div>
               <div class="lbl">Editor</div>
             </div>
           </div>
@@ -446,7 +446,7 @@
         </div>
         <div class="uv">
           <div class="device-frame">
-            <div class="screen" data-cwm-screen="claude-night" data-cwm-theme="auto"></div>
+            <div class="screen" data-tmon-screen="claude-night" data-tmon-theme="auto"></div>
           </div>
         </div>
       </div>
@@ -462,7 +462,7 @@
           <h2>Day · Night · Auto.</h2>
           <div class="step-rule"></div>
           <p>Three modes. <strong style="color: var(--fg-1)">Auto</strong> follows sunrise/sunset for your configured city — with a ±90 s hysteresis so a passing cloud doesn't trigger a swap. Switch any time from Claude Code, Codex or Gemini:</p>
-<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /cwallmonitor:theme day|night|auto</div>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:theme day|night|auto</div>
           <div class="theme-row">
             <div class="theme-tile">
               <div class="swatch-stack">
@@ -496,11 +496,11 @@
         <div class="uv">
           <div class="theme-pair">
             <div>
-              <div class="device-frame"><div class="screen" data-cwm-screen="claude-day"></div></div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="claude-day"></div></div>
               <div class="lbl">Day · Claude Code</div>
             </div>
             <div>
-              <div class="device-frame"><div class="screen" data-cwm-screen="claude-night"></div></div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="claude-night"></div></div>
               <div class="lbl">Night · Claude Code</div>
             </div>
           </div>
@@ -515,7 +515,7 @@
       <p class="eyebrow">Control plane</p>
       <h2 style="margin-bottom: 1rem">Two skills do the heavy lifting.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
-      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/cwallmonitor:configure</code> pairs and provisions. <code class="inline-code">/cwallmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/tokenmonitor:configure</code> pairs and provisions. <code class="inline-code">/tokenmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
       <a href="plugin.html#skills" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
     </div>
   </section>
@@ -523,7 +523,7 @@
 
 <footer class="legal-footer">
   <div class="inner">
-    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

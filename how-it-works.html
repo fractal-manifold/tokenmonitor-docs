@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>How it works — C Wall Monitor</title>
+<title>How it works — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="How the C Wall Monitor works end to end: the device, the local cwm-mcp broker, the marketplace plugin, exactly what data goes where, and the security model.">
-<link rel="canonical" href="https://cwm.fractalmanifold.com/how-it-works.html">
+<meta name="description" content="How the TokenMonitor works end to end: the device, the local tokenmonitor-mcp broker, the marketplace plugin, exactly what data goes where, and the security model.">
+<link rel="canonical" href="https://tokenmonitor.dev/how-it-works.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://cwm.fractalmanifold.com/how-it-works.html">
-<meta property="og:title" content="How it works — C Wall Monitor">
+<meta property="og:url" content="https://tokenmonitor.dev/how-it-works.html">
+<meta property="og:title" content="How it works — TokenMonitor">
 <meta property="og:description" content="The device, the local broker, the marketplace plugin — and exactly what data goes where.">
-<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How it works — C Wall Monitor">
+<meta name="twitter:title" content="How it works — TokenMonitor">
 <meta name="twitter:description" content="The device, the local broker, the marketplace plugin — and exactly what data goes where.">
-<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
-<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
 <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
-<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
   .page-head { padding: 4rem 0 2rem 0; }
   .page-head h1 {
@@ -186,7 +186,7 @@
       <div class="arch-node">
         <span class="tag">On your laptop</span>
         <h3>Your CLIs + the broker</h3>
-        <p>Claude Code, Codex and Gemini already log usage locally. The <code class="inline-code">cwm-mcp</code> broker reads those logs and serves a tiny JSON dashboard.</p>
+        <p>Claude Code, Codex and Gemini already log usage locally. The <code class="inline-code">tokenmonitor-mcp</code> broker reads those logs and serves a tiny JSON dashboard.</p>
       </div>
       <div class="arch-link">
         <span>Wi-Fi LAN</span>
@@ -236,13 +236,13 @@
         </article>
         <article class="card gold-edge">
           <span class="chip">Local server</span>
-          <h3>The cwm-mcp broker</h3>
+          <h3>The tokenmonitor-mcp broker</h3>
           <p>A small open-source (Apache-2.0) server you run on your laptop. It reads your CLI logs and answers the device's polls. Pick the Go, Python or JS build — they're interchangeable.</p>
         </article>
         <article class="card gold-edge">
           <span class="chip">Marketplace plugin</span>
           <h3>The MCP plugin</h3>
-          <p>Installed into Claude Code, Codex or Gemini from the public marketplace. It registers the broker and adds the <code class="inline-code">/cwallmonitor:configure</code> and theme skills, so you pair and manage the device by just asking your AI.</p>
+          <p>Installed into Claude Code, Codex or Gemini from the public marketplace. It registers the broker and adds the <code class="inline-code">/tokenmonitor:configure</code> and theme skills, so you pair and manage the device by just asking your AI.</p>
         </article>
       </div>
     </section>
@@ -349,7 +349,7 @@
         </div>
         <div class="sec-row">
           <h4>Keys at rest</h4>
-          <p>On the device, the key lives in NVS (encrypted at rest on production units). On your laptop it's stored in a <code class="inline-code">0600</code> file under <code class="inline-code">~/.config/cwallmonitor/</code> — readable only by you.</p>
+          <p>On the device, the key lives in NVS (encrypted at rest on production units). On your laptop it's stored in a <code class="inline-code">0600</code> file under <code class="inline-code">~/.config/tokenmonitor/</code> — readable only by you.</p>
         </div>
         <div class="sec-row">
           <h4>Signed firmware</h4>
@@ -375,7 +375,7 @@
       <h2>What it needs to work.</h2>
       <div class="rule"></div>
       <ul class="req-list">
-        <li>A laptop or always-on machine that runs your AI CLI, with the <code class="inline-code">cwm-mcp</code> broker running on it (it can sleep with the machine — the dashboard simply freezes until it's back).</li>
+        <li>A laptop or always-on machine that runs your AI CLI, with the <code class="inline-code">tokenmonitor-mcp</code> broker running on it (it can sleep with the machine — the dashboard simply freezes until it's back).</li>
         <li>The device and that machine on the same 2.4&nbsp;GHz Wi-Fi / reachable LAN (port <code class="inline-code">8765</code> open between them).</li>
         <li>Internet for the live percentages, the weather strip and clock sync. Without it, the LAN dashboard still draws your local token totals.</li>
         <li>A supported runtime for the broker (one of Go / Python / Node — pick whichever you already have).</li>
@@ -400,7 +400,7 @@
 
 <footer class="legal-footer">
   <div class="inner">
-    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

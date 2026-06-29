@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FAQ & troubleshooting — C Wall Monitor</title>
+<title>FAQ & troubleshooting — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Frequently asked questions and troubleshooting for the C Wall Monitor.">
-<link rel="canonical" href="https://cwm.fractalmanifold.com/faq.html">
+<meta name="description" content="Frequently asked questions and troubleshooting for the TokenMonitor.">
+<link rel="canonical" href="https://tokenmonitor.dev/faq.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://cwm.fractalmanifold.com/faq.html">
-<meta property="og:title" content="FAQ & troubleshooting — C Wall Monitor">
-<meta property="og:description" content="Frequently asked questions and troubleshooting for the C Wall Monitor.">
-<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:url" content="https://tokenmonitor.dev/faq.html">
+<meta property="og:title" content="FAQ & troubleshooting — TokenMonitor">
+<meta property="og:description" content="Frequently asked questions and troubleshooting for the TokenMonitor.">
+<meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FAQ & troubleshooting — C Wall Monitor">
-<meta name="twitter:description" content="Frequently asked questions and troubleshooting for the C Wall Monitor.">
-<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
-<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:title" content="FAQ & troubleshooting — TokenMonitor">
+<meta name="twitter:description" content="Frequently asked questions and troubleshooting for the TokenMonitor.">
+<meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
 <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
-<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <style>
   .page-head {
     padding: 4rem 0 3rem 0;
@@ -303,7 +303,7 @@
             <details class="acc-item">
               <summary class="acc-summary">What does it need to work? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>A machine that runs your AI CLI with the <code>cwm-mcp</code> broker running on it; the device and that machine on the same 2.4&nbsp;GHz Wi-Fi / reachable LAN (port <code>8765</code> between them); and internet for the live percentages, weather and clock. If the broker's machine sleeps, the dashboard freezes; if only the internet drops, your local token totals keep updating while the live percentages and weather hold their last values.</p>
+                <p>A machine that runs your AI CLI with the <code>tokenmonitor-mcp</code> broker running on it; the device and that machine on the same 2.4&nbsp;GHz Wi-Fi / reachable LAN (port <code>8765</code> between them); and internet for the live percentages, weather and clock. If the broker's machine sleeps, the dashboard freezes; if only the internet drops, your local token totals keep updating while the live percentages and weather hold their last values.</p>
               </div>
             </details>
 
@@ -329,7 +329,7 @@
                 <p>Each device has its own key, generated at pairing (you can also set a passphrase, which is hashed into the key and itself never stored or sent). It lives in two places:</p>
                 <ul>
                   <li>The device: in ESP32 <code>NVS</code>, encrypted at rest on production units.</li>
-                  <li>Your laptop: in a <code>0600</code> file under <code>~/.config/cwallmonitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
+                  <li>Your laptop: in a <code>0600</code> file under <code>~/.config/tokenmonitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
                 </ul>
                 <p>This device key is exchanged exactly once, during pairing, over your LAN — authorised by the 6-digit code shown on the device (with a lockout after repeated wrong attempts). After that it never leaves either side again: it's only used locally to sign each request and decrypt config pushes.</p>
                 <p>Your <strong>provider logins are a separate thing entirely</strong>. The Anthropic, Codex and Gemini credentials the broker uses to read your usage never reach the device — they stay on your computer, in your own CLI's config, and are only ever sent to each provider directly over HTTPS, exactly as your CLI already does.</p>
@@ -339,13 +339,13 @@
             <details class="acc-item">
               <summary class="acc-summary">How is the device ↔ broker link protected? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Each request the device sends carries <code>X-Cwm-Timestamp</code>, <code>X-Cwm-Nonce</code> and <code>X-Cwm-Signature</code> — an HMAC-SHA256 over the method, path, timestamp and one-time nonce, signed with the device key. The broker rejects a stale timestamp (&gt; 60&nbsp;s skew) or a reused nonce, so a captured request can't be replayed.</p>
+                <p>Each request the device sends carries <code>X-Tmon-Timestamp</code>, <code>X-Tmon-Nonce</code> and <code>X-Tmon-Signature</code> — an HMAC-SHA256 over the method, path, timestamp and one-time nonce, signed with the device key. The broker rejects a stale timestamp (&gt; 60&nbsp;s skew) or a reused nonce, so a captured request can't be replayed.</p>
                 <p>Sensitive control-plane payloads — key rotation and settings pushed to the device — are AES-256-CTR encrypted with the device key. The signature covers the request headers rather than every body, so we don't claim the whole link is confidential; the part that carries secrets is the part that's encrypted, and nothing is exposed beyond your LAN.</p>
               </div>
             </details>
 
             <details class="acc-item">
-              <summary class="acc-summary">Can the cwm-mcp server see my code or prompts? <span class="plus">+</span></summary>
+              <summary class="acc-summary">Can the tokenmonitor-mcp server see my code or prompts? <span class="plus">+</span></summary>
               <div class="acc-body">
                 <p>The broker parses the token-count fields out of your CLI transcripts to total your usage. It isn't built to read or transmit the prompt and code inside those logs, and it has no endpoint that would send them anywhere. Because it's open source (Apache-2.0) and runs on your own machine, you can verify that for yourself.</p>
                 <p>Put plainly: the broker runs with your user permissions and can read what you can read — which is exactly why it's open and auditable rather than a black box.</p>
@@ -363,7 +363,7 @@
             <details class="acc-item">
               <summary class="acc-summary">What's stored on my laptop, and how do I remove it? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Everything the broker keeps lives under <code>~/.config/cwallmonitor/</code>: its config (<code>cwm.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; factory-reset the device (hold the <strong>BOOT</strong> button ~10 s, confirm on screen) to clear its side. There's no server-side account to close.</p>
+                <p>Everything the broker keeps lives under <code>~/.config/tokenmonitor/</code>: its config (<code>tokenmonitor.toml</code>), one <code>0600</code> file per paired device, and a day-cached copy of the public price list. Delete that directory to wipe all device keys and registry state; factory-reset the device (hold the <strong>BOOT</strong> button ~10 s, confirm on screen) to clear its side. There's no server-side account to close.</p>
               </div>
             </details>
           </div>
@@ -379,7 +379,7 @@
             <details class="acc-item">
               <summary class="acc-summary">Multiple devices in the same house? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Yes. Each device has its own <code>device_id</code> (the last 4 bytes of its MAC — 8 hex characters) and announces itself on mDNS as <code>cwm-&lt;device_id&gt;.local</code>. The configure skill picks them up individually.</p>
+                <p>Yes. Each device has its own <code>device_id</code> (the last 4 bytes of its MAC — 8 hex characters) and announces itself on mDNS as <code>tmon-&lt;device_id&gt;.local</code>. The configure skill picks them up individually.</p>
                 <p>The broker can serve any number of devices on the same LAN. Each gets its own key; per-device keys are independent.</p>
               </div>
             </details>
@@ -417,14 +417,14 @@
             <details class="acc-item">
               <summary class="acc-summary">Can I modify the firmware? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>The firmware is <strong>proprietary</strong>, and updates are distributed only as Ed25519-signed images the device verifies before installing. The broker (<code>cwm-mcp</code>), the MCP plugin and the documentation are public and <strong>Apache-2.0</strong>. You can absolutely build your own client against the broker's HTTP API — that's the integration point we support.</p>
+                <p>The firmware is <strong>proprietary</strong>, and updates are distributed only as Ed25519-signed images the device verifies before installing. The broker (<code>tokenmonitor-mcp</code>), the MCP plugin and the documentation are public and <strong>Apache-2.0</strong>. You can absolutely build your own client against the broker's HTTP API — that's the integration point we support.</p>
               </div>
             </details>
 
             <details class="acc-item">
               <summary class="acc-summary">How are firmware updates delivered? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>OTA, over your LAN, via the broker. When a new release is available, <code>/cwallmonitor:firmware</code> stages it; the device downloads it, verifies an <strong>Ed25519-signed manifest on-device</strong>, switches the boot slot and reboots. If the new image doesn't come up healthy and check in, the bootloader <strong>rolls back automatically</strong>, and a version floor blocks downgrades.</p>
+                <p>OTA, over your LAN, via the broker. When a new release is available, <code>/tokenmonitor:firmware</code> stages it; the device downloads it, verifies an <strong>Ed25519-signed manifest on-device</strong>, switches the boot slot and reboots. If the new image doesn't come up healthy and check in, the bootloader <strong>rolls back automatically</strong>, and a version floor blocks downgrades.</p>
               </div>
             </details>
 
@@ -436,7 +436,7 @@
                   <li><strong>Restart</strong> — hold <strong>PWR</strong> for ~2 s. It just reboots; nothing is erased. This is the first thing to try if it ever acts up. (A short PWR press toggles standby instead.)</li>
                   <li><strong>Factory reset</strong> — hold <strong>BOOT</strong> for ~10 s. A confirmation screen appears; tap <strong>Erase</strong> to wipe Wi-Fi, city, display settings and the broker passphrase and reboot into first-boot setup, or <strong>Cancel</strong> to back out. The device's identity and update anti-rollback floor are preserved, so it re-pairs cleanly.</li>
                 </ul>
-                <p>After a factory reset, also delete the device's <code>0600</code> key file under <code>~/.config/cwallmonitor/devices/</code> on the laptop (or just re-run <code>/cwallmonitor:configure</code>) so the broker re-pairs with the fresh passphrase.</p>
+                <p>After a factory reset, also delete the device's <code>0600</code> key file under <code>~/.config/tokenmonitor/devices/</code> on the laptop (or just re-run <code>/tokenmonitor:configure</code>) so the broker re-pairs with the fresh passphrase.</p>
               </div>
             </details>
 
@@ -478,7 +478,7 @@
           <div class="ts-card symptom">
             <span class="symptom-tag">Symptom</span>
             <h4>Captive portal doesn't appear.</h4>
-            <p>You joined <code>ClaudeWallMonitor-XXXX</code>, but no portal opens in the browser.</p>
+            <p>You joined <code>TokenMonitor-XXXX</code>, but no portal opens in the browser.</p>
             <span class="fix-tag">Fix</span>
             <p>Some OSes only auto-open the portal once per network. On <strong>macOS</strong>, click the Wi-Fi icon and pick "Use without internet"; on <strong>iOS / Android</strong>, open the network's "log in" prompt manually.</p>
             <p>If still nothing, browse directly to <code>http://192.168.4.1/</code> — the captive page always lives there, even when auto-detect fails.</p>
@@ -491,9 +491,9 @@
             <span class="fix-tag">Fix</span>
             <p>The broker isn't being reached. Check, in order:</p>
             <ol>
-              <li>Is <code>cwm-mcp</code> actually running on your laptop? Ask your CLI <em>"check my wall monitor broker health"</em> — it calls <code>wall_monitor_health</code> and reports PASS/FAIL per component.</li>
+              <li>Is <code>tokenmonitor-mcp</code> actually running on your laptop? Ask your CLI <em>"check my wall monitor broker health"</em> — it calls <code>tokenmonitor_health</code> and reports PASS/FAIL per component.</li>
               <li>Is your laptop on the same Wi-Fi as the device, with port <code>8765</code> reachable between them? (different SSIDs / VLANs / guest networks fail silently)</li>
-              <li>Ask your CLI <em>"tail the last 20 lines of the broker log"</em> — it'll call <code>wall_monitor_recent_logs</code> and you'll see the rejected polls, if any.</li>
+              <li>Ask your CLI <em>"tail the last 20 lines of the broker log"</em> — it'll call <code>tokenmonitor_recent_logs</code> and you'll see the rejected polls, if any.</li>
             </ol>
           </div>
 
@@ -515,7 +515,7 @@
             <span class="symptom-tag">Symptom</span>
             <h4>Auto theme stuck on Night during the day.</h4>
             <span class="fix-tag">Fix</span>
-            <p>Auto follows your <strong>configured city's</strong> sunrise/sunset, not the laptop's clock. If the city is set to a place in a different timezone, Auto will look wrong. Update Settings → City, or force the theme: <code>/cwallmonitor:theme day</code>.</p>
+            <p>Auto follows your <strong>configured city's</strong> sunrise/sunset, not the laptop's clock. If the city is set to a place in a different timezone, Auto will look wrong. Update Settings → City, or force the theme: <code>/tokenmonitor:theme day</code>.</p>
           </div>
         </section>
       </div>
@@ -525,7 +525,7 @@
     <div class="help-banner">
       <div>
         <h3>Still stuck?</h3>
-        <p>Open an issue on the marketplace repo, or email us — we read everything. Include the output of <code class="inline-code">wall_monitor_health</code> and the last 50 broker log lines if you can.</p>
+        <p>Open an issue on the marketplace repo, or email us — we read everything. Include the output of <code class="inline-code">tokenmonitor_health</code> and the last 50 broker log lines if you can.</p>
       </div>
       <a href="mailto:cwm@fractalmanifold.com" class="btn btn-primary">cwm@fractalmanifold.com</a>
     </div>
@@ -543,7 +543,7 @@
 
 <footer class="legal-footer">
   <div class="inner">
-    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

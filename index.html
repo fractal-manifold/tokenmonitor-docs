@@ -2,34 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>C Wall Monitor — See your AI usage on your desk</title>
+<title>TokenMonitor — See your AI usage on your desk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
-<link rel="canonical" href="https://cwm.fractalmanifold.com/">
+<link rel="canonical" href="https://tokenmonitor.dev/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="C Wall Monitor">
+<meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://cwm.fractalmanifold.com/">
-<meta property="og:title" content="C Wall Monitor — See your AI usage on your desk">
+<meta property="og:url" content="https://tokenmonitor.dev/">
+<meta property="og:title" content="TokenMonitor — See your AI usage on your desk">
 <meta property="og:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
-<meta property="og:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
+<meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="C Wall Monitor — See your AI usage on your desk">
+<meta name="twitter:title" content="TokenMonitor — See your AI usage on your desk">
 <meta name="twitter:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
-<meta name="twitter:image" content="https://cwm.fractalmanifold.com/assets/prototype.jpg">
-<meta name="twitter:image:alt" content="C Wall Monitor — 4-inch desk display showing live AI usage">
+<meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
+<meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
 <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="assets/site.css">
-<script>try{var t=localStorage.getItem('cwm:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+<script>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
 <script>/* Currency: Americas → USD, rest of world → EUR. Browser timezone/locale only — no IP geolocation. */
-try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}var lang=(navigator.language||'').toLowerCase();c=(/^America\//.test(tz)||/-(us|ca)$/.test(lang))?'usd':'eur';}document.documentElement.dataset.cur=c;}catch(e){document.documentElement.dataset.cur='eur';}</script>
+try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}var lang=(navigator.language||'').toLowerCase();c=(/^America\//.test(tz)||/-(us|ca)$/.test(lang))?'usd':'eur';}document.documentElement.dataset.cur=c;}catch(e){document.documentElement.dataset.cur='eur';}</script>
 <style>
   /* ── Landing-specific ───────────────────────────────────── */
   .hero {
@@ -475,9 +475,9 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
         <video
           autoplay muted loop playsinline preload="metadata"
           poster="assets/prototype.jpg"
-          aria-label="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
-          <source src="assets/cwm.mp4" type="video/mp4">
-          <img src="assets/prototype.jpg" alt="C Wall Monitor — 4-inch desk display in hand, showing Claude Code usage">
+          aria-label="TokenMonitor — 4-inch desk display in hand, showing Claude Code usage">
+          <source src="assets/tokenmonitor.mp4" type="video/mp4">
+          <img src="assets/prototype.jpg" alt="TokenMonitor — 4-inch desk display in hand, showing Claude Code usage">
         </video>
       </div>
       <span class="proto-tag">Working prototype</span>
@@ -532,7 +532,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
       <div class="node">
         <span class="k">On your laptop</span>
         <h3>The broker</h3>
-        <p>The <code class="inline-code">cwm-mcp</code> server reads your Claude Code / Codex / Gemini logs and serves the numbers.</p>
+        <p>The <code class="inline-code">tokenmonitor-mcp</code> server reads your Claude Code / Codex / Gemini logs and serves the numbers.</p>
       </div>
       <div class="arr">⇄</div>
       <div class="node accent">
@@ -544,7 +544,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
       <div class="node">
         <span class="k">In your AI</span>
         <h3>The plugin</h3>
-        <p>Installed from the marketplace. You pair the device by asking your AI to run <a href="plugin.html#skills"><code class="inline-code">/cwallmonitor:configure</code></a>.</p>
+        <p>Installed from the marketplace. You pair the device by asking your AI to run <a href="plugin.html#skills"><code class="inline-code">/tokenmonitor:configure</code></a>.</p>
       </div>
     </div>
     <div class="hiw-foot">
@@ -604,7 +604,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
       </div>
       <div class="theme-device">
         <div class="device-frame">
-          <div class="screen" data-cwm-screen="claude-day" id="themeScreen"></div>
+          <div class="screen" data-tmon-screen="claude-day" id="themeScreen"></div>
         </div>
       </div>
     </div>
@@ -658,7 +658,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
       <details class="acc-item">
         <summary class="acc-summary">Do I have to flash firmware or use a terminal? <span class="plus">+</span></summary>
         <div class="acc-body">
-          <p>No flashing — units ship pre-flashed. You plug in USB-C, join the device's Wi-Fi once to enter your network, then pair it by asking your AI to run a skill. On your computer you install the <code class="inline-code">cwm-mcp</code> broker (one command) plus the marketplace plugin that runs it — nothing is flashed. <a href="setup.html">See the 5-step setup →</a></p>
+          <p>No flashing — units ship pre-flashed. You plug in USB-C, join the device's Wi-Fi once to enter your network, then pair it by asking your AI to run a skill. On your computer you install the <code class="inline-code">tokenmonitor-mcp</code> broker (one command) plus the marketplace plugin that runs it — nothing is flashed. <a href="setup.html">See the 5-step setup →</a></p>
         </div>
       </details>
       <details class="acc-item">
@@ -717,7 +717,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
 
 <footer class="legal-footer">
   <div class="inner">
-    C Wall Monitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 
@@ -754,7 +754,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
   (function () {
     const screen = document.getElementById('themeScreen');
     const hint = document.getElementById('themeHint');
-    if (!screen || !window.CWM) return;
+    if (!screen || !window.TMON) return;
     let provider = 'claude', mode = 'day';
     const hints = {
       day:   'Day palette — bright and high-contrast for a lit desk.',
@@ -763,14 +763,14 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
     };
     function apply() {
       if (mode === 'auto') {
-        screen.setAttribute('data-cwm-screen', provider + '-day');
-        screen.setAttribute('data-cwm-theme', 'auto');
+        screen.setAttribute('data-tmon-screen', provider + '-day');
+        screen.setAttribute('data-tmon-theme', 'auto');
       } else {
-        screen.setAttribute('data-cwm-screen', provider + '-' + mode);
-        screen.removeAttribute('data-cwm-theme');
+        screen.setAttribute('data-tmon-screen', provider + '-' + mode);
+        screen.removeAttribute('data-tmon-theme');
       }
       if (hint) hint.textContent = hints[mode];
-      window.CWM.mount();
+      window.TMON.mount();
     }
     function wire(sel, set) {
       document.querySelectorAll(sel + ' .tab').forEach(btn => {
@@ -801,7 +801,7 @@ try{var c=localStorage.getItem('cwm:cur');if(c!=='usd'&&c!=='eur'){var tz='';try
     btns.forEach(b => b.addEventListener('click', () => {
       const c = b.getAttribute('data-cur');
       document.documentElement.dataset.cur = c;
-      try { localStorage.setItem('cwm:cur', c); } catch (e) {}
+      try { localStorage.setItem('tmon:cur', c); } catch (e) {}
       sync();
     }));
     sync();
