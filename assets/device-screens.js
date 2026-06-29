@@ -333,7 +333,7 @@
           <span class="t22sb" style="color:#fff">1</span>
         </div>
         <div class="t18 c-text-dim abs" style="left:64px; top:8px">Join this Wi-Fi</div>
-        <div class="t22sb c-text abs" style="left:64px; bottom:8px">CWallMonitor-3C7C</div>
+        <div class="t22sb c-text abs" style="left:64px; bottom:8px">TokenMonitor-3C7C</div>
       </div>
       <div class="card-box abs" style="left:14px; top:144px; width:452px; height:64px; padding:10px 12px">
         <div class="abs" style="left:12px; top:12px; width:40px; height:40px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center">
