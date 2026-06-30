@@ -9,7 +9,7 @@
 
 Public English-language landing + tutorial site for a 4-inch
 ESP32-S3 wall display that shows live usage of Claude Code, Codex
-CLI and Gemini CLI on the user's laptop. Designed to fit a standard
+CLI and the Antigravity CLI on the user's laptop. Designed to fit a standard
 86×86 mm wall switch box.
 
 **The site must be in English.** (The product is sold internationally.)
@@ -21,7 +21,7 @@ CLI and Gemini CLI on the user's laptop. Designed to fit a standard
 - Palette: dark mode primary, with accent gradients per provider:
   - Claude — warm orange / red
   - Codex — green
-  - Gemini — blue / purple
+  - Antigravity — blue (accent #3186FF day / #5A9BFF night)
 - Reuse the pixel-exact dashboard mockups from
   `docs/tokenmonitor-design.html` (8 screen states already designed:
   Dashboard day/night for each provider, Standby, Connecting,
@@ -38,7 +38,7 @@ CLI and Gemini CLI on the user's laptop. Designed to fit a standard
 /how-it-works               Architecture diagram + data flow
 /setup                      Tutorial (5 steps with screenshots)
 /usage                      Day-to-day usage guide
-/plugin                     MCP plugin install (Claude Code, Codex, Gemini)
+/plugin                     MCP plugin install (Claude Code, Codex, Antigravity)
 /skills                     Skill reference (/tokenmonitor:configure, /tokenmonitor:theme)
 /faq                        Troubleshooting + FAQ
 ```
@@ -49,7 +49,7 @@ CLI and Gemini CLI on the user's laptop. Designed to fit a standard
 
 - Headline: **"See your AI usage on the wall."**
 - Sub: "A 4-inch always-on display that shows live Claude Code,
-  Codex and Gemini usage from your laptop. Fits a standard wall
+  Codex and Antigravity usage from your laptop. Fits a standard wall
   switch box."
 - CTA primary: **Get setup → /setup**
 - CTA secondary: **How it works → /how-it-works**
@@ -58,7 +58,7 @@ CLI and Gemini CLI on the user's laptop. Designed to fit a standard
 
 **Feature grid (3 cols)**
 
-1. **Three providers, one panel** — Claude · Codex · Gemini,
+1. **Three providers, one panel** — Claude · Codex · Antigravity,
    brand-tinted day & night themes. (Dashboard mockups)
 2. **Works on your LAN** — No cloud, no telemetry. The device polls
    your laptop directly over Wi-Fi. (architecture micro-diagram)
@@ -82,7 +82,7 @@ ESP32-S3 · 16 MB Flash · 8 MB PSRAM · 480×480 capacitive touch ·
 
 Architecture diagram (Mermaid is fine):
 
-- Laptop running Claude Code / Codex / Gemini → `tokenmonitor-mcp` broker
+- Laptop running Claude Code / Codex / Antigravity → `tokenmonitor-mcp` broker
   (Go / Python / JS, your choice) → HTTP + HMAC over LAN →
   ESP32-S3 device.
 - Side branch: device → Open-Meteo (weather + day/night) over
@@ -187,13 +187,14 @@ command = "tokenmonitor-mcp"
 args = ["mcp"]
 ```
 
-### Gemini CLI
+### Antigravity CLI
 
-Gemini reads extensions from `~/.gemini/extensions/`. Either drop
+Antigravity (`agy`, Google's successor to the Gemini CLI) reads
+extensions from `~/.gemini/antigravity-cli/extensions/`. Either drop
 in the `gemini-extension.json` from the plugin repo, or:
 
 ```bash
-gemini extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
+agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
 ```
 
 The extension JSON is identical across CLIs:
@@ -295,7 +296,7 @@ English. Key entries:
 - `docs/tokenmonitor-design.html` — all UI screens pixel-exact
   (480×480 each). Open in a browser and screenshot / export each
   `<section>`.
-- Provider logos (Claude / Codex / Gemini) exist as LVGL C arrays
+- Provider logos (Claude / Codex / Antigravity) exist as LVGL C arrays
   under `firmware/components/ui/src/assets/logos/`. Designer should
   recreate from the brand kits — the C arrays aren't web-friendly.
 

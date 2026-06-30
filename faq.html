@@ -257,7 +257,7 @@
             <details class="acc-item" open>
               <summary class="acc-summary">Do I need an Anthropic, OpenAI or Google account? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p><strong>Yes — for the CLI side. Not for the device.</strong> Each CLI (Claude Code, Codex, Gemini) authenticates against its own provider as it normally does. The wall monitor itself never talks to any of them.</p>
+                <p><strong>Yes — for the CLI side. Not for the device.</strong> Each CLI (Claude Code, Codex, Antigravity) authenticates against its own provider as it normally does. The wall monitor itself never talks to any of them.</p>
                 <p>The device only talks to the broker on your laptop for usage (plus a public clock and weather service); the broker reads from the CLIs' local on-disk logs. If you don't already have a CLI installed for a given provider, that provider's card will simply not show on the device.</p>
               </div>
             </details>
@@ -295,7 +295,7 @@
             <details class="acc-item">
               <summary class="acc-summary">Which CLIs are supported — what if I only use one? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>Claude Code, Codex CLI and Gemini CLI. Enable one or all three from Settings; a provider whose CLI isn't installed simply doesn't appear. The pairing plugin installs into whichever of the three you use.</p>
+                <p>Claude Code, Codex CLI and the Antigravity CLI. Enable one or all three from Settings; a provider whose CLI isn't installed simply doesn't appear. The pairing plugin installs into whichever of the three you use.</p>
                 <p>The "magic" pairing skill is most polished in Claude Code, but the broker is a standard local server — you can configure a device against it manually (broker URL + key) from any of the supported CLIs, or by hand.</p>
               </div>
             </details>
@@ -332,7 +332,7 @@
                   <li>Your laptop: in a <code>0600</code> file under <code>~/.config/tokenmonitor/devices/</code> — protected by filesystem permissions, readable only by your user.</li>
                 </ul>
                 <p>This device key is exchanged exactly once, during pairing, over your LAN — authorised by the 6-digit code shown on the device (with a lockout after repeated wrong attempts). After that it never leaves either side again: it's only used locally to sign each request and decrypt config pushes.</p>
-                <p>Your <strong>provider logins are a separate thing entirely</strong>. The Anthropic, Codex and Gemini credentials the broker uses to read your usage never reach the device — they stay on your computer, in your own CLI's config, and are only ever sent to each provider directly over HTTPS, exactly as your CLI already does.</p>
+                <p>Your <strong>provider logins are a separate thing entirely</strong>. The Anthropic, Codex and Antigravity credentials the broker uses to read your usage never reach the device — they stay on your computer, in your own CLI's config, and are only ever sent to each provider directly over HTTPS, exactly as your CLI already does.</p>
               </div>
             </details>
 
@@ -543,7 +543,7 @@
 
 <footer class="legal-footer">
   <div class="inner">
-    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Antigravity and Gemini are trademarks of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

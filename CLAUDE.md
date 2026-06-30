@@ -8,7 +8,7 @@ end users.
 ## What this site is
 
 A landing + tutorial site for a 4-inch ESP32-S3 **desk display**
-that shows live usage of Claude Code, Codex CLI and Gemini CLI on
+that shows live usage of Claude Code, Codex CLI and the Antigravity CLI on
 the user's laptop. The device is 86×86 mm (the original "wall
 switch box" form factor) but the current product positioning is
 desk-top: USB-C powered, sits on the desk with its own base.
@@ -28,7 +28,7 @@ an international audience and is English-only.
 - Palette: dark mode primary, accent gradients per provider:
   - Claude — warm orange / red
   - Codex — green
-  - Gemini — blue / purple
+  - Antigravity — blue (accent #3186FF day / #5A9BFF night)
 - Reuse the pixel-exact UI mockups from
   `../docs/tokenmonitor-design.html` — 8 screen states already
   designed (Dashboard day/night per provider, Standby, Connecting,
@@ -57,7 +57,7 @@ an international audience and is English-only.
 **Hero**
 - Headline: **"See your AI usage on your desk."**
 - Sub: "A 4-inch always-on desk display that shows live Claude
-  Code, Codex and Gemini usage from your laptop. 86×86 mm
+  Code, Codex and Antigravity usage from your laptop. 86×86 mm
   footprint, USB-C powered, sits on the desk with its own base."
 - Primary CTA: **Get setup → /setup**
 - Secondary CTA: **How it works → /how-it-works**
@@ -65,7 +65,7 @@ an international audience and is English-only.
   through the three providers' day-mode dashboards.
 
 **Feature grid (3 cols)**
-1. **Three providers, one panel** — Claude · Codex · Gemini,
+1. **Three providers, one panel** — Claude · Codex · Antigravity,
    brand-tinted day & night themes.
 2. **Works on your LAN** — No cloud, no telemetry. Device polls
    your laptop directly over Wi-Fi.
@@ -85,7 +85,7 @@ ESP32-S3 · 16 MB Flash · 8 MB PSRAM · 480×480 capacitive touch ·
 ### 2. How it works (`/how-it-works`)
 
 Architecture diagram (Mermaid is fine):
-- Laptop (Claude Code / Codex / Gemini) → `tokenmonitor-mcp` broker
+- Laptop (Claude Code / Codex / Antigravity) → `tokenmonitor-mcp` broker
   (Go / Python / JS, user's choice) → HTTP + HMAC over LAN →
   ESP32-S3 device.
 - Side branch: device → Open-Meteo (weather + day/night) over
@@ -174,9 +174,10 @@ command = "tokenmonitor-mcp"
 args = ["mcp"]
 ```
 
-**Gemini CLI** — reads `~/.gemini/extensions/`:
+**Antigravity CLI** (`agy`, successor to the Gemini CLI) — reads
+`~/.gemini/antigravity-cli/extensions/`:
 ```bash
-gemini extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
+agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
 ```
 
 Extension JSON (same shape for all three):
@@ -257,7 +258,7 @@ city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
   Open in a browser and screenshot / export each `<section>`.
 - Provider + UI icons are already recreated as crisp, device-matched
   SVG inside `assets/device-screens.js` (Claude pixel-mascot, Codex `>_`
-  app icon, Gemini sparkle, ambient sun/moon/thermo, gear, pencil,
+  app icon, Antigravity glyph, ambient sun/moon/thermo, gear, pencil,
   level-coloured battery). The Fractal Manifold mark is the exception:
   it's the real brand logo (`assets/logo.png`), trimmed/squared and
   inlined as a 112px data URI in `_fmLogoSrc` — edit that constant (or
@@ -281,7 +282,7 @@ city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
 ## Things NOT to do
 
 - Don't claim the device "uses your API key" — it doesn't. It
-  reads usage from your local Claude Code / Codex / Gemini session
+  reads usage from your local Claude Code / Codex / Antigravity session
   via the broker.
 - Don't put the user's passphrase or PSK anywhere on the site.
   This is a security-sensitive product; secrets stay local.

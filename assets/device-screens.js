@@ -35,8 +35,8 @@
     .pal-claude-night{ --bg:#120d09; --card:#2a2017; --card-alt:#3a2c1c; --text:#f0e6d2; --text-dim:#a89880; --divider:#503c28; --accent:#e07a4a; --accent-text:#e07a4a; }
     .pal-codex-day   { --bg:#e3e9e6; --card:#ffffff; --card-alt:#d3ded8; --text:#131a17; --text-dim:#4a5a52; --divider:#bacbc3; --accent:#10a37f; --accent-text:#075a46; }
     .pal-codex-night { --bg:#090e0c; --card:#1a231f; --card-alt:#26332c; --text:#e2efe9; --text-dim:#88a098; --divider:#3a4d44; --accent:#1ed29c; --accent-text:#3ce0b0; }
-    .pal-gemini-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#1a73e8; --accent-text:#0a428e; }
-    .pal-gemini-night{ --bg:#070d1c; --card:#161f37; --card-alt:#22304e; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#324568; --accent:#5a9bff; --accent-text:#7eb1ff; }
+    .pal-antigravity-day  { --bg:#dde7f6; --card:#ffffff; --card-alt:#cedcf1; --text:#0f1a30; --text-dim:#4a5670; --divider:#b2c6e6; --accent:#3186FF; --accent-text:#0a428e; }
+    .pal-antigravity-night{ --bg:#070d1c; --card:#161f37; --card-alt:#22304e; --text:#e5ecf8; --text-dim:#8a96b0; --divider:#324568; --accent:#5A9BFF; --accent-text:#7eb1ff; }
     .pal-fm          { --bg:#000000; --card:#1f1f1c; --card-alt:#34302a; --text:#faf9f5; --text-dim:#9a978f; --divider:#38352e; --accent:#a855f7; --accent2:#f59e0b; --accent-text:#f59e0b; }
     .tmon-screen { background: var(--bg); color: var(--text); }
 
@@ -61,10 +61,10 @@
     }
     .brand-claude { color: #c15f3c; }
     .brand-codex  { color: #10a37f; }
-    .brand-gemini { color: #1a73e8; }
+    .brand-antigravity { color: #3186FF; }
     .pal-claude-night .brand-claude { color: #e07a4a; }
     .pal-codex-night  .brand-codex  { color: #1ed29c; }
-    .pal-gemini-night .brand-gemini { color: #5a9bff; }
+    .pal-antigravity-night .brand-antigravity { color: #5A9BFF; }
 
     .amb-ico { display: inline-flex; align-items: center; justify-content: center;
       width: 26px; height: 26px; font-size: 22px; color: var(--text-dim); vertical-align: middle; }
@@ -74,16 +74,16 @@
     .dot { width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; border: 2px solid; }
     .dot.d-claude { border-color: #c15f3c; }
     .dot.d-codex  { border-color: #10a37f; }
-    .dot.d-gemini { border-color: #1a73e8; }
+    .dot.d-antigravity { border-color: #3186FF; }
     .pal-claude-night .dot.d-claude { border-color: #e07a4a; }
     .pal-codex-night  .dot.d-codex  { border-color: #1ed29c; }
-    .pal-gemini-night .dot.d-gemini { border-color: #5a9bff; }
+    .pal-antigravity-night .dot.d-antigravity { border-color: #5A9BFF; }
     .dot.active.d-claude { background: #c15f3c; }
     .dot.active.d-codex  { background: #10a37f; }
-    .dot.active.d-gemini { background: #1a73e8; }
+    .dot.active.d-antigravity { background: #3186FF; }
     .pal-claude-night .dot.active.d-claude { background: #e07a4a; }
     .pal-codex-night  .dot.active.d-codex  { background: #1ed29c; }
-    .pal-gemini-night .dot.active.d-gemini { background: #5a9bff; }
+    .pal-antigravity-night .dot.active.d-antigravity { background: #5A9BFF; }
     .dots-bottom { position: absolute; left: 14px; bottom: 12px; height: 56px; display: flex; align-items: center; gap: 2px; }
 
     /* battery is now an inline SVG (icoBattery) — level-coloured, matches firmware */
@@ -112,7 +112,7 @@
      Crisp SVG recreations of the firmware assets so the screens read
      like the real device instead of letter placeholders:
        · provider logos — Claude pixel-mascot (mascot.c k_mark_bitmap),
-                          Codex >_ app icon, Gemini sparkle
+                          Codex >_ app icon, Antigravity glyph
        · Fractal Manifold chrome infinity — the REAL logo.png (inlined),
                           not an SVG recreation (see _fmLogoSrc below)
        · ambient sun/moon/thermo — fixed colours from mascot.c
@@ -132,12 +132,12 @@
         + '<path d="M21 21 l7 7 l-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>'
         + '<line x1="29" y1="37" x2="38" y2="37" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg>';
     }
-    if (p === 'gemini') {
-      var gg = tmonGid('gem');
-      return '<svg viewBox="0 0 56 56" width="46" height="46" aria-label="Gemini" xmlns="http://www.w3.org/2000/svg">'
-        + '<defs><linearGradient id="' + gg + '" x1="0.1" y1="0.1" x2="0.9" y2="0.9">'
-        + '<stop offset="0" stop-color="#1ba1e3"/><stop offset="0.3" stop-color="#5489d6"/><stop offset="0.55" stop-color="#9b72cb"/><stop offset="0.8" stop-color="#d96570"/><stop offset="1" stop-color="#f49c46"/></linearGradient></defs>'
-        + '<path fill="url(#' + gg + ')" d="M28 6 C29.4 18.6 37.4 26.6 50 28 C37.4 29.4 29.4 37.4 28 50 C26.6 37.4 18.6 29.4 6 28 C18.6 26.6 26.6 18.6 28 6 Z"/></svg>';
+    if (p === 'antigravity') {
+      // Official Antigravity brand mark (assets/antigravity-logo.svg) — the colourful
+      // arch glyph, inlined so the bundle has no external-asset / base-path dependency.
+      // The SVG's shared id suffix is uniquified per call so repeated frames never collide.
+      var ag = tmonGid('agy');
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 7.5 99 99" width="46" height="46" fill="none" aria-label="Antigravity"><defs><filter id="filter0_f_6001_463" x="2.49348" y="-26.5423" width="69.0899" height="61.2525" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="3.89034" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter1_f_6001_463" x="28.7524" y="-32.0333" width="135.477" height="134.313" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="18.8078" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter2_f_6001_463" x="-62.2884" y="-21.9253" width="142.637" height="127.18" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="15.9884" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter3_f_6001_463" x="-62.2884" y="-21.9253" width="142.637" height="127.18" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="15.9884" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter4_f_6001_463" x="-52.5697" y="-20.8346" width="127.582" height="127.452" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="15.9884" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter5_f_6001_463" x="17.3619" y="45.4646" width="116.786" height="118.715" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="15.1937" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter6_f_6001_463" x="-7.44765" y="-60.4737" width="125.303" height="122.858" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="13.7698" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter7_f_6001_463" x="-27.7086" y="13.3597" width="157.119" height="162.029" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="12.297" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter8_f_6001_463" x="50.4638" y="16.981" width="87.3973" height="83.7738" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="11.0036" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter9_f_6001_463" x="34.2604" y="-28.457" width="116.701" height="104.506" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="9.29385" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><filter id="filter10_f_6001_463" x="-15.1522" y="-15.9493" width="77.2941" height="91.076" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="11.5027" result="effect1_foregroundBlur_6001_463"></feGaussianBlur></filter><clipPath id="clip0_6001_463"><rect width="869" height="113" fill="white"></rect></clipPath></defs><mask id="mask0_6001_463" maskUnits="userSpaceOnUse" x="13" y="18" width="85" height="78" style="mask-type: alpha;"><path d="M89.6992 93.695C94.3659 97.195 101.366 94.8617 94.9492 88.445C75.6992 69.7783 79.7825 18.445 55.8659 18.445C31.9492 18.445 36.0325 69.7783 16.7825 88.445C9.78251 95.445 17.3658 97.195 22.0325 93.695C40.1159 81.445 38.9492 59.8617 55.8659 59.8617C72.7825 59.8617 71.6159 81.445 89.6992 93.695Z" fill="black"></path></mask><g mask="url(#mask0_6001_463)"><g filter="url(#filter0_f_6001_463)"><ellipse cx="22.7873" cy="26.8098" rx="22.7873" ry="26.8098" transform="matrix(-0.112784 0.99362 -0.99362 -0.112781 66.2473 -15.5344)" fill="#FFE432"></ellipse></g><g filter="url(#filter1_f_6001_463)"><ellipse cx="96.491" cy="35.1231" rx="29.5007" ry="30.1492" transform="rotate(76.9243 96.491 35.1231)" fill="#FC413D"></ellipse></g><g filter="url(#filter2_f_6001_463)"><ellipse cx="9.02988" cy="41.6647" rx="30.832" ry="39.9417" transform="rotate(74.1257 9.02988 41.6647)" fill="#00B95C"></ellipse></g><g filter="url(#filter3_f_6001_463)"><ellipse cx="9.02988" cy="41.6647" rx="30.832" ry="39.9417" transform="rotate(74.1257 9.02988 41.6647)" fill="#00B95C"></ellipse></g><g filter="url(#filter4_f_6001_463)"><ellipse cx="11.2212" cy="42.8915" rx="30.22" ry="33.2695" transform="rotate(45.6065 11.2212 42.8915)" fill="#00B95C"></ellipse></g><g filter="url(#filter5_f_6001_463)"><ellipse cx="75.7546" cy="104.822" rx="29.0177" ry="27.943" transform="rotate(76.9243 75.7546 104.822)" fill="#3186FF"></ellipse></g><g filter="url(#filter6_f_6001_463)"><ellipse cx="33.5661" cy="35.4043" rx="33.5661" ry="35.4043" transform="matrix(-0.409539 0.912293 -0.912294 -0.409537 101.25 -15.1674)" fill="#FBBC04"></ellipse></g><g filter="url(#filter7_f_6001_463)"><path d="M2.56802 149.695C-15.8116 142.48 15.5987 83.1163 23.4093 63.2203C31.22 43.3244 52.4514 33.0447 70.831 40.26C89.2107 47.4753 110.996 87.2162 103.185 107.112C95.3742 127.008 20.9477 156.91 2.56802 149.695Z" fill="#3186FF"></path></g><g filter="url(#filter8_f_6001_463)"><path d="M113.934 75.8079C109.013 81.5509 96.1724 78.6224 85.253 69.2667C74.3335 59.911 69.4704 47.6711 74.391 41.928C79.3116 36.185 92.1525 39.1136 103.072 48.4692C113.991 57.8249 118.855 70.0648 113.934 75.8079Z" fill="#749BFF"></path></g><g filter="url(#filter9_f_6001_463)"><ellipse cx="92.611" cy="23.7962" rx="44.2411" ry="27.5016" transform="rotate(34.0763 92.611 23.7962)" fill="#FC413D"></ellipse></g><g filter="url(#filter10_f_6001_463)"><ellipse cx="23.4949" cy="29.5887" rx="23.7071" ry="13.7869" transform="rotate(112.516 23.4949 29.5887)" fill="#FFEE48"></ellipse></g></g></svg>'.replace(/_6001_463/g, ag);
     }
     return '<svg class="brand-claude" viewBox="0 0 16 10" width="46" height="29" fill="currentColor" shape-rendering="crispEdges" aria-label="Claude" xmlns="http://www.w3.org/2000/svg">'
       + '<rect x="2" y="0" width="12" height="2"/><rect x="2" y="2" width="2" height="2"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="2" width="2" height="2"/>'
@@ -236,7 +236,7 @@
       ${card(236, 96, cw.pct, 'Weekly', cw.fill, cw.ghost, cw.metaLeft, cw.metaRight)}
       ${cd ? cardSmall(342, 76, cd.pct, 'Design', cd.fill, cd.ghost, cd.metaLeft) : ''}
       ${withToast ? `<div class="toast abs t18sb" style="left:50%; transform:translateX(-50%); bottom:78px; width:380px; height:32px; display:flex; align-items:center; justify-content:center">codex: provider creds missing on laptop</div>` : ''}
-      <div class="dots-bottom">${dot('claude')}${dot('codex')}${dot('gemini')}</div>
+      <div class="dots-bottom">${dot('claude')}${dot('codex')}${dot('antigravity')}</div>
       <div class="abs" style="left:14px; right:14px; bottom:12px; height:56px; display:flex; align-items:center; justify-content:center; gap:8px; pointer-events:none">
         <span class="t22sb c-accent-tx" style="width:22px; text-align:center">${statusAst}</span>
         <span class="t22sb c-accent-tx">${statusWord}</span>
@@ -398,7 +398,7 @@
       ['h', 'PROVIDERS'],
       ['f', 'Claude Code', 'On'],
       ['f', 'Codex', 'Off'],
-      ['f', 'Gemini', 'Off'],
+      ['f', 'Antigravity', 'Off'],
       ['h', 'DISPLAY'],
       ['f', 'Auto-rotate', 'On'],
       ['f', 'Rotate interval', '8 s'],
@@ -529,18 +529,18 @@
       statusAst: '+', statusWord: 'Generating', statusDots: '..',
       activeChip: 'codex'
     }),
-    'gemini-day': () => dashboardHtml({
-      palette: 'pal-gemini-day', provider: 'gemini', providerName: 'Gemini',
+    'antigravity-day': () => dashboardHtml({
+      palette: 'pal-antigravity-day', provider: 'antigravity', providerName: 'Antigravity',
       cards: {
         session: { pct: '24.0%', fill: 24, ghost: 48, metaLeft: 'Resets in 4h 02m  ·  at 16:36', metaRight: '→ 48%' },
         weekly:  { pct: '19.0%', fill: 19, ghost: 32, metaLeft: 'Resets in 5d 11h  ·  at Sun 09:00', metaRight: '→ 32%' },
         design:  null
       },
       statusAst: 'x', statusWord: 'Synthesizing', statusDots: '.',
-      activeChip: 'gemini'
+      activeChip: 'antigravity'
     }),
-    'gemini-night': () => dashboardHtml({
-      palette: 'pal-gemini-night', provider: 'gemini', providerName: 'Gemini',
+    'antigravity-night': () => dashboardHtml({
+      palette: 'pal-antigravity-night', provider: 'antigravity', providerName: 'Antigravity',
       clock: '22:48',
       cards: {
         session: { pct: '56.0%', fill: 56, ghost: 74, metaLeft: 'Resets in 2h 12m  ·  at 01:00', metaRight: '→ 74%' },
@@ -548,7 +548,7 @@
         design:  null
       },
       statusAst: 'x', statusWord: 'Synthesizing', statusDots: '.',
-      activeChip: 'gemini'
+      activeChip: 'antigravity'
     }),
     'standby-day':   () => standbyHtml('pal-claude-day'),
     'standby-night': () => standbyHtml('pal-claude-night', '23:04', 'Thu 14 May', '19.1 °C'),

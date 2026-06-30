@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <title>TokenMonitor — See your AI usage on your desk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta name="description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Antigravity usage from your laptop.">
 <link rel="canonical" href="https://tokenmonitor.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://tokenmonitor.dev/">
 <meta property="og:title" content="TokenMonitor — See your AI usage on your desk">
-<meta property="og:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta property="og:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Antigravity usage from your laptop.">
 <meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TokenMonitor — See your AI usage on your desk">
-<meta name="twitter:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Gemini usage from your laptop.">
+<meta name="twitter:description" content="A 4-inch always-on desk display that shows live Claude Code, Codex and Antigravity usage from your laptop.">
 <meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
@@ -146,7 +146,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
   .provider-card:hover { transform: translateY(-5px); }
   .provider-card.claude:hover { border-color: rgba(224,122,74,0.4); box-shadow: 0 10px 40px rgba(224,122,74,0.18); }
   .provider-card.codex:hover  { border-color: rgba(30,210,156,0.4); box-shadow: 0 10px 40px rgba(30,210,156,0.18); }
-  .provider-card.gemini:hover { border-color: rgba(90,155,255,0.4); box-shadow: 0 10px 40px rgba(90,155,255,0.18); }
+  .provider-card.antigravity:hover { border-color: rgba(49,134,255,0.4); box-shadow: 0 10px 40px rgba(49,134,255,0.18); }
   .provider-card .header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 1.25rem;
@@ -452,7 +452,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
     <div>
       <p class="eyebrow">4-inch desk display</p>
       <h1>See your <span class="accent gradient-text">AI usage</span><br>on your desk.</h1>
-      <p class="lead">A 4-inch always-on desk display that shows your live Claude Code, Codex and Gemini usage — straight from the machine you already work on, with the logins you already have.</p>
+      <p class="lead">A 4-inch always-on desk display that shows your live Claude Code, Codex and Antigravity usage — straight from the machine you already work on, with the logins you already have.</p>
       <div class="cta-row">
         <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary btn-buy">
           <span class="buy-label">Get early access <span class="arrow">→</span></span>
@@ -532,7 +532,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
       <div class="node">
         <span class="k">On your laptop</span>
         <h3>The broker</h3>
-        <p>The <code class="inline-code">tokenmonitor-mcp</code> server reads your Claude Code / Codex / Gemini logs and serves the numbers.</p>
+        <p>The <code class="inline-code">tokenmonitor-mcp</code> server reads your Claude Code / Codex / Antigravity logs and serves the numbers.</p>
       </div>
       <div class="arr">⇄</div>
       <div class="node accent">
@@ -580,7 +580,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
       <p class="eyebrow">Three providers · day, night &amp; auto</p>
       <h2>One panel, dressed for the model.</h2>
       <div class="rule" style="margin:1.5rem auto;"></div>
-      <p class="lead" style="margin:0 auto;">Claude Code, Codex and Gemini each get their own brand-tinted palette in a day and a night flavour — six looks, drawn pixel-exact at 480×480. Auto follows your city's real sunrise and sunset; or lock one with a tap, or set it from your CLI. Try it:</p>
+      <p class="lead" style="margin:0 auto;">Claude Code, Codex and Antigravity each get their own brand-tinted palette in a day and a night flavour — six looks, drawn pixel-exact at 480×480. Auto follows your city's real sunrise and sunset; or lock one with a tap, or set it from your CLI. Try it:</p>
     </div>
     <div class="theme-lab">
       <div class="theme-controls">
@@ -589,7 +589,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
           <div class="tabs" data-seg="provider">
             <button type="button" class="tab active" data-provider="claude"><span class="swatch claude"></span>Claude</button>
             <button type="button" class="tab" data-provider="codex"><span class="swatch codex"></span>Codex</button>
-            <button type="button" class="tab" data-provider="gemini"><span class="swatch gemini"></span>Gemini</button>
+            <button type="button" class="tab" data-provider="antigravity"><span class="swatch antigravity"></span>Antigravity</button>
           </div>
         </div>
         <div class="seg-group">
@@ -664,7 +664,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
       <details class="acc-item">
         <summary class="acc-summary">What if I only use one provider — or not Claude Code? <span class="plus">+</span></summary>
         <div class="acc-body">
-          <p>Enable one or all three. It works with Claude Code, Codex CLI and Gemini CLI; a provider whose CLI you don't run simply doesn't appear on the device. The pairing plugin installs into whichever of those you use. <a href="faq.html#general">Provider details →</a></p>
+          <p>Enable one or all three. It works with Claude Code, Codex CLI and the Antigravity CLI; a provider whose CLI you don't run simply doesn't appear on the device. The pairing plugin installs into whichever of those you use. <a href="faq.html#general">Provider details →</a></p>
         </div>
       </details>
       <details class="acc-item">
@@ -717,7 +717,7 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
 
 <footer class="legal-footer">
   <div class="inner">
-    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Antigravity and Gemini are trademarks of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 

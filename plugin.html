@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <title>Plugin &amp; skills — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
+<meta name="description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or the Antigravity CLI — plus the four skills and MCP tools it adds.">
 <link rel="canonical" href="https://tokenmonitor.dev/plugin.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://tokenmonitor.dev/plugin.html">
 <meta property="og:title" content="Plugin &amp; skills — TokenMonitor">
-<meta property="og:description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
+<meta property="og:description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or the Antigravity CLI — plus the four skills and MCP tools it adds.">
 <meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Plugin &amp; skills — TokenMonitor">
-<meta name="twitter:description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or Gemini CLI — plus the four skills and MCP tools it adds.">
+<meta name="twitter:description" content="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or the Antigravity CLI — plus the four skills and MCP tools it adds.">
 <meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
@@ -78,7 +78,7 @@
   }
   .cli-tab .swatch.claude { background: #e07a4a; box-shadow: 0 0 14px rgba(224,122,74,0.5); }
   .cli-tab .swatch.codex  { background: #1ed29c; box-shadow: 0 0 14px rgba(30,210,156,0.5); }
-  .cli-tab .swatch.gemini { background: #5a9bff; box-shadow: 0 0 14px rgba(90,155,255,0.5); }
+  .cli-tab .swatch.antigravity { background: #3186FF; box-shadow: 0 0 14px rgba(49,134,255,0.5); }
   .cli-tab .label-block { line-height: 1.2; }
   .cli-tab h3 {
     font-family: var(--font-display);
@@ -99,7 +99,7 @@
   }
   .cli-tab.active.claude { border-color: rgba(224,122,74,0.50); box-shadow: 0 8px 30px rgba(224,122,74,0.18); }
   .cli-tab.active.codex  { border-color: rgba(30,210,156,0.50); box-shadow: 0 8px 30px rgba(30,210,156,0.18); }
-  .cli-tab.active.gemini { border-color: rgba(90,155,255,0.50); box-shadow: 0 8px 30px rgba(90,155,255,0.18); }
+  .cli-tab.active.antigravity { border-color: rgba(49,134,255,0.50); box-shadow: 0 8px 30px rgba(49,134,255,0.18); }
 
   /* ── CLI panel ──────────────────────────────────────────── */
   .cli-panel { display: none; }
@@ -430,10 +430,10 @@
             <h3>Codex CLI</h3>
           </div>
         </button>
-        <button class="cli-tab gemini" data-cli="gemini">
-          <span class="swatch gemini"></span>
+        <button class="cli-tab antigravity" data-cli="antigravity">
+          <span class="swatch antigravity"></span>
           <div class="label-block">
-            <h3>Gemini CLI</h3>
+            <h3>Antigravity CLI</h3>
           </div>
         </button>
       </div>
@@ -494,19 +494,19 @@ tokenmonitor_provision_hint
         <p style="font-size: 0.92rem; color: var(--fg-3);">Drop the server any time with <code class="inline-code">codex mcp remove tokenmonitor-mcp</code>.</p>
       </div>
 
-      <!-- ── Gemini CLI panel ────────────────────────────────── -->
-      <div class="cli-panel" data-panel="gemini">
+      <!-- ── Antigravity CLI panel ───────────────────────────── -->
+      <div class="cli-panel" data-panel="antigravity">
         <div class="panel-head">
-          <h2>Gemini CLI</h2>
+          <h2>Antigravity CLI</h2>
           <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
-        <p class="lead">Gemini reads extensions from <code class="inline-code">~/.gemini/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually.</p>
+        <p class="lead">Antigravity — the <code class="inline-code">agy</code> CLI, Google's successor to the Gemini CLI — reads extensions from <code class="inline-code">~/.gemini/antigravity-cli/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually. (It still runs the Gemini-family models, e.g. <code class="inline-code">gemini-3.5-flash</code> and <code class="inline-code">gemini-3.1-pro</code>.)</p>
 
         <h4>Install (recommended)</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
 
         <h4>Or — drop the JSON manually</h4>
-        <span class="file-tag">~/.gemini/extensions/tokenmonitor/gemini-extension.json</span>
+        <span class="file-tag">~/.gemini/antigravity-cli/extensions/tokenmonitor/gemini-extension.json</span>
 <div class="code-block">{
   <span class="str">"name"</span>:    <span class="str">"tokenmonitor"</span>,
   <span class="str">"version"</span>: <span class="str">"0.4.0"</span>,
@@ -522,8 +522,8 @@ tokenmonitor_provision_hint
   <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>, <span class="str">"firmware"</span>]
 }</div>
 
-        <h4>Restart Gemini</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> gemini restart
+        <h4>Restart Antigravity</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy restart
 <span class="cmt"># Loaded extension: tokenmonitor (skills: configure, theme, settings, firmware)</span></div>
       </div>
 
@@ -727,7 +727,7 @@ tokenmonitor_provision_hint
 
 <footer class="legal-footer">
   <div class="inner">
-    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Gemini is a trademark of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
+    TokenMonitor is an independent third-party product. Claude™ is a trademark of Anthropic, PBC. Codex is a trademark of OpenAI. Antigravity and Gemini are trademarks of Google LLC. This product is not affiliated with, endorsed by, or sponsored by these companies.
   </div>
 </footer>
 
