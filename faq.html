@@ -257,7 +257,7 @@
             <details class="acc-item" open>
               <summary class="acc-summary">Do I need an Anthropic, OpenAI or Google account? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p><strong>Yes — for the CLI side. Not for the device.</strong> Each CLI (Claude Code, Codex, Antigravity) authenticates against its own provider as it normally does. The wall monitor itself never talks to any of them.</p>
+                <p><strong>Yes — for the CLI side. Not for the device.</strong> Each CLI (Claude Code, Codex, Antigravity) authenticates against its own provider as it normally does. The TokenMonitor itself never talks to any of them.</p>
                 <p>The device only talks to the broker on your laptop for usage (plus a public clock and weather service); the broker reads from the CLIs' local on-disk logs. If you don't already have a CLI installed for a given provider, that provider's card will simply not show on the device.</p>
               </div>
             </details>
@@ -273,7 +273,7 @@
             <details class="acc-item">
               <summary class="acc-summary">Does it use my API key, or cost me tokens or money? <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>No new API key, and no extra spend. The broker reuses the login your CLI already has. Token totals come from logs already on disk; the limit percentages come from each provider's <em>usage</em> endpoint — a read, not a billable completion. Running the wall monitor doesn't consume tokens or add charges.</p>
+                <p>No new API key, and no extra spend. The broker reuses the login your CLI already has. Token totals come from logs already on disk; the limit percentages come from each provider's <em>usage</em> endpoint — a read, not a billable completion. Running the TokenMonitor doesn't consume tokens or add charges.</p>
               </div>
             </details>
 
@@ -491,7 +491,7 @@
             <span class="fix-tag">Fix</span>
             <p>The broker isn't being reached. Check, in order:</p>
             <ol>
-              <li>Is <code>tokenmonitor-mcp</code> actually running on your laptop? Ask your CLI <em>"check my wall monitor broker health"</em> — it calls <code>tokenmonitor_health</code> and reports PASS/FAIL per component.</li>
+              <li>Is <code>tokenmonitor-mcp</code> actually running on your laptop? Ask your CLI <em>"check my TokenMonitor broker health"</em> — it calls <code>tokenmonitor_health</code> and reports PASS/FAIL per component.</li>
               <li>Is your laptop on the same Wi-Fi as the device, with port <code>8765</code> reachable between them? (different SSIDs / VLANs / guest networks fail silently)</li>
               <li>Ask your CLI <em>"tail the last 20 lines of the broker log"</em> — it'll call <code>tokenmonitor_recent_logs</code> and you'll see the rejected polls, if any.</li>
             </ol>

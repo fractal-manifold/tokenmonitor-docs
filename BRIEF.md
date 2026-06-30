@@ -216,7 +216,7 @@ The extension JSON is identical across CLIs:
 ### Verify
 
 Common to all three CLIs — ask the model:
-> *"What's the status of my wall monitor broker?"*
+> *"What's the status of my TokenMonitor broker?"*
 
 It should call `tokenmonitor_status` and return broker role +
 request count. If it errors with *"no working implementation

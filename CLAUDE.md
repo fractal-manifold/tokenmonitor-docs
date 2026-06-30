@@ -195,7 +195,7 @@ Extension JSON (same shape for all three):
 }
 ```
 
-**Verify** — ask the model: *"What's the status of my wall monitor
+**Verify** — ask the model: *"What's the status of my TokenMonitor
 broker?"* — it should call `tokenmonitor_status` and return broker
 role + request count. On `"no working implementation found"`, run
 `tokenmonitor-mcp --probe` to see which runtime got picked.
