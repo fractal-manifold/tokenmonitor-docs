@@ -509,6 +509,43 @@
     </div>
   </section>
 
+  <!-- ── Custom panel ───────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Custom panel</p>
+          <h2>Draw your own data.</h2>
+          <div class="step-rule"></div>
+          <p>Swipe up from the dashboard to reach an extra screen that shows <strong style="color: var(--fg-1)">whatever you want</strong> — a line or bar chart, a pie/donut, a key-value table or plain text. A small script on your laptop writes a JSON file; the broker serves it to the device over the same authenticated LAN link; the device draws it. Edit the file and the screen refreshes within ~20 s — nothing to recompile or reflash.</p>
+          <p>It's an <strong style="color: var(--fg-1)">opt-in</strong> feature, off by default. Turn it on from the device Settings, or from your CLI:</p>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:settings panel_enabled=true</div>
+          <p style="color: var(--fg-2); font-size: 0.95rem;">The data is entirely yours — the device just renders the file your script writes. Point the broker at it with a <code class="inline-code">[panel]</code> section in <code class="inline-code">tokenmonitor.toml</code>.</p>
+        </div>
+        <div class="uv">
+<div class="code-block" style="text-align:left"><span style="color:var(--fg-2)"># tokenmonitor.toml</span>
+[panel]
+file = <span style="color:var(--color-gold)">"~/.local/state/tokenmonitor/panel.json"</span>
+
+<span style="color:var(--fg-2)"># panel.json — rewritten by your script</span>
+{
+  <span style="color:var(--color-gold)">"version"</span>: 1,
+  <span style="color:var(--color-gold)">"title"</span>: <span style="color:var(--color-gold)">"Session"</span>,
+  <span style="color:var(--color-gold)">"tiles"</span>: [{
+    <span style="color:var(--color-gold)">"type"</span>: <span style="color:var(--color-gold)">"line"</span>,
+    <span style="color:var(--color-gold)">"title"</span>: <span style="color:var(--color-gold)">"Tokens/min"</span>,
+    <span style="color:var(--color-gold)">"series"</span>: [{
+      <span style="color:var(--color-gold)">"name"</span>: <span style="color:var(--color-gold)">"in"</span>,
+      <span style="color:var(--color-gold)">"color"</span>: <span style="color:var(--color-gold)">"#c15f3c"</span>,
+      <span style="color:var(--color-gold)">"points"</span>: [12,18,9,24,31]
+    }]
+  }]
+}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── CTA ────────────────────────────────────────────────── -->
   <section class="container">
     <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px);">
