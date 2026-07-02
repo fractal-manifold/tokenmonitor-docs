@@ -402,6 +402,90 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
   position: relative;
 }
 
+/* ─── Custom-panel mockups (static; mirror screen_panel.c) ─────
+   A hand-built preview of the swipe-up custom panel. Sizes scale with the
+   frame via container query units (cqw), so it stays crisp from the big
+   landing frame down to the small setup gallery frames. Colours here are the
+   panel author's #rrggbb — exactly what the JSON `color`/`bg`/`title_color`
+   fields drive on the device. */
+.tmon-panel {
+  position: absolute; inset: 0;
+  container-type: inline-size;
+  background: #0d0c0b;
+  color: #faf9f5;
+  font-family: var(--font-body);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.tmon-panel__bar {
+  display: flex; align-items: center; gap: 2cqw;
+  padding: 3.5cqw 4cqw 2.5cqw;
+  flex: 0 0 auto;
+}
+.tmon-panel__back {
+  font-size: 3.4cqw; color: #888680;
+  border: 1px solid #292621; border-radius: 2cqw;
+  padding: 1cqw 2.4cqw; white-space: nowrap;
+}
+.tmon-panel__title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 4.4cqw; letter-spacing: 0.2px;
+  flex: 1; text-align: center; margin-right: 12cqw;
+}
+.tmon-panel__sub {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 3.8cqw; text-align: center;
+  padding: 0 4cqw 2cqw;
+}
+.tmon-panel__body { flex: 1; padding: 1cqw 5cqw 4cqw; min-height: 0; display: flex; flex-direction: column; }
+
+/* line/bar */
+.tmon-panel__chart {
+  flex: 1; min-height: 0;
+  background: #17150f; border: 1px solid #292621; border-radius: 2cqw;
+  padding: 2.5cqw;
+}
+.tmon-panel__chart svg { width: 100%; height: 100%; display: block; }
+.tmon-panel__bars { display: flex; align-items: flex-end; gap: 2.4cqw; height: 100%; }
+.tmon-panel__bars i { flex: 1; border-radius: 1cqw 1cqw 0 0; display: block; }
+.tmon-panel__legend {
+  display: flex; justify-content: center; gap: 5cqw;
+  font-size: 3.1cqw; color: #bfbdb6; padding-top: 2.5cqw;
+}
+.tmon-panel__legend span { display: inline-flex; align-items: center; gap: 1.6cqw; }
+.tmon-panel__legend b { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; }
+
+/* pie */
+.tmon-panel__pie-wrap { flex: 1; display: flex; align-items: center; gap: 5cqw; min-height: 0; }
+.tmon-panel__pie {
+  width: 42cqw; height: 42cqw; border-radius: 50%;
+  -webkit-mask: radial-gradient(circle, transparent 32%, #000 33%);
+          mask: radial-gradient(circle, transparent 32%, #000 33%);
+}
+.tmon-panel__pie-legend { display: flex; flex-direction: column; gap: 2.6cqw; font-size: 3.4cqw; }
+.tmon-panel__pie-legend span { display: inline-flex; align-items: center; gap: 2cqw; }
+.tmon-panel__pie-legend b { width: 3cqw; height: 3cqw; border-radius: 50%; flex: 0 0 auto; }
+
+/* table */
+.tmon-panel__table {
+  flex: 1; background: #17150f; border: 1px solid #292621; border-radius: 2cqw;
+  padding: 1cqw 3.5cqw; display: flex; flex-direction: column; justify-content: center;
+}
+.tmon-panel__table .row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2.6cqw 0; font-size: 4cqw;
+  border-bottom: 1px solid #23201b;
+}
+.tmon-panel__table .row:last-child { border-bottom: none; }
+.tmon-panel__table .row .k { color: #888680; }
+
+/* text */
+.tmon-panel__text {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  text-align: center; font-family: var(--font-display); font-weight: 700;
+  font-size: 8cqw; line-height: 1.2; padding: 4cqw;
+}
+
 /* ─── Tabs ─────────────────────────────────────────────────── */
 .tabs {
   display: flex; gap: 4px;

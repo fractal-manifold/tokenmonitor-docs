@@ -517,30 +517,42 @@
           <p class="eyebrow">Custom panel</p>
           <h2>Draw your own data.</h2>
           <div class="step-rule"></div>
-          <p>Swipe up from the dashboard to reach an extra screen that shows <strong style="color: var(--fg-1)">whatever you want</strong> — a line or bar chart, a pie/donut, a key-value table or plain text. A small script on your laptop writes a JSON file; the broker serves it to the device over the same authenticated LAN link; the device draws it. Edit the file and the screen refreshes within ~20 s — nothing to recompile or reflash.</p>
+          <p>Swipe up from the dashboard to reach an extra screen that shows <strong style="color: var(--fg-1)">whatever you want</strong> — a line or bar chart, a pie/donut, a key-value table or plain text. A small script on your laptop writes a JSON file; the broker serves it to the device over the same authenticated LAN link; the device draws it. Edit the file and the screen refreshes within seconds — nothing to recompile or reflash.</p>
           <p>It's an <strong style="color: var(--fg-1)">opt-in</strong> feature, off by default. Turn it on from the device Settings, or from your CLI:</p>
 <div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:settings panel_enabled=true</div>
-          <p style="color: var(--fg-2); font-size: 0.95rem;">The data is entirely yours — the device just renders the file your script writes. Point the broker at it with a <code class="inline-code">[panel]</code> section in <code class="inline-code">tokenmonitor.toml</code>.</p>
+          <div class="callout" style="background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.22); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-purple-light); flex-shrink: 0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.25rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Full walkthrough on the setup page</strong>
+              <span>Where the file lives, the <code class="inline-code">[panel]</code> config and per-device files, a copy-paste generator script, colors, <code class="inline-code">poll_s</code> and all five widgets — step by step.</span>
+              <a href="setup.html#custom-panel" class="btn btn-ghost" style="margin-top: 1rem;">Set up a custom panel <span class="arrow">→</span></a>
+            </div>
+          </div>
         </div>
         <div class="uv">
-<div class="code-block" style="text-align:left"><span style="color:var(--fg-2)"># tokenmonitor.toml</span>
-[panel]
-file = <span style="color:var(--color-gold)">"~/.local/state/tokenmonitor/panel.json"</span>
-
-<span style="color:var(--fg-2)"># panel.json — rewritten by your script</span>
-{
-  <span style="color:var(--color-gold)">"version"</span>: 1,
-  <span style="color:var(--color-gold)">"title"</span>: <span style="color:var(--color-gold)">"Session"</span>,
-  <span style="color:var(--color-gold)">"tiles"</span>: [{
-    <span style="color:var(--color-gold)">"type"</span>: <span style="color:var(--color-gold)">"line"</span>,
-    <span style="color:var(--color-gold)">"title"</span>: <span style="color:var(--color-gold)">"Tokens/min"</span>,
-    <span style="color:var(--color-gold)">"series"</span>: [{
-      <span style="color:var(--color-gold)">"name"</span>: <span style="color:var(--color-gold)">"in"</span>,
-      <span style="color:var(--color-gold)">"color"</span>: <span style="color:var(--color-gold)">"#c15f3c"</span>,
-      <span style="color:var(--color-gold)">"points"</span>: [12,18,9,24,31]
-    }]
-  }]
-}</div>
+          <div class="device-frame">
+            <div class="screen">
+              <div class="tmon-panel">
+                <div class="tmon-panel__bar">
+                  <span class="tmon-panel__back">‹ Back</span>
+                  <span class="tmon-panel__title" style="color:#e0894a">Session</span>
+                </div>
+                <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+                <div class="tmon-panel__body">
+                  <div class="tmon-panel__chart">
+                    <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                      <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="1.8"/>
+                      <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="1.8"/>
+                    </svg>
+                  </div>
+                  <div class="tmon-panel__legend">
+                    <span><b style="background:#c15f3c"></b>in</span>
+                    <span><b style="background:#e07a4a"></b>out</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

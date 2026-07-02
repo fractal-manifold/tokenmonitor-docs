@@ -426,7 +426,23 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
   .price-meta { font-size: 0.92rem; color: var(--fg-2); margin: 0.4rem 0 1.4rem; }
   .price-note { font-size: 0.78rem; color: var(--fg-3); max-width: 60ch; margin: 1.5rem 0 0; line-height: 1.6; }
 
+  /* ── Custom-panel showcase ──────────────────────────────── */
+  .panel-cta { display: grid; grid-template-columns: 340px 1fr; gap: 3.5rem; align-items: center; }
+  .panel-cta .device-frame { max-width: 340px; }
+  .panel-cta ul { list-style: none; padding: 0; margin: 1.4rem 0 1.8rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  .panel-cta li { display: flex; gap: 0.7rem; color: var(--fg-2); font-size: 1rem; line-height: 1.5; }
+  .panel-cta li::before { content: '▸'; color: var(--color-gold); flex-shrink: 0; }
+  .panel-cta .swipe-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.68rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--color-gold);
+    background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 1.2rem;
+  }
+
   @media (max-width: 900px) {
+    .panel-cta { grid-template-columns: 1fr; gap: 2rem; }
+    .panel-cta .device-frame { order: -1; margin: 0 auto; }
     .hero { grid-template-columns: 1fr; gap: 3rem; min-height: auto; padding: 2rem 0 4rem; }
     .scroll-cue { display: none; }
     .hero-visual { justify-self: center; max-width: 100%; }
@@ -610,6 +626,52 @@ try{var c=localStorage.getItem('tmon:cur');if(c!=='usd'&&c!=='eur'){var tz='';tr
     </div>
     <div class="midcta">
       <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ─── Custom panel (make it yours) ─────────────────────── -->
+  <section class="container" id="custom-panel">
+    <div class="section-head">
+      <p class="eyebrow">Beyond the dashboard</p>
+      <h2>Bring your own charts.</h2>
+      <div class="rule"></div>
+      <p class="lead">Swipe up for a screen that's entirely yours. A tiny script on your laptop writes a JSON file; the broker serves it over the same secure channel; the device draws it as a line, bar, pie, table or text — in your own colors.</p>
+    </div>
+    <div class="panel-cta">
+      <div class="device-frame">
+        <div class="screen">
+          <div class="tmon-panel">
+            <div class="tmon-panel__bar">
+              <span class="tmon-panel__back">‹ Back</span>
+              <span class="tmon-panel__title" style="color:#e0894a">Sesión</span>
+            </div>
+            <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+            <div class="tmon-panel__body">
+              <div class="tmon-panel__chart">
+                <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                  <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="1.8"/>
+                  <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="1.8"/>
+                </svg>
+              </div>
+              <div class="tmon-panel__legend">
+                <span><b style="background:#c15f3c"></b>in</span>
+                <span><b style="background:#e07a4a"></b>out</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="swipe-tag"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--color-gold)"></span>Swipe up to reach it</span>
+        <ul>
+          <li>Any data you can measure — tokens/min, RAM, spend, build times, whatever your script emits.</li>
+          <li>Five widgets: line, bar, pie/donut, key-value table, big text.</li>
+          <li>Your palette — set a color on every series, slice, row, title and background.</li>
+          <li>Edit the file and the device picks it up within a poll — set <code class="inline-code">poll_s</code> for a near-live refresh.</li>
+          <li>Off by default, open-source broker, no cloud round-trip.</li>
+        </ul>
+        <a href="setup.html#custom-panel" class="btn btn-ghost">Set up your own panel <span class="arrow">→</span></a>
+      </div>
     </div>
   </section>
 

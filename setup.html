@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <title>Setup — TokenMonitor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Five-step setup tutorial for the TokenMonitor.">
+<meta name="description" content="Step-by-step setup tutorial for the TokenMonitor, plus an optional custom panel.">
 <link rel="canonical" href="https://tokenmonitor.dev/setup.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TokenMonitor">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://tokenmonitor.dev/setup.html">
 <meta property="og:title" content="Setup — TokenMonitor">
-<meta property="og:description" content="Five-step setup tutorial for the TokenMonitor.">
+<meta property="og:description" content="Step-by-step setup tutorial for the TokenMonitor, plus an optional custom panel.">
 <meta property="og:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Setup — TokenMonitor">
-<meta name="twitter:description" content="Five-step setup tutorial for the TokenMonitor.">
+<meta name="twitter:description" content="Step-by-step setup tutorial for the TokenMonitor, plus an optional custom panel.">
 <meta name="twitter:image" content="https://tokenmonitor.dev/assets/prototype.jpg">
 <meta name="twitter:image:alt" content="TokenMonitor — 4-inch desk display showing live AI usage">
 <link rel="icon" type="image/png" href="assets/logo.png">
@@ -43,12 +43,14 @@
   /* ── Stepper TOC ─────────────────────────────────────────── */
   .stepper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 0.75rem;
     margin: 3rem 0 4rem 0;
     padding: 0;
     list-style: none;
   }
+  .stepper li.optional { border-style: dashed; }
+  .stepper li.optional .num { color: var(--color-purple-light); }
   .stepper li {
     background: var(--color-bg-tertiary);
     border: var(--border-faint);
@@ -301,8 +303,174 @@
   .done-banner h3 { font-size: 1.1rem; margin: 0 0 0.4rem 0; }
   .done-banner p { margin: 0; color: var(--fg-2); }
 
+  /* ── Panel examples gallery ─────────────────────────────── */
+  .panel-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .panel-gallery figure { margin: 0; }
+  .panel-gallery .device-frame { border-radius: 14px; padding: 7px; }
+  .panel-gallery .device-frame .screen { border-radius: 6px; }
+  .panel-gallery figcaption {
+    text-align: center; margin-top: 0.7rem;
+    font-family: var(--font-display); font-size: 0.66rem;
+    letter-spacing: 1.3px; text-transform: uppercase; color: var(--fg-3);
+  }
+  /* Code blocks on this page are authored with meaningful line breaks
+     (toml, JSON, the Python generator) — preserve them, wrap long lines
+     rather than overflow off the device-width column. */
+  .code-block { white-space: pre-wrap; }
+  .panel-json { margin-top: 0; line-height: 1.5; }
+  .code-block .p-key   { color: var(--color-purple-light); }
+  .code-block .p-brace { color: var(--fg-3); }
+
+  /* Selectable widget gallery → shows each shape's source JSON. */
+  #shapeGallery figure {
+    cursor: pointer; border-radius: 16px; outline: none;
+    transition: transform var(--ease-snappy);
+  }
+  #shapeGallery figure:hover { transform: translateY(-3px); }
+  #shapeGallery figure .device-frame { transition: box-shadow var(--ease-snappy); }
+  #shapeGallery figure.active .device-frame,
+  #shapeGallery figure:focus-visible .device-frame {
+    box-shadow: 0 0 0 2px var(--color-gold), 0 12px 30px -14px rgba(245,158,11,0.45);
+  }
+  #shapeGallery figure.active figcaption { color: var(--color-gold-light); }
+  .shape-json { margin-top: 1.75rem; }
+  .shape-json .sj-hint {
+    text-align: center; color: var(--fg-3); font-size: 0.7rem;
+    font-family: var(--font-display); letter-spacing: 1.3px; text-transform: uppercase;
+    margin-bottom: 0.85rem;
+  }
+  .shape-json .panel-json { display: none; }
+  .shape-json .panel-json.active { display: block; }
+
+  /* ── Custom-panel guide (full-width) ────────────────────── */
+  .pg-lead { max-width: 66ch; font-size: 1.05rem; margin-bottom: 0.5rem; }
+
+  /* data-flow strip */
+  .pg-flow {
+    display: flex; align-items: stretch; gap: 0.6rem;
+    flex-wrap: wrap; margin: 2rem 0 2.75rem 0;
+  }
+  .pg-flow .node {
+    flex: 1; min-width: 150px;
+    background: var(--color-bg-tertiary); border: var(--border-faint);
+    border-radius: var(--radius-lg); padding: 1rem 1.1rem;
+    backdrop-filter: blur(8px);
+  }
+  .pg-flow .node.accent { border-color: rgba(245,158,11,0.32); }
+  .pg-flow .node .k {
+    display: block; font-family: var(--font-display);
+    font-size: 0.56rem; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-gold); margin-bottom: 0.4rem;
+  }
+  .pg-flow .node b { display: block; font-size: 1rem; color: var(--fg-1); margin-bottom: 0.15rem; }
+  .pg-flow .node .d { font-size: 0.8rem; color: var(--fg-3); line-height: 1.4; }
+  .pg-flow .arr { align-self: center; color: var(--color-gold); font-size: 1.2rem; }
+
+  /* numbered sub-steps */
+  .pg-step {
+    display: grid; grid-template-columns: 44px 1fr; gap: 1.2rem;
+    padding: 1.9rem 0; border-top: var(--border-faint);
+  }
+  .pg-step:first-of-type { border-top: none; padding-top: 0.5rem; }
+  .pg-step .pg-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 2px solid rgba(245,158,11,0.45); color: var(--color-gold);
+    font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+    display: grid; place-items: center;
+  }
+  .pg-step .pg-body h3 {
+    font-family: var(--font-display); font-size: 1.12rem;
+    letter-spacing: 0.4px; color: var(--fg-1); margin: 0.3rem 0 0.6rem 0;
+  }
+  .pg-step .pg-body p { font-size: 0.96rem; margin: 0 0 0.5rem 0; }
+
+  /* resolution-order box */
+  .pg-reso {
+    margin-top: 1rem; background: var(--color-bg-tertiary);
+    border: var(--border-faint); border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+  }
+  .pg-reso .cap {
+    font-family: var(--font-display); font-size: 0.64rem;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--fg-3);
+  }
+  .pg-reso ol { margin: 0.65rem 0 0.4rem 0; padding-left: 1.3rem; }
+  .pg-reso li { margin: 0.35rem 0; color: var(--fg-2); font-size: 0.9rem; }
+  .pg-reso li em { color: var(--fg-3); font-style: normal; }
+  .pg-reso .note { font-size: 0.84rem; color: var(--fg-3); margin: 0.7rem 0 0 0; line-height: 1.5; }
+
+  /* code + screen two-column */
+  .pg-cols {
+    display: grid; grid-template-columns: 1fr 292px; gap: 1.5rem;
+    align-items: start; margin-top: 0.75rem;
+  }
+  .pg-cols .device-frame { max-width: 292px; }
+  .pg-details { margin-top: 1.1rem; }
+  .pg-details summary {
+    cursor: pointer; color: var(--color-gold-light);
+    font-size: 0.92rem; font-family: var(--font-display); letter-spacing: 0.3px;
+  }
+  .pg-details .code-block { margin-top: 0.9rem; }
+
+  /* colors + limits two-column */
+  .pg-two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 1rem; }
+  .pg-two h3 {
+    font-family: var(--font-display); font-size: 1.05rem;
+    color: var(--fg-1); margin: 0 0 0.75rem 0; letter-spacing: 0.3px;
+  }
+  .pg-colorlist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .pg-colorlist li { font-size: 0.92rem; color: var(--fg-2); }
+  .pg-colorlist li code { color: var(--color-purple-light); }
+  .pg-limits { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .pg-limits td { padding: 0.42rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--fg-2); }
+  .pg-limits td:last-child { text-align: right; font-family: var(--font-mono); color: var(--color-gold-light); font-variant-numeric: tabular-nums; }
+
+  /* multi-tile grid mockups (device renders 1 full · 2 stacked · 3–4 in 2×2) */
+  .pg-layouts {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem; margin-top: 2.5rem; align-items: start;
+  }
+  .pg-layouts figure { margin: 0; }
+  .pg-layouts .device-frame { border-radius: 16px; padding: 8px; }
+  .pg-layouts .device-frame .screen { border-radius: 7px; }
+  .pg-layouts figcaption {
+    text-align: center; margin-top: 0.8rem;
+    font-family: var(--font-display); font-size: 0.7rem;
+    letter-spacing: 1.3px; text-transform: uppercase; color: var(--fg-3);
+  }
+  .pg-layouts figcaption b { color: var(--fg-1); font-weight: 600; }
+  /* grid body inside a .tmon-panel (container-type: inline-size → cqw units) */
+  .tmon-panel__grid {
+    flex: 1; display: grid; gap: 2.4cqw;
+    padding: 1cqw 3cqw 3cqw; min-height: 0;
+  }
+  .tmon-panel__grid.two  { grid-template-rows: 1fr 1fr; }
+  .tmon-panel__grid.four { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  .pg-mtile {
+    background: #141312; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2.4cqw; padding: 2.4cqw;
+    display: flex; flex-direction: column; gap: 1.2cqw;
+    overflow: hidden; min-height: 0;
+  }
+  .pg-mtile .mt-t { font-size: 4.2cqw; font-weight: 600; line-height: 1.1; }
+  .pg-mtile .mt-body { flex: 1; min-height: 0; display: flex; }
+  .pg-mtile .mt-rows { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.4cqw; font-size: 3.6cqw; }
+  .pg-mtile .mt-rows > div { display: flex; justify-content: space-between; }
+  .pg-mtile .mt-rows .k { color: #8a8781; }
+
   @media (max-width: 900px) {
     .stepper { grid-template-columns: 1fr 1fr; }
+    .panel-gallery { grid-template-columns: repeat(2, 1fr); }
+    .pg-layouts { grid-template-columns: 1fr; max-width: 320px; margin-left: auto; margin-right: auto; }
+    .pg-flow .arr { transform: rotate(90deg); }
+    .pg-cols { grid-template-columns: 1fr; }
+    .pg-cols .device-frame { order: -1; margin: 0 auto; }
+    .pg-two { grid-template-columns: 1fr; gap: 1.75rem; }
     .step-inner { grid-template-columns: 1fr; gap: 2rem; }
     .step-block.reverse .step-inner { grid-template-columns: 1fr; }
     .step-block.reverse .step-text-col { order: 1; }
@@ -328,6 +496,7 @@
       <li><a href="#step-3"><div class="num">Step 03</div><div class="lbl">Captive portal</div></a></li>
       <li><a href="#step-4"><div class="num">Step 04</div><div class="lbl">Pair from your AI</div></a></li>
       <li><a href="#step-5"><div class="num">Step 05</div><div class="lbl">You're done</div></a></li>
+      <li class="optional"><a href="#custom-panel"><div class="num">Step 06 · optional</div><div class="lbl">Your own panel</div></a></li>
     </ol>
   </div>
 
@@ -532,12 +701,428 @@
           <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
             <a href="usage.html" class="btn btn-primary">Day-to-day usage <span class="arrow">→</span></a>
             <a href="plugin.html#skills" class="btn btn-ghost">Skills reference</a>
+            <a href="#custom-panel" class="btn btn-ghost">Add a custom panel <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="step-visual-col">
           <div class="device-frame">
             <div class="screen" data-tmon-screen="claude-day" data-tmon-theme="auto"></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Step 6: Custom panel (optional) ────────────────────── -->
+  <section class="step-block" id="custom-panel">
+    <div class="container">
+      <div class="step-num" style="-webkit-text-stroke-color: var(--color-purple-light)">06</div>
+      <h2>Your own panel. <span style="color:var(--fg-3); font-size:0.7em">Optional.</span></h2>
+      <div class="step-rule" style="background: var(--color-purple-light)"></div>
+      <p class="pg-lead">Swipe up on the dashboard to reach a screen that's entirely yours — a line, bar, pie, key/value table or plain-text widget, drawn from data you produce. A small script on your laptop writes a JSON file; the broker serves it to the device over the same signed LAN link; the device draws it. It's <strong style="color:var(--fg-1)">opt-in</strong>, off by default, and nothing is ever flashed — edit the file and the screen catches up within one poll.</p>
+
+      <!-- data-flow strip -->
+      <div class="pg-flow">
+        <div class="node">
+          <span class="k">on your laptop</span><b>Your script</b>
+          <span class="d">writes a small JSON file, whenever your data changes</span>
+        </div>
+        <div class="arr">→</div>
+        <div class="node">
+          <span class="k">a file</span><b>panel.json</b>
+          <span class="d">any path you choose — the broker just reads it</span>
+        </div>
+        <div class="arr">→</div>
+        <div class="node">
+          <span class="k">broker</span><b>Serves it</b>
+          <span class="d">verbatim, over the signed <code class="inline-code">GET /device/&lt;id&gt;/panel</code></span>
+        </div>
+        <div class="arr">→</div>
+        <div class="node accent">
+          <span class="k">on your desk</span><b>The device</b>
+          <span class="d">swipe up to view · redraws on every poll</span>
+        </div>
+      </div>
+
+      <!-- ① turn it on -->
+      <div class="pg-step">
+        <div class="pg-num">1</div>
+        <div class="pg-body">
+          <h3>Turn it on</h3>
+          <p>The panel is off until you enable it. On the device: <strong style="color:var(--fg-1)">Settings → Display → Custom panel</strong>. Or from your agent, on any of the three CLIs:</p>
+<div class="code-block" style="margin: 0.4rem 0 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:settings panel_enabled=true</div>
+        </div>
+      </div>
+
+      <!-- ② point the broker at a file -->
+      <div class="pg-step">
+        <div class="pg-num">2</div>
+        <div class="pg-body">
+          <h3>Point the broker at a file</h3>
+          <p><em>You</em> decide where the file lives — the broker only reads the path you give it. Add a <code class="inline-code">[panel]</code> section to <code class="inline-code">~/.config/tokenmonitor/tokenmonitor.toml</code>:</p>
+<div class="code-block" style="margin: 0.4rem 0 0"><span class="cmt"># one file, shared by every device you own</span>
+[panel]
+file = <span class="str">"~/.local/state/tokenmonitor/panel.json"</span>
+
+<span class="cmt"># …or a folder of per-device files (optional)</span>
+<span class="cmt"># dir  = "~/.config/tokenmonitor/panels"</span></div>
+          <p style="margin-top:0.75rem"><strong style="color:var(--fg-1)">Restart the broker once</strong> after adding the section. From then on the file is re-read on every poll — rewrite it as often as you like, no restart needed.</p>
+          <div class="pg-reso">
+            <span class="cap">Which file does device <code class="inline-code">&lt;id&gt;</code> get?</span>
+            <ol>
+              <li><code class="inline-code">dir/&lt;id&gt;.json</code> <em>— per-device, wins if present</em></li>
+              <li><code class="inline-code">dir/default.json</code> <em>— shared fallback in the folder</em></li>
+              <li><code class="inline-code">file</code> <em>— the single global one</em></li>
+            </ol>
+            <p class="note">Your device's 8-hex ID is on <strong style="color:var(--fg-2)">Settings → About</strong> (or ask your agent to list devices). If none of these resolve, the panel screen simply shows an empty-state message — that's normal, not an error.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ write the file -->
+      <div class="pg-step">
+        <div class="pg-num">3</div>
+        <div class="pg-body">
+          <h3>Write the file</h3>
+          <p>Any language works. Write it <strong style="color:var(--fg-1)">atomically</strong> — a temp file, then a rename — so the broker never catches a half-written file. Give any element a color, and set <code class="inline-code">poll_s</code> (3–60&nbsp;s) when you want a near-live refresh:</p>
+          <div class="pg-cols">
+<div class="code-block panel-json"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>, <span class="p-key">"poll_s"</span>: <span class="num">5</span>,
+  <span class="p-key">"title"</span>: <span class="str">"Session"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#e0894a"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"line"</span>, <span class="p-key">"title"</span>: <span class="str">"Tokens/min"</span>,
+    <span class="p-key">"series"</span>: [
+      <span class="p-brace">{</span> <span class="p-key">"name"</span>: <span class="str">"in"</span>,  <span class="p-key">"color"</span>: <span class="str">"#c15f3c"</span>, <span class="p-key">"points"</span>: [<span class="num">12</span>,<span class="num">18</span>,<span class="num">9</span>,<span class="num">24</span>,<span class="num">31</span>] <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"name"</span>: <span class="str">"out"</span>, <span class="p-key">"color"</span>: <span class="str">"#e07a4a"</span>, <span class="p-key">"points"</span>: [<span class="num">4</span>,<span class="num">7</span>,<span class="num">3</span>,<span class="num">11</span>,<span class="num">15</span>] <span class="p-brace">}</span>
+    ]
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+            <div class="device-frame">
+              <div class="screen">
+                <div class="tmon-panel">
+                  <div class="tmon-panel__bar">
+                    <span class="tmon-panel__back">‹ Back</span>
+                    <span class="tmon-panel__title" style="color:#e0894a">Session</span>
+                  </div>
+                  <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+                  <div class="tmon-panel__body">
+                    <div class="tmon-panel__chart">
+                      <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                        <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="1.8"/>
+                        <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="1.8"/>
+                      </svg>
+                    </div>
+                    <div class="tmon-panel__legend">
+                      <span><b style="background:#c15f3c"></b>in</span>
+                      <span><b style="background:#e07a4a"></b>out</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <details class="pg-details">
+            <summary>A ~20-line Python generator you can steal →</summary>
+<div class="code-block"><span class="cmt">#!/usr/bin/env python3</span>
+import json, os, time, collections
+OUT  = os.path.expanduser(<span class="str">"~/.local/state/tokenmonitor/panel.json"</span>)
+hist = collections.deque(maxlen=<span class="num">64</span>)
+
+while True:
+    hist.append(round(sample_metric()))         <span class="cmt"># your number: tokens/min, RAM %, $ today…</span>
+    doc = {
+        <span class="str">"version"</span>: <span class="num">1</span>, <span class="str">"poll_s"</span>: <span class="num">5</span>, <span class="str">"title"</span>: <span class="str">"Live"</span>,
+        <span class="str">"tiles"</span>: [{
+            <span class="str">"type"</span>: <span class="str">"line"</span>, <span class="str">"title"</span>: <span class="str">"metric/min"</span>,
+            <span class="str">"series"</span>: [{<span class="str">"name"</span>: <span class="str">"m"</span>, <span class="str">"color"</span>: <span class="str">"#c15f3c"</span>, <span class="str">"points"</span>: list(hist)}],
+        }],
+    }
+    tmp = OUT + <span class="str">".tmp"</span>                            <span class="cmt"># write a temp file first…</span>
+    with open(tmp, <span class="str">"w"</span>) as f:
+        json.dump(doc, f)
+    os.replace(tmp, OUT)                          <span class="cmt"># …then rename — atomic, never half-read</span>
+    time.sleep(<span class="num">30</span>)</div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Widget gallery — selectable, each shape shows its source JSON -->
+      <div style="margin-top: 3.5rem;">
+        <div class="section-head" style="text-align:center; max-width:640px; margin:0 auto;">
+          <p class="eyebrow">Five widgets, your data &amp; colors</p>
+          <h2 style="font-size: clamp(1.4rem, 2.6vw, 1.8rem)">Pick a shape for whatever you measure.</h2>
+        </div>
+        <div class="panel-gallery" id="shapeGallery" role="tablist" aria-label="Panel widget examples">
+          <!-- line -->
+          <figure data-shape="line" role="tab" tabindex="0" aria-pressed="true">
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#e0894a; margin:0">Session</span></div>
+              <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__chart">
+                <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="2.2"/>
+                  <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="2.2"/>
+                </svg></div></div>
+            </div></div></div>
+            <figcaption>Line</figcaption>
+          </figure>
+          <!-- bar -->
+          <figure data-shape="bar" role="tab" tabindex="0" aria-pressed="false">
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#10a37f; margin:0">Per day</span></div>
+              <div class="tmon-panel__sub" style="color:#bfbdb6">Tokens/day</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__chart"><div class="tmon-panel__bars">
+                <i style="height:57%;background:#10a37f"></i><i style="height:47%;background:#10a37f"></i>
+                <i style="height:69%;background:#10a37f"></i><i style="height:29%;background:#10a37f"></i>
+                <i style="height:100%;background:#10a37f"></i><i style="height:15%;background:#10a37f"></i>
+                <i style="height:9%;background:#10a37f"></i>
+              </div></div></div>
+            </div></div></div>
+            <figcaption>Bar</figcaption>
+          </figure>
+          <!-- pie -->
+          <figure data-shape="pie" role="tab" tabindex="0" aria-pressed="false">
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="margin:0">Split</span></div>
+              <div class="tmon-panel__sub" style="color:#bfbdb6">By provider</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__pie-wrap">
+                <div class="tmon-panel__pie" style="background:conic-gradient(#c15f3c 0 61%, #10a37f 61% 88%, #3186ff 88% 100%)"></div>
+                <div class="tmon-panel__pie-legend">
+                  <span><b style="background:#c15f3c"></b>Claude</span>
+                  <span><b style="background:#10a37f"></b>Codex</span>
+                  <span><b style="background:#3186ff"></b>Antigrav</span>
+                </div>
+              </div></div>
+            </div></div></div>
+            <figcaption>Pie</figcaption>
+          </figure>
+          <!-- table -->
+          <figure data-shape="table" role="tab" tabindex="0" aria-pressed="false">
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#c15f3c; margin:0">System</span></div>
+              <div class="tmon-panel__sub" style="color:#e07a4a">Metrics</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__table">
+                <div class="row"><span class="k">RAM</span><span style="color:#10a37f">62%</span></div>
+                <div class="row"><span class="k">$ today</span><span style="color:#e07a4a">4.21</span></div>
+                <div class="row"><span class="k">session</span><span>12.4k</span></div>
+                <div class="row"><span class="k">uptime</span><span>3h12m</span></div>
+              </div></div>
+            </div></div></div>
+            <figcaption>Table</figcaption>
+          </figure>
+          <!-- text -->
+          <figure data-shape="text" role="tab" tabindex="0" aria-pressed="false">
+            <div class="device-frame"><div class="screen"><div class="tmon-panel" style="background:#141210">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#c15f3c; margin:0">Hello</span></div>
+              <div class="tmon-panel__sub" style="color:#888680">Note</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__text" style="color:#e07a4a">ship it</div></div>
+            </div></div></div>
+            <figcaption>Text</figcaption>
+          </figure>
+        </div>
+
+        <!-- source JSON for the selected shape -->
+        <div class="shape-json">
+          <p class="sj-hint">↑ Tap a shape · here's the file that draws it ↓</p>
+<div class="code-block panel-json active" data-shape="line"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>, <span class="p-key">"poll_s"</span>: <span class="num">5</span>,
+  <span class="p-key">"title"</span>: <span class="str">"Session"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#e0894a"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"line"</span>, <span class="p-key">"title"</span>: <span class="str">"Tokens/min"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#c15f3c"</span>,
+    <span class="p-key">"series"</span>: [
+      <span class="p-brace">{</span> <span class="p-key">"name"</span>: <span class="str">"in"</span>,  <span class="p-key">"color"</span>: <span class="str">"#c15f3c"</span>, <span class="p-key">"points"</span>: [<span class="num">12</span>,<span class="num">18</span>,<span class="num">9</span>,<span class="num">24</span>,<span class="num">31</span>] <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"name"</span>: <span class="str">"out"</span>, <span class="p-key">"color"</span>: <span class="str">"#e07a4a"</span>, <span class="p-key">"points"</span>: [<span class="num">4</span>,<span class="num">7</span>,<span class="num">3</span>,<span class="num">11</span>,<span class="num">15</span>] <span class="p-brace">}</span>
+    ]
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+<div class="code-block panel-json" data-shape="bar"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>,
+  <span class="p-key">"title"</span>: <span class="str">"Per day"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#10a37f"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"bar"</span>, <span class="p-key">"title"</span>: <span class="str">"Tokens/day"</span>,
+    <span class="p-key">"series"</span>: [
+      <span class="p-brace">{</span> <span class="p-key">"color"</span>: <span class="str">"#10a37f"</span>, <span class="p-key">"points"</span>: [<span class="num">23</span>,<span class="num">19</span>,<span class="num">28</span>,<span class="num">12</span>,<span class="num">40</span>,<span class="num">6</span>,<span class="num">4</span>] <span class="p-brace">}</span>
+    ]
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+<div class="code-block panel-json" data-shape="pie"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>, <span class="p-key">"title"</span>: <span class="str">"Split"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"pie"</span>, <span class="p-key">"title"</span>: <span class="str">"By provider"</span>,
+    <span class="p-key">"slices"</span>: [
+      <span class="p-brace">{</span> <span class="p-key">"label"</span>: <span class="str">"Claude"</span>,      <span class="p-key">"value"</span>: <span class="num">61</span>, <span class="p-key">"color"</span>: <span class="str">"#c15f3c"</span> <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"label"</span>: <span class="str">"Codex"</span>,       <span class="p-key">"value"</span>: <span class="num">27</span>, <span class="p-key">"color"</span>: <span class="str">"#10a37f"</span> <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"label"</span>: <span class="str">"Antigravity"</span>, <span class="p-key">"value"</span>: <span class="num">12</span>, <span class="p-key">"color"</span>: <span class="str">"#3186ff"</span> <span class="p-brace">}</span>
+    ]
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+<div class="code-block panel-json" data-shape="table"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>, <span class="p-key">"title"</span>: <span class="str">"System"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#c15f3c"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"table"</span>, <span class="p-key">"title"</span>: <span class="str">"Metrics"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#e07a4a"</span>,
+    <span class="p-key">"rows"</span>: [
+      <span class="p-brace">{</span> <span class="p-key">"k"</span>: <span class="str">"RAM"</span>,     <span class="p-key">"v"</span>: <span class="str">"62%"</span>,  <span class="p-key">"color"</span>: <span class="str">"#10a37f"</span> <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"k"</span>: <span class="str">"$ today"</span>, <span class="p-key">"v"</span>: <span class="str">"4.21"</span>, <span class="p-key">"color"</span>: <span class="str">"#e07a4a"</span> <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"k"</span>: <span class="str">"session"</span>, <span class="p-key">"v"</span>: <span class="str">"12.4k"</span> <span class="p-brace">}</span>,
+      <span class="p-brace">{</span> <span class="p-key">"k"</span>: <span class="str">"uptime"</span>,  <span class="p-key">"v"</span>: <span class="str">"3h12m"</span> <span class="p-brace">}</span>
+    ]
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+<div class="code-block panel-json" data-shape="text"><span class="p-brace">{</span>
+  <span class="p-key">"version"</span>: <span class="num">1</span>, <span class="p-key">"title"</span>: <span class="str">"Hello"</span>, <span class="p-key">"title_color"</span>: <span class="str">"#c15f3c"</span>,
+  <span class="p-key">"tiles"</span>: [<span class="p-brace">{</span>
+    <span class="p-key">"type"</span>: <span class="str">"text"</span>, <span class="p-key">"title"</span>: <span class="str">"Note"</span>,
+    <span class="p-key">"bg"</span>: <span class="str">"#141210"</span>,
+    <span class="p-key">"text"</span>: <span class="str">"ship it"</span>, <span class="p-key">"color"</span>: <span class="str">"#e07a4a"</span>
+  <span class="p-brace">}</span>]
+<span class="p-brace">}</span></div>
+        </div>
+        <script>
+        (function () {
+          var g = document.getElementById('shapeGallery');
+          if (!g) return;
+          var figs = g.querySelectorAll('figure[data-shape]');
+          var jsons = document.querySelectorAll('.shape-json .panel-json[data-shape]');
+          function select(shape) {
+            figs.forEach(function (f) {
+              var on = f.getAttribute('data-shape') === shape;
+              f.classList.toggle('active', on);
+              f.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            jsons.forEach(function (j) {
+              j.classList.toggle('active', j.getAttribute('data-shape') === shape);
+            });
+          }
+          figs.forEach(function (f) {
+            f.addEventListener('click', function () { select(f.getAttribute('data-shape')); });
+            f.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(f.getAttribute('data-shape')); }
+            });
+          });
+          select('line');
+        })();
+        </script>
+      </div>
+
+      <!-- one, two, or four tiles -->
+      <div style="margin-top: 3.5rem;">
+        <div class="section-head" style="text-align:center; max-width:660px; margin:0 auto;">
+          <p class="eyebrow">One panel — or a grid</p>
+          <h2 style="font-size: clamp(1.4rem, 2.6vw, 1.8rem)">Add more tiles, up to four.</h2>
+          <p style="color:var(--fg-2); margin-top:0.75rem; font-size:0.95rem">Put more objects in <code class="inline-code">tiles[]</code> and the device lays them out for you: one fills the screen, two stack in rows, three or four fall into a 2×2 grid.</p>
+        </div>
+        <div class="pg-layouts">
+          <!-- 1 tile -->
+          <figure>
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#e0894a; margin:0">Session</span></div>
+              <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+              <div class="tmon-panel__body"><div class="tmon-panel__chart">
+                <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="2.2"/>
+                  <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="2.2"/>
+                </svg></div></div>
+            </div></div></div>
+            <figcaption><b>1 tile</b> · full screen</figcaption>
+          </figure>
+          <!-- 2 tiles -->
+          <figure>
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#c15f3c; margin:0">Panel</span></div>
+              <div class="tmon-panel__grid two">
+                <div class="pg-mtile">
+                  <span class="mt-t" style="color:#c15f3c">Tokens/min</span>
+                  <div class="mt-body"><svg viewBox="0 0 100 34" preserveAspectRatio="none" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%">
+                    <polyline points="2,26 26,19 50,29 74,9 98,3" stroke="#c15f3c" stroke-width="3"/>
+                    <polyline points="2,31 26,28 50,32 74,23 98,19" stroke="#e07a4a" stroke-width="3"/>
+                  </svg></div>
+                </div>
+                <div class="pg-mtile">
+                  <span class="mt-t" style="color:#e07a4a">Metrics</span>
+                  <div class="mt-rows">
+                    <div><span class="k">RAM</span><span style="color:#10a37f">62%</span></div>
+                    <div><span class="k">$ today</span><span style="color:#e07a4a">4.21</span></div>
+                    <div><span class="k">uptime</span><span>3h12m</span></div>
+                  </div>
+                </div>
+              </div>
+            </div></div></div>
+            <figcaption><b>2 tiles</b> · stacked</figcaption>
+          </figure>
+          <!-- 3–4 tiles -->
+          <figure>
+            <div class="device-frame"><div class="screen"><div class="tmon-panel">
+              <div class="tmon-panel__bar"><span class="tmon-panel__title" style="color:#c15f3c; margin:0">Panel</span></div>
+              <div class="tmon-panel__grid four">
+                <div class="pg-mtile">
+                  <span class="mt-t" style="color:#c15f3c">Tokens</span>
+                  <div class="mt-body"><svg viewBox="0 0 100 34" preserveAspectRatio="none" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%">
+                    <polyline points="2,26 34,16 66,28 98,5" stroke="#c15f3c" stroke-width="4"/>
+                  </svg></div>
+                </div>
+                <div class="pg-mtile">
+                  <span class="mt-t" style="color:#e07a4a">Metrics</span>
+                  <div class="mt-rows" style="font-size:3.2cqw">
+                    <div><span class="k">RAM</span><span style="color:#10a37f">62%</span></div>
+                    <div><span class="k">$ today</span><span style="color:#e07a4a">4.21</span></div>
+                  </div>
+                </div>
+                <div class="pg-mtile">
+                  <span class="mt-t">Split</span>
+                  <div class="mt-body" style="align-items:center;justify-content:center">
+                    <div style="width:15cqw;height:15cqw;border-radius:50%;background:conic-gradient(#c15f3c 0 61%,#10a37f 61% 88%,#3186ff 88% 100%);display:grid;place-items:center">
+                      <div style="width:6cqw;height:6cqw;border-radius:50%;background:#141312"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pg-mtile" style="background:#141210">
+                  <span class="mt-t" style="color:#8a8781">Note</span>
+                  <div class="mt-body" style="align-items:center;justify-content:center">
+                    <span style="color:#e07a4a;font-size:5cqw;font-weight:600">ship it</span>
+                  </div>
+                </div>
+              </div>
+            </div></div></div>
+            <figcaption><b>3–4 tiles</b> · 2×2 grid</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- colours + limits -->
+      <div class="pg-two">
+        <div>
+          <h3>Colour anything</h3>
+          <p style="font-size:0.95rem; color:var(--fg-2); margin:0 0 0.9rem 0">Every colour is an optional solid <code class="inline-code">#rrggbb</code>. Omit it and the element falls back to the active day / night theme:</p>
+          <ul class="pg-colorlist">
+            <li>Screen &amp; tile titles — <code>title_color</code></li>
+            <li>Tile background — <code>bg</code></li>
+            <li>Line / bar series &amp; pie slices — <code>color</code></li>
+            <li>Table value / key cells — <code>color</code> / <code>kcolor</code></li>
+            <li>Text tile — <code>color</code></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Limits</h3>
+          <p style="font-size:0.95rem; color:var(--fg-2); margin:0 0 0.9rem 0">The device parses into fixed buffers — anything past these caps is simply ignored, never a crash:</p>
+          <table class="pg-limits">
+            <tr><td>Tiles per document</td><td>4</td></tr>
+            <tr><td>Series · points each</td><td>4 · 64</td></tr>
+            <tr><td>X-axis labels</td><td>12</td></tr>
+            <tr><td>Pie slices</td><td>8</td></tr>
+            <tr><td>Table rows</td><td>12</td></tr>
+            <tr><td>Any text string</td><td>32 chars</td></tr>
+            <tr><td>Whole file</td><td>8 KB</td></tr>
+            <tr><td><code>poll_s</code> range</td><td>3–60 s</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- cost / refresh -->
+      <div class="callout" style="margin-top:2.5rem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <div>
+          <strong>A fast <code class="inline-code" style="color:inherit">poll_s</code> costs the broker nothing extra</strong>
+          <span>Serving the panel is a plain file read, and provider usage is answered from the broker's ~30&nbsp;s cache — so polling every few seconds never multiplies calls to Claude, Codex or Antigravity. The full field reference lives in <a href="https://github.com/fractal-manifold/tokenmonitor-mcp" style="color:var(--color-gold-light)">the broker docs</a>.</span>
         </div>
       </div>
     </div>
