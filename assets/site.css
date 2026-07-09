@@ -321,6 +321,9 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
 .site-footer ul { list-style: none; padding: 0; margin: 0; }
 .site-footer li { margin: 0 0 0.55rem 0; }
 .site-footer a { color: var(--fg-3); font-size: 0.92rem; transition: color var(--ease-snappy); }
+/* Long link labels (e.g. the contact email) break instead of overflowing the
+   column — but not the brand lockup, which must stay on one word. */
+.site-footer li a { overflow-wrap: anywhere; }
 .site-footer a:hover { color: var(--fg-1); }
 .site-footer .colophon {
   max-width: 1200px;
@@ -370,9 +373,13 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
 .code-block .var { color: #60a5fa; }
 .code-block .num { color: var(--color-gold); }
 
+/* Long tokens in inline code (paths, header names, commands) must break
+   rather than overflow their column on narrow screens. */
+code { overflow-wrap: anywhere; }
 .inline-code {
   font-family: var(--font-mono);
   font-size: 0.88em;
+  overflow-wrap: anywhere;
   background: rgba(245,158,11,0.10);
   border: 1px solid rgba(245,158,11,0.18);
   color: var(--color-gold-light);
@@ -674,6 +681,13 @@ p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
   .site-nav { gap: 1.2rem; font-size: 0.7rem; }
   .brand-mark .sub { display: none; }
 }
+/* Comparison tables are content-dense; tighten padding so 3 columns fit a
+   phone viewport instead of clipping the last column. */
+@media (max-width: 600px) {
+  .tool-table th, .tool-table td { padding: 0.55rem 0.6rem; font-size: 0.82rem; }
+  .tool-table code { padding: 1px 5px; font-size: 0.78rem; }
+}
+
 @media (max-width: 900px) {
   body { padding-top: 64px; }
   .site-header { height: 64px; }

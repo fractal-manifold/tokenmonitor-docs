@@ -220,6 +220,9 @@
     }
     .faq-toc a { padding: 0.4rem 0.9rem; border: var(--border-faint); border-radius: var(--radius-md); margin: 0; }
     .help-banner { grid-template-columns: 1fr; }
+    /* The contact button's label is a full email — let it wrap instead of
+       forcing the banner wider than the phone viewport. */
+    .help-banner a.btn { white-space: normal; overflow-wrap: anywhere; text-align: center; }
   }
 </style>
 </head>
@@ -535,8 +538,8 @@
       <p class="eyebrow">Don't have one yet?</p>
       <h2 style="margin-bottom: 1rem">Reserve early access.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
-      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">Early-access units are a small first batch, shipping worldwide before Q4&nbsp;2026. The waitlist locks the launch price for the first 100 to join.</p>
-      <a href="https://forms.gle/Yg3ZhXZJGXuvRKx49" target="_blank" rel="noopener" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">Early-access units are a small first batch, shipping worldwide before Q4&nbsp;2026, limited to the first 100 to join.</p>
+      <a href="#" class="btn btn-primary">Get early access <span class="arrow">→</span></a>
     </div>
   </div>
 </main>

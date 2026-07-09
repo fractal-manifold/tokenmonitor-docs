@@ -8,3 +8,7 @@ _site/
 .idea/
 .vscode/
 *.iml
+
+# raw camera source footage — the web-encoded desk-loop.{mp4,webm} are what ship
+assets/*.MOV
+assets/DSCF9993.MOV
