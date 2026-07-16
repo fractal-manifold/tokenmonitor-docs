@@ -1,0 +1,923 @@
+/* ============================================================
+   TokenMonitor — site styles
+   Built on Fractal Manifold tokens. Premium hardware product feel.
+   ============================================================ */
+@import url('./tokens.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Override FM type tokens — use the device's Montserrat as the site
+ * voice. Bruno Ace is kept ONLY for the footer brand lockup so the
+ * "by Fractal Manifold" stamp is still recognisably FM. */
+:root {
+  --font-display: 'Montserrat', system-ui, sans-serif;
+  --font-body:    'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-brand:   'Bruno Ace', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--color-bg);
+  color: var(--fg-2);
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body { padding-top: 80px; overflow-x: hidden; }
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ─── Background orbs + watermark (per FM brand) ───────────── */
+.bg-stage {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+.bg-stage::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url('logo.png');
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: 800px 800px;
+  filter: grayscale(100%);
+  opacity: 0.06;
+}
+.orb {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  /* Desaturated so the canvas reads as neutral gray, not warm —
+     keeps faint depth/motion without a yellow cast. */
+  filter: blur(100px) grayscale(78%);
+  opacity: 0.16;
+  will-change: transform;
+}
+.orb.gold   { background: radial-gradient(circle, var(--color-gold) 0%, transparent 70%); }
+.orb.purple { background: radial-gradient(circle, var(--color-purple) 0%, transparent 70%); }
+.orb.warm   { background: radial-gradient(circle, #F97316 0%, transparent 70%); }
+.orb-1 { top: -10%; left: -10%;  animation: float-1 14s ease-in-out infinite; }
+.orb-2 { top: 30%;  right: -12%; animation: float-2 16s ease-in-out infinite; }
+.orb-3 { bottom: -15%; left: 30%; animation: float-3 18s ease-in-out infinite; opacity: 0.12; }
+@keyframes float-1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px, 40px); } }
+@keyframes float-2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px, 60px); } }
+@keyframes float-3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, -40px); } }
+@media (prefers-reduced-motion: reduce) { .orb { animation: none; } }
+
+/* ─── Header ───────────────────────────────────────────────── */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 80px; z-index: 100;
+  background: rgba(10,10,10,0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: var(--border-faint);
+}
+.site-header .inner {
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.brand-mark {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+  font-size: 0.92rem;
+  color: var(--fg-1);
+  flex-shrink: 0;
+}
+.brand-mark img { width: 28px; height: 28px; }
+.brand-mark .sub {
+  color: var(--fg-3);
+  font-size: 0.56rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.brand-mark .name { display: flex; flex-direction: column; line-height: 1.15; }
+
+/* Footer brand-mark keeps Bruno Ace — single FM stamp on the page. */
+.site-footer .brand-mark {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  font-size: 0.92rem;
+}
+.site-footer .brand-mark img { width: 32px; height: 32px; }
+.site-footer .brand-mark .sub { font-family: var(--font-brand); font-weight: 400; letter-spacing: 1.5px; font-size: 0.6rem; }
+
+.site-nav {
+  display: flex; gap: 1.6rem;
+  margin-left: auto;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.site-nav a {
+  color: var(--fg-3);
+  position: relative;
+  padding: 6px 2px;
+  transition: color var(--ease-snappy);
+}
+.site-nav a:hover { color: var(--fg-1); }
+.site-nav a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--ease-standard);
+}
+.site-nav a:hover::after { transform: scaleX(1); }
+.site-nav a.active { color: var(--fg-1); }
+.site-nav a.active::after { transform: scaleX(1); }
+
+/* The header CTA reuses .btn .btn-primary .btn-sm; .nav-cta only kills the
+   nav underline animation and pins white-space so the label doesn't wrap. */
+.nav-cta {
+  color: #ffffff !important;
+  white-space: nowrap;
+}
+.nav-cta:hover { transform: translateY(-1px); }
+.nav-cta::after { display: none !important; }
+
+.menu-toggle { display: none; }
+
+/* ─── Containers, sections ─────────────────────────────────── */
+/* Horizontal padding only. Using padding-inline (not the `0 2rem` shorthand)
+ * so it never clobbers a section's vertical rhythm again — the two concerns
+ * live on different longhand properties and stop competing on specificity. */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 2rem;
+}
+.container-narrow {
+  max-width: 880px;
+  margin: 0 auto;
+  padding-inline: 2rem;
+}
+/* Vertical rhythm, centralized. Every section gets it via padding-block;
+ * <Section> variants below adjust the scale. */
+section { padding-block: 6rem; }
+.sec-compact { padding-block: 4rem; }
+.sec-tight   { padding-block: 1rem 2rem; }
+.sec-flush   { padding-block: 0; }
+.sec-first   { padding-block-start: 0; }
+.section-head { margin-bottom: 3.5rem; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--fg-1);
+  margin: 0;
+}
+h1 { letter-spacing: -0.5px; line-height: 1.08; }
+h2 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  letter-spacing: -0.3px;
+  line-height: 1.12;
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+}
+h2 + .rule, .section-head .rule { margin-bottom: 1.5rem; }
+.rule {
+  height: 3px; width: 84px;
+  background: var(--gradient-brand);
+  border-radius: 2px;
+  margin: 0 0 1.5rem 0;
+}
+h3 {
+  font-size: 1.18rem;
+  letter-spacing: 0;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+h4 { font-weight: 600; }
+p { margin: 0 0 1rem 0; line-height: 1.7; color: var(--fg-2); }
+.lead {
+  font-size: 1.18rem;
+  line-height: 1.65;
+  color: var(--fg-2);
+  max-width: 56ch;
+  font-weight: 500;
+}
+
+/* Eyebrow keeps the uppercase-display feel without Bruno Ace */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  padding: 14px 24px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--ease-standard);
+}
+.btn-primary {
+  background: var(--gradient-brand);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.btn-secondary {
+  background: transparent;
+  border: var(--border-gold-2);
+  color: var(--color-gold);
+}
+.btn-secondary:hover {
+  background: rgba(245,158,11,0.08);
+  border-color: var(--color-gold);
+  transform: translateY(-3px);
+}
+.btn-ghost {
+  color: var(--fg-2);
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.02);
+}
+.btn-ghost:hover { color: var(--fg-1); border-color: rgba(255,255,255,0.25); }
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  border-radius: var(--radius-md);
+}
+.btn .arrow { transition: transform var(--ease-snappy); }
+.btn:hover .arrow { transform: translateX(3px); }
+
+/* ─── Cards / feature tiles ────────────────────────────────── */
+.card {
+  background: var(--color-bg-tertiary);
+  border: var(--border-faint);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  backdrop-filter: blur(8px);
+  transition: all var(--ease-standard);
+}
+.card.gold-edge { border: var(--border-gold); }
+.card.gold-edge:hover {
+  border-color: rgba(243,158,11,0.30);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-sm);
+}
+.card .chip {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.18);
+  padding: 5px 10px;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+/* ─── Footer ───────────────────────────────────────────────── */
+.site-footer {
+  border-top: var(--border-faint);
+  padding: 3.5rem 0 2.5rem 0;
+  margin-top: 4rem;
+  background: rgba(0,0,0,0.4);
+}
+.site-footer .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+}
+.site-footer h4 {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin: 0 0 1.1rem 0;
+}
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer li { margin: 0 0 0.55rem 0; }
+.site-footer a { color: var(--fg-3); font-size: 0.92rem; transition: color var(--ease-snappy); }
+/* Long link labels (e.g. the contact email) break instead of overflowing the
+   column — but not the brand lockup, which must stay on one word. */
+.site-footer li a { overflow-wrap: anywhere; }
+.site-footer a:hover { color: var(--fg-1); }
+.site-footer .colophon {
+  max-width: 1200px;
+  margin: 2.5rem auto 0 auto;
+  padding: 2rem 2rem 0 2rem;
+  border-top: var(--border-faint);
+  display: flex; justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--fg-3);
+}
+.site-footer .brand-mark { color: var(--fg-1); }
+.site-footer p { font-size: 0.92rem; color: var(--fg-3); max-width: 36ch; }
+
+/* ─── Legal disclaimer footer ──────────────────────────────── */
+.legal-footer {
+  border-top: var(--border-faint);
+  margin-top: 4rem;
+  padding: 2rem 0 2.5rem 0;
+}
+.legal-footer .inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--fg-3);
+  text-align: center;
+}
+
+/* ─── Code blocks ──────────────────────────────────────────── */
+.code-block {
+  position: relative;
+  background: #07070a;
+  border: var(--border-faint);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--fg-2);
+  overflow-x: auto;
+  font-variant-numeric: tabular-nums;
+}
+.code-block .cmt { color: #6b7280; }
+.code-block .kw  { color: var(--color-purple-light); }
+.code-block .str { color: var(--color-gold-light); }
+.code-block .var { color: #60a5fa; }
+.code-block .num { color: var(--color-gold); }
+
+/* Long tokens in inline code (paths, header names, commands) must break
+   rather than overflow their column on narrow screens. */
+code { overflow-wrap: anywhere; }
+.inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+  background: rgba(245,158,11,0.10);
+  border: 1px solid rgba(245,158,11,0.18);
+  color: var(--color-gold-light);
+  padding: 1px 8px;
+  border-radius: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Device frame (the real ESP32 4" display) ─────────────── */
+.device-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  position: relative;
+  border-radius: 22px;
+  padding: 14px;
+  background: linear-gradient(160deg, #1c1c1f 0%, #0c0c0e 100%);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 1px 0 rgba(255,255,255,0.05) inset;
+}
+.device-frame .screen {
+  width: 100%; height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Custom-panel mockups (static; mirror screen_panel.c) ─────
+   A hand-built preview of the swipe-up custom panel. Sizes scale with the
+   frame via container query units (cqw), so it stays crisp from the big
+   landing frame down to the small setup gallery frames. Colours here are the
+   panel author's #rrggbb — exactly what the JSON `color`/`bg`/`title_color`
+   fields drive on the device. */
+.tmon-panel {
+  position: absolute; inset: 0;
+  container-type: inline-size;
+  background: #0d0c0b;
+  color: #faf9f5;
+  font-family: var(--font-body);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.tmon-panel__bar {
+  display: flex; align-items: center; gap: 2cqw;
+  padding: 3.5cqw 4cqw 2.5cqw;
+  flex: 0 0 auto;
+}
+.tmon-panel__back {
+  font-size: 3.4cqw; color: #888680;
+  border: 1px solid #292621; border-radius: 2cqw;
+  padding: 1cqw 2.4cqw; white-space: nowrap;
+}
+.tmon-panel__title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 4.4cqw; letter-spacing: 0.2px;
+  flex: 1; text-align: center; margin-right: 12cqw;
+}
+.tmon-panel__sub {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 3.8cqw; text-align: center;
+  padding: 0 4cqw 2cqw;
+}
+.tmon-panel__body { flex: 1; padding: 1cqw 5cqw 4cqw; min-height: 0; display: flex; flex-direction: column; }
+
+/* line/bar */
+.tmon-panel__chart {
+  flex: 1; min-height: 0;
+  background: #17150f; border: 1px solid #292621; border-radius: 2cqw;
+  padding: 2.5cqw;
+}
+.tmon-panel__chart svg { width: 100%; height: 100%; display: block; }
+.tmon-panel__bars { display: flex; align-items: flex-end; gap: 2.4cqw; height: 100%; }
+.tmon-panel__bars i { flex: 1; border-radius: 1cqw 1cqw 0 0; display: block; }
+.tmon-panel__legend {
+  display: flex; justify-content: center; gap: 5cqw;
+  font-size: 3.1cqw; color: #bfbdb6; padding-top: 2.5cqw;
+}
+.tmon-panel__legend span { display: inline-flex; align-items: center; gap: 1.6cqw; }
+.tmon-panel__legend b { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; }
+
+/* pie */
+.tmon-panel__pie-wrap { flex: 1; display: flex; align-items: center; gap: 5cqw; min-height: 0; }
+.tmon-panel__pie {
+  width: 42cqw; height: 42cqw; border-radius: 50%;
+  -webkit-mask: radial-gradient(circle, transparent 32%, #000 33%);
+          mask: radial-gradient(circle, transparent 32%, #000 33%);
+}
+.tmon-panel__pie-legend { display: flex; flex-direction: column; gap: 2.6cqw; font-size: 3.4cqw; }
+.tmon-panel__pie-legend span { display: inline-flex; align-items: center; gap: 2cqw; }
+.tmon-panel__pie-legend b { width: 3cqw; height: 3cqw; border-radius: 50%; flex: 0 0 auto; }
+
+/* table */
+.tmon-panel__table {
+  flex: 1; background: #17150f; border: 1px solid #292621; border-radius: 2cqw;
+  padding: 1cqw 3.5cqw; display: flex; flex-direction: column; justify-content: center;
+}
+.tmon-panel__table .row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2.6cqw 0; font-size: 4cqw;
+  border-bottom: 1px solid #23201b;
+}
+.tmon-panel__table .row:last-child { border-bottom: none; }
+.tmon-panel__table .row .k { color: #888680; }
+
+/* text */
+.tmon-panel__text {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  text-align: center; font-family: var(--font-display); font-weight: 700;
+  font-size: 8cqw; line-height: 1.2; padding: 4cqw;
+}
+
+/* ─── Tabs ─────────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: 4px;
+  padding: 6px;
+  background: var(--color-bg-tertiary);
+  border: var(--border-faint);
+  border-radius: var(--radius-lg);
+  width: fit-content;
+}
+.tab {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--fg-3);
+  background: transparent;
+  border: none;
+  transition: all var(--ease-snappy);
+}
+.tab:hover { color: var(--fg-1); }
+.tab.active {
+  background: rgba(245,158,11,0.12);
+  color: var(--color-gold);
+  box-shadow: inset 0 0 0 1px rgba(245,158,11,0.25);
+}
+
+/* ─── Step list ────────────────────────────────────────────── */
+.step {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 4rem;
+  padding: 4rem 0;
+  border-top: var(--border-faint);
+  align-items: center;
+}
+.step:first-child { border-top: none; padding-top: 0; }
+.step .step-num {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-gold);
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+  display: inline-block;
+}
+.step h3 {
+  font-size: 1.6rem;
+  letter-spacing: 0.8px;
+  margin-bottom: 1rem;
+  color: var(--fg-1);
+}
+.step.reverse { grid-template-columns: 480px 1fr; }
+.step.reverse .step-text { order: 2; }
+.step.reverse .step-visual { order: 1; }
+
+/* ─── Accordion (FAQ) ──────────────────────────────────────── */
+.accordion {
+  border-top: var(--border-faint);
+}
+.acc-item {
+  border-bottom: var(--border-faint);
+}
+.acc-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.5rem 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  color: var(--fg-1);
+  transition: color var(--ease-snappy);
+}
+.acc-summary::-webkit-details-marker { display: none; }
+.acc-summary:hover { color: var(--color-gold); }
+.acc-summary .plus {
+  width: 28px; height: 28px;
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1rem;
+  color: var(--color-gold);
+  transition: all var(--ease-standard);
+  flex-shrink: 0;
+}
+.acc-item[open] .acc-summary .plus { transform: rotate(45deg); background: rgba(245,158,11,0.1); }
+.acc-body {
+  padding: 0 0 1.75rem 0;
+  max-width: 78ch;
+  color: var(--fg-2);
+}
+.acc-body p { color: var(--fg-2); }
+.acc-body p:last-child { margin-bottom: 0; }
+
+/* ─── Spec strip ───────────────────────────────────────────── */
+.spec-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-bg-tertiary);
+  border: var(--border-faint);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--fg-3);
+  row-gap: 0.4rem;
+}
+.spec-strip span { padding: 0.4rem 1rem; position: relative; white-space: nowrap; }
+.spec-strip span + span::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 1em;
+  background: rgba(255,255,255,0.12);
+}
+.spec-strip .num {
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin-right: 0.35em;
+}
+
+/* ─── Tables (skill reference) ─────────────────────────────── */
+.tool-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: var(--border-faint);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-bg-tertiary);
+  backdrop-filter: blur(8px);
+}
+.tool-table th, .tool-table td {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  border-bottom: var(--border-faint);
+}
+.tool-table tr:last-child td { border-bottom: none; }
+.tool-table th {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: rgba(245,158,11,0.04);
+}
+.tool-table code {
+  font-family: var(--font-mono);
+  color: var(--color-gold-light);
+  font-size: 0.85rem;
+  background: rgba(245,158,11,0.08);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+/* ─── Provider stripes (Claude / Codex / Antigravity accent) ────── */
+.provider-tag {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.provider-tag .swatch {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.swatch.claude { background: #e07a4a; box-shadow: 0 0 12px rgba(224,122,74,0.6); }
+.swatch.codex  { background: #1ed29c; box-shadow: 0 0 12px rgba(30,210,156,0.55); }
+.swatch.antigravity { background: #3186FF; box-shadow: 0 0 12px rgba(49,134,255,0.55); }
+
+/* ─── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .site-header .inner { max-width: 1200px; }
+  .site-nav { gap: 1.2rem; font-size: 0.7rem; }
+  .brand-mark .sub { display: none; }
+}
+/* Comparison tables are content-dense; tighten padding so 3 columns fit a
+   phone viewport instead of clipping the last column. */
+@media (max-width: 600px) {
+  .tool-table th, .tool-table td { padding: 0.55rem 0.6rem; font-size: 0.82rem; }
+  .tool-table code { padding: 1px 5px; font-size: 0.78rem; }
+}
+
+@media (max-width: 900px) {
+  body { padding-top: 64px; }
+  .site-header { height: 64px; }
+  .site-header .inner { padding: 0 1.25rem; gap: 1rem; }
+  .site-nav {
+    position: fixed;
+    inset: 64px 0 auto 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(10,10,10,0.96);
+    backdrop-filter: blur(20px);
+    padding: 1rem 0;
+    border-bottom: var(--border-faint);
+    display: none;
+  }
+  .site-nav.open { display: flex; }
+  .site-nav a { padding: 1rem 1.5rem; width: 100%; }
+  .menu-toggle {
+    display: grid; place-items: center;
+    width: 40px; height: 40px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-md);
+    color: var(--fg-1);
+    margin-left: auto;
+    cursor: pointer;
+  }
+  section { padding-block: 4rem; }
+  .sec-compact { padding-block: 3rem; }
+  .container, .container-narrow { padding-inline: 1.25rem; }
+  .step { grid-template-columns: 1fr; gap: 2rem; }
+  .step.reverse { grid-template-columns: 1fr; }
+  .step.reverse .step-text { order: 1; }
+  .step.reverse .step-visual { order: 2; }
+  .device-frame { margin: 0 auto; }
+  .site-footer .inner { grid-template-columns: 1fr 1fr; }
+  .site-footer .colophon { flex-direction: column; gap: 0.5rem; }
+}
+
+/* ============================================================
+   LIGHT THEME — opt-in via [data-theme="light"] on <html>
+   Cream paper canvas, warm dark text, accents intact.
+   Code blocks + device screens + photo stay native (dark device
+   art is "content", not chrome).
+   ============================================================ */
+[data-theme="light"] {
+  --color-bg:            #f3f4f6;
+  --color-bg-secondary:  #ffffff;
+  --color-bg-tertiary:   rgba(255,255,255,0.72);
+
+  --fg-1:                #14110b;
+  --fg-2:                #3a342a;
+  --fg-3:                #6b6357;
+  --fg-on-gold:          #14110b;
+  --color-text:          var(--fg-1);
+  --color-text-secondary:var(--fg-2);
+  --color-text-muted:    var(--fg-3);
+
+  --border-faint:  1px solid rgba(20,17,11,0.10);
+  --border-gold:   1px solid rgba(193,95,60,0.18);
+  --border-gold-2: 1px solid rgba(193,95,60,0.40);
+
+  --shadow-sm:   0 4px 16px rgba(193,95,60,0.10);
+  --shadow-md:   0 8px 30px rgba(193,95,60,0.18);
+  --shadow-lg:   0 14px 36px rgba(193,95,60,0.20);
+  --shadow-purple: 0 12px 36px rgba(147,51,234,0.15);
+
+  /* Slightly warmer gold reads better on cream than the cool #F59E0B */
+  --color-gold:       #c47012;
+  --color-gold-light: #d98a23;
+}
+
+[data-theme="light"] body {
+  color: var(--fg-2);
+}
+
+[data-theme="light"] .bg-stage::before {
+  filter: grayscale(100%);
+  opacity: 0.05;
+}
+[data-theme="light"] .orb { opacity: 0.07; }
+
+/* Header / nav */
+[data-theme="light"] .site-header {
+  background: rgba(243,244,246,0.80);
+  border-bottom: 1px solid rgba(20,17,11,0.08);
+}
+[data-theme="light"] .site-nav a { color: var(--fg-3); }
+[data-theme="light"] .site-nav a:hover,
+[data-theme="light"] .site-nav a.active { color: var(--fg-1); }
+
+/* Footer flips to a soft warm panel */
+[data-theme="light"] .site-footer {
+  background: rgba(20,17,11,0.04);
+  border-top: 1px solid rgba(20,17,11,0.08);
+}
+
+/* Inline code / tags */
+[data-theme="light"] .inline-code {
+  background: rgba(193,95,60,0.10);
+  border: 1px solid rgba(193,95,60,0.25);
+  color: #8a4b1c;
+}
+
+/* Floating "Live" tag over the hero photo — needs darker bg for legibility on cream */
+[data-theme="light"] .hero-visual .float-tag {
+  background: rgba(20,17,11,0.90);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: #f6f3ec;
+}
+
+/* Browser bar dots in the captive portal mock — need contrast */
+[data-theme="light"] .portal-mock .dot-mac { background: rgba(20,17,11,0.20); }
+
+/* Stepper toc tiles + cards / property tiles read fine via --color-bg-tertiary,
+   but the warm-orange floating tag dots and accents need a tiny tweak: */
+[data-theme="light"] .site-footer .brand-mark { color: var(--fg-1); }
+[data-theme="light"] .site-footer p,
+[data-theme="light"] .site-footer a { color: var(--fg-3); }
+[data-theme="light"] .site-footer a:hover { color: var(--fg-1); }
+
+/* Step-number outline gold needs a darker stroke on cream */
+[data-theme="light"] .step-num,
+[data-theme="light"] .step-block .step-num {
+  -webkit-text-stroke-color: var(--color-gold);
+}
+
+/* Accordion plus button */
+[data-theme="light"] .acc-summary .plus {
+  border-color: rgba(193,95,60,0.4);
+  color: var(--color-gold);
+}
+
+/* Mobile menu open background */
+@media (max-width: 900px) {
+  [data-theme="light"] .site-nav {
+    background: rgba(250,248,243,0.98);
+    border-bottom: 1px solid rgba(20,17,11,0.08);
+  }
+  [data-theme="light"] .menu-toggle { border-color: rgba(20,17,11,0.18); }
+}
+
+/* Code-style components stay dark even in light theme (the syntax-highlight
+   palette is tuned for it), so force a light text colour and tweak comment
+   greys so the body copy doesn't bleed into the dark canvas. */
+[data-theme="light"] .code-block,
+[data-theme="light"] .term,
+[data-theme="light"] .term .input-line,
+[data-theme="light"] .skill-card .syntax {
+  color: #f1ead8;
+}
+[data-theme="light"] .code-block .cmt,
+[data-theme="light"] .term .out,
+[data-theme="light"] .term .titlebar .lbl { color: #9a9282; }
+
+/* Chat bubbles flip to a pale warm tint on cream */
+[data-theme="light"] .chat-bubble {
+  background: rgba(20,17,11,0.04);
+  border-color: rgba(20,17,11,0.10);
+  color: var(--fg-1);
+}
+[data-theme="light"] .chat-bubble code {
+  background: rgba(196,112,18,0.10);
+  color: #8a4b1c;
+}
+
+/* The "verify the plugin is loaded" green card swaps its inner grey bubbles
+   for white cards so they read on the lighter tint */
+[data-theme="light"] .verify { border-color: rgba(16,185,129,0.30); }
+[data-theme="light"] .verify .chat-bubble {
+  background: #ffffff;
+  border-color: rgba(20,17,11,0.10);
+}
+
+/* Skills example flow — same fix for the rose-tinted card on /skills */
+[data-theme="light"] .flow { border-color: rgba(147,51,234,0.25); }
+[data-theme="light"] .flow .chat-bubble {
+  background: #ffffff;
+  border-color: rgba(20,17,11,0.10);
+}
+
+/* Tool cards on /skills inherit the dark canvas via .tool-card .tool-name,
+   which was readable on dark and breaks on cream. */
+[data-theme="light"] .tool-card .returns span {
+  background: rgba(20,17,11,0.04);
+  border-color: rgba(20,17,11,0.10);
+  color: var(--fg-3);
+}
+
+/* ─── Theme toggle button ─────────────────────────────────── */
+.theme-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  margin-left: 0.4rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 999px;
+  color: var(--fg-2);
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: all var(--ease-snappy);
+}
+.theme-toggle:hover {
+  color: var(--color-gold);
+  border-color: rgba(245,158,11,0.35);
+  background: rgba(245,158,11,0.08);
+}
+.theme-toggle svg { width: 16px; height: 16px; }
+/* Show sun when dark (click to go light), moon when light (click to go dark) */
+.theme-toggle .ico-moon { display: none; }
+.theme-toggle .ico-sun  { display: block; }
+[data-theme="light"] .theme-toggle {
+  background: rgba(20,17,11,0.04);
+  border-color: rgba(20,17,11,0.15);
+  color: var(--fg-2);
+}
+[data-theme="light"] .theme-toggle:hover {
+  color: var(--color-gold);
+  border-color: rgba(196,112,18,0.40);
+  background: rgba(196,112,18,0.08);
+}
+[data-theme="light"] .theme-toggle .ico-moon { display: block; }
+[data-theme="light"] .theme-toggle .ico-sun  { display: none; }

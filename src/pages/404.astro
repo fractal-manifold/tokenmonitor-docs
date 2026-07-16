@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Page not found — TokenMonitor"
+  description="The page you were looking for does not exist on tokenmonitor.dev."
+  ogImage="/assets/prototype.jpg"
+  page="404"
+  noindex
+  legal={false}
+>
+  <div class="container">
+    <section class="notfound">
+      <div class="inner">
+        <p class="code" aria-hidden="true">404</p>
+        <h1>This page is off-grid.</h1>
+        <p class="lead">The page you were looking for has moved, or was never there. The device on your desk is still polling — just not for this URL.</p>
+        <div class="cta-row">
+          <a href="/" class="btn btn-primary">Back to home <span class="arrow">→</span></a>
+          <a href="/setup.html" class="btn btn-ghost">Setup guide</a>
+        </div>
+        <div class="shortcuts">
+          <h4>Or jump to</h4>
+          <ul>
+            <li><a href="/">Overview</a></li>
+            <li><a href="/setup.html">Setup</a></li>
+            <li><a href="/usage.html">Usage</a></li>
+            <li><a href="/plugin.html">Plugin install</a></li>
+            <li><a href="/plugin.html#skills">Skills reference</a></li>
+            <li><a href="/faq.html">FAQ &amp; troubleshooting</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style is:global>
+  .notfound {
+    min-height: calc(100vh - 80px - 200px);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 5rem 0 6rem;
+  }
+  .notfound .inner { max-width: 640px; }
+  .notfound .code {
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: clamp(5rem, 14vw, 9rem);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--color-gold-light, #f59e0b) 0%, var(--color-warm, #ef4444) 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    margin: 0 0 1rem;
+  }
+  .notfound h1 {
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    margin: 0 0 1rem;
+  }
+  .notfound .lead {
+    color: var(--fg-2);
+    font-size: 1.05rem;
+    margin: 0 0 2.25rem;
+  }
+  .notfound .cta-row {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .notfound .shortcuts {
+    border-top: var(--border-faint, 1px solid rgba(255,255,255,0.08));
+    padding-top: 2rem;
+    text-align: left;
+  }
+  .notfound .shortcuts h4 {
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg-3);
+  }
+  .notfound .shortcuts ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1.5rem;
+  }
+  .notfound .shortcuts a {
+    color: var(--fg-1);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .notfound .shortcuts a:hover {
+    border-bottom-color: var(--color-gold-light, #f59e0b);
+  }
+  @media (max-width: 540px) {
+    .notfound .shortcuts ul { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,12 @@
+---
+// Eyebrow + h2 + gradient rule + optional lead. The `.section-head` block that
+// opens most sections. Title goes in the default slot; lead in the `lead` slot.
+const { eyebrow, eyebrowStyle } = Astro.props;
+const hasLead = Astro.slots.has('lead');
+---
+<div class="section-head">
+  {eyebrow && <p class="eyebrow" style={eyebrowStyle}>{eyebrow}</p>}
+  <h2><slot /></h2>
+  <div class="rule"></div>
+  {hasLead && <p class="lead"><slot name="lead" /></p>}
+</div>

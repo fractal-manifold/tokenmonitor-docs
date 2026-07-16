@@ -1,0 +1,719 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+---
+<Layout
+  title="Plugin & skills — TokenMonitor"
+  description="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or the Antigravity CLI — plus the four skills and MCP tools it adds."
+  ogImage="/assets/prototype.jpg"
+  canonical="https://tokenmonitor.dev/plugin.html"
+  page="plugin"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">Plugin · skills · tools</p>
+      <h1>One MCP plugin.<br>Three CLIs.</h1>
+      <div class="rule"></div>
+      <p class="lead">The <code class="inline-code">tokenmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Same skill catalogue, same tool surface — only the install command differs. Install it below, then jump to the <a href="#skills" style="color:var(--color-gold-light)">skills &amp; tools reference</a>.</p>
+
+      <div class="cli-tabs">
+        <button class="cli-tab claude active" data-cli="claude">
+          <span class="swatch claude"></span>
+          <div class="label-block">
+            <h3>Claude Code</h3>
+          </div>
+        </button>
+        <button class="cli-tab codex" data-cli="codex">
+          <span class="swatch codex"></span>
+          <div class="label-block">
+            <h3>Codex CLI</h3>
+          </div>
+        </button>
+        <button class="cli-tab antigravity" data-cli="antigravity">
+          <span class="swatch antigravity"></span>
+          <div class="label-block">
+            <h3>Antigravity CLI</h3>
+          </div>
+        </button>
+      </div>
+
+      <!-- ── Claude Code panel ───────────────────────────────── -->
+      <div class="cli-panel active" data-panel="claude">
+        <div class="panel-head">
+          <h2>Claude Code</h2>
+          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
+        </div>
+        <p class="lead">Claude Code natively supports MCP marketplaces. Two commands — first you add the marketplace, then you install the plugin from it.</p>
+
+        <h4>Install</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin marketplace add fractal-manifold/mcp-marketplace
+<span class="prompt" style="color:var(--color-gold)">&gt;</span> /plugin install tokenmonitor@fractalmanifold-mcp-marketplace</div>
+
+        <h4>What it adds</h4>
+<div class="code-block"><span class="cmt"># Skills (you invoke these)</span>
+/tokenmonitor:configure
+/tokenmonitor:theme <span class="accent" style="color:var(--color-purple-light)">&lt;day|night|auto&gt;</span>
+/tokenmonitor:settings <span class="accent" style="color:var(--color-purple-light)">&lt;change&gt;…</span>
+/tokenmonitor:firmware
+
+<span class="cmt"># Tools the model calls as needed — the diagnostic four,</span>
+<span class="cmt"># plus control-plane tools the skills drive for you</span>
+tokenmonitor_status
+tokenmonitor_health
+tokenmonitor_recent_logs
+tokenmonitor_provision_hint</div>
+
+        <h4>Where it lives</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Marketplace entries land in <code class="inline-code">~/.claude/plugins/</code>. Uninstall any time with <code class="inline-code">/plugin uninstall tokenmonitor</code>.</p>
+      </div>
+
+      <!-- ── Codex CLI panel ─────────────────────────────────── -->
+      <div class="cli-panel" data-panel="codex">
+        <div class="panel-head">
+          <h2>Codex CLI</h2>
+          <span class="marketplace">registers <code class="inline-code">tokenmonitor-mcp</code> as an MCP server</span>
+        </div>
+        <p class="lead">Codex reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. One command registers the broker so Codex can call the <code class="inline-code">tokenmonitor_*</code> tools — install the <code class="inline-code">tokenmonitor-mcp</code> broker first (see <a href="/setup.html" style="color:var(--color-gold-light)">Setup</a>).</p>
+
+        <h4>Register the broker</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> codex mcp add tokenmonitor-mcp -- "$(command -v tokenmonitor-mcp)"</div>
+        <p style="font-size: 0.92rem; color: var(--fg-3); margin-top: -0.4rem;">Adds an <code class="inline-code">[mcp_servers.tokenmonitor-mcp]</code> entry to <code class="inline-code">~/.codex/config.toml</code>.</p>
+
+        <h4>What you get</h4>
+<div class="code-block"><span class="cmt"># Tools Codex can call as needed</span>
+tokenmonitor_status
+tokenmonitor_health
+tokenmonitor_recent_logs
+tokenmonitor_provision_hint
+
+<span class="cmt"># Pair &amp; reconfigure by asking Codex in plain language —</span>
+<span class="cmt"># it drives the provisioning + control-plane tools for you.</span></div>
+
+        <h4>Remove it</h4>
+        <p style="font-size: 0.92rem; color: var(--fg-3);">Drop the server any time with <code class="inline-code">codex mcp remove tokenmonitor-mcp</code>.</p>
+      </div>
+
+      <!-- ── Antigravity CLI panel ───────────────────────────── -->
+      <div class="cli-panel" data-panel="antigravity">
+        <div class="panel-head">
+          <h2>Antigravity CLI</h2>
+          <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
+        </div>
+        <p class="lead">Antigravity — the <code class="inline-code">agy</code> CLI, Google's successor to the Gemini CLI — reads extensions from <code class="inline-code">~/.gemini/antigravity-cli/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually. (It still runs the Gemini-family models, e.g. <code class="inline-code">gemini-3.5-flash</code> and <code class="inline-code">gemini-3.1-pro</code>.)</p>
+
+        <h4>Install (recommended)</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
+
+        <h4>Or — drop the JSON manually</h4>
+        <span class="file-tag">~/.gemini/antigravity-cli/extensions/tokenmonitor/gemini-extension.json</span>
+<div class="code-block">&#123;
+  <span class="str">"name"</span>:    <span class="str">"tokenmonitor"</span>,
+  <span class="str">"version"</span>: <span class="str">"0.4.0"</span>,
+  <span class="str">"mcpServers"</span>: &#123;
+    <span class="str">"tokenmonitor"</span>: &#123;
+      <span class="str">"command"</span>: <span class="str">"tokenmonitor-mcp"</span>,
+      <span class="str">"args"</span>:    [<span class="str">"mcp"</span>],
+      <span class="str">"env"</span>: &#123;
+        <span class="str">"TMON_BROKER"</span>: <span class="str">"http://localhost:8765"</span>
+      &#125;
+    &#125;
+  &#125;,
+  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>, <span class="str">"firmware"</span>]
+&#125;</div>
+
+        <h4>Restart Antigravity</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy restart
+<span class="cmt"># Loaded extension: tokenmonitor (skills: configure, theme, settings, firmware)</span></div>
+      </div>
+
+      <!-- ── Verify (common to all three) ────────────────────── -->
+      <div class="verify">
+        <div class="head">
+          <div class="check">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+          <div>
+            <h3>Verify the plugin is loaded</h3>
+            <p>Same prompt works in any of the three CLIs. It hits <code class="inline-code">tokenmonitor_status</code> under the hood.</p>
+          </div>
+        </div>
+        <div class="chat-bubble user">
+          What's the status of my TokenMonitor broker?
+        </div>
+        <div class="chat-bubble cli">
+          The broker is running with role <code>leader</code> on <code>localhost:8765</code>. It last served <code>tmon-3c7c9a02</code> a few seconds ago and has handled <strong style="color: var(--color-gold-light);">2,847 requests</strong> since it started 4&nbsp;hours ago. Health: <strong style="color: var(--color-success);">PASS</strong>.
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 0.92rem; color: var(--fg-3);">If the answer comes back with a different broker role, an empty request count, or the CLI says it can't find the tool — head to the <a href="/faq.html" style="color: var(--color-gold-light);">troubleshooting page</a>.</p>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- ── Skills & tools reference ────────────────────────── -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="part-head" id="skills">
+        <p class="eyebrow">Skills &amp; MCP tools</p>
+        <h2>Four skills. Four core tools.</h2>
+        <div class="rule"></div>
+        <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. Both are loaded the moment the <code class="inline-code">tokenmonitor</code> plugin is installed — nothing else to wire up.</p>
+      </div>
+
+      <!-- ── Skills (pulled from SKILL.md frontmatter) ────────── -->
+      <div class="skills-grid">
+        <article class="skill-card">
+          <div class="skill-name">/tokenmonitor:configure</div>
+          <h3>Pair or reconfigure a device</h3>
+          <p class="desc">Provision a new device, or reconfigure an existing one, from the LAN. Discovers via mDNS, prompts for the 6-digit pairing code, pushes broker URL + auto-generated PSK, registers the device locally.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>New device showing "Waiting for setup" / pairing code on screen</li>
+            <li><span class="b"></span>Moving the broker to a different machine</li>
+            <li><span class="b"></span>Rotating the passphrase / PSK</li>
+            <li><span class="b"></span>Re-establishing trust after a device factory reset</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/tokenmonitor:configure</span></div>
+
+          <h4>What it does, step by step</h4>
+          <ul>
+            <li><span class="b"></span>Scans <code class="inline-code">_tmon._tcp.local</code> for advertised devices</li>
+            <li><span class="b"></span>Prompts you to confirm the pairing code on the device</li>
+            <li><span class="b"></span>Generates a random per-device key (or hashes a passphrase you set)</li>
+            <li><span class="b"></span>POSTs the broker URL + key to the device over the LAN</li>
+            <li><span class="b"></span>Writes the device entry under <code class="inline-code">~/.config/tokenmonitor/devices/</code></li>
+          </ul>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/tokenmonitor:theme</div>
+          <h3>Switch themes remotely</h3>
+          <p class="desc">Flip a device between Day, Night or Auto themes from the comfort of your CLI. Auto follows sunrise/sunset for the device's configured city with a ±90 s hysteresis.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>Force Day mode for a screenshot</li>
+            <li><span class="b"></span>Force Night mode when you're working late and the sensor lags</li>
+            <li><span class="b"></span>Reset to Auto after manual overrides</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/tokenmonitor:theme</span> <span class="opt">&lt;day | night | auto&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Examples</h4>
+          <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/tokenmonitor:theme</span> auto</div>
+          <div class="syntax" style="margin-bottom: 0.5rem"><span class="arg">/tokenmonitor:theme</span> night <span class="opt">--device</span> tmon-3c7c9a02</div>
+          <div class="syntax"><span class="arg">/tokenmonitor:theme</span> day <span class="opt">--device</span> kitchen</div>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/tokenmonitor:settings</div>
+          <h3>Reconfigure a provisioned device</h3>
+          <p class="desc">Push runtime settings to an already-paired device via the control plane: city, day / night brightness, alert volume, which providers are enabled, auto-rotation, broker URL, passphrase rotation. The change applies on the device's next 60 s poll, with automatic rollback if it can't be promoted.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>"Set the city to Madrid"</li>
+            <li><span class="b"></span>"Lower night brightness to 15"</li>
+            <li><span class="b"></span>"Mute alerts" / "set volume to 0"</li>
+            <li><span class="b"></span>"Disable Codex on the TokenMonitor"</li>
+            <li><span class="b"></span>"Rotate providers every 60 s"</li>
+            <li><span class="b"></span>"Rotate the broker passphrase"</li>
+            <li><span class="b"></span>"Change the broker URL"</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/tokenmonitor:settings</span> <span class="opt">&lt;natural-language change&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Out of scope</h4>
+          <p class="desc" style="font-size:0.88rem">WiFi SSID / password cannot be changed remotely — a bad push would brick the device. Open the on-device Settings panel (long-press the mascot) or factory-reset and re-run <code class="inline-code">/tokenmonitor:configure</code>.</p>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-name">/tokenmonitor:firmware</div>
+          <h3>Stage a signed firmware update</h3>
+          <p class="desc">Stage an over-the-air firmware update to the device across your LAN, through the broker. Each image is an Ed25519-signed manifest the device verifies before the boot slot switches — with automatic rollback if the new build doesn't check in healthy, and an anti-rollback floor against downgrades.</p>
+
+          <h4>When to use</h4>
+          <ul>
+            <li><span class="b"></span>A new firmware release is available for your device</li>
+            <li><span class="b"></span>You want to move a device onto the dev / canary channel</li>
+            <li><span class="b"></span>Re-applying after an automatic rollback</li>
+          </ul>
+
+          <h4>Syntax</h4>
+          <div class="syntax"><span class="arg">/tokenmonitor:firmware</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
+
+          <h4>Safe by design</h4>
+          <p class="desc" style="font-size:0.88rem">Updates only ever flow over your own LAN, and the device installs nothing it can't cryptographically verify. If a build won't boot cleanly, it reverts itself.</p>
+        </article>
+      </div>
+
+      <!-- ── 4 MCP tools (table-style) ────────────────────────── -->
+      <div class="tools-section">
+        <p class="eyebrow">MCP tools</p>
+        <h2>What the model can call directly.</h2>
+        <div class="rule"></div>
+        <p class="lead" style="max-width: 64ch;">These are the four you'll reach for directly — your AI agent calls them in response to natural-language questions, no slash-skill needed. The skills drive a larger set of control-plane tools (device registry, discovery, firmware publish / revert) behind the scenes.</p>
+
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-name">tokenmonitor_status</div>
+            <h4>Runtime, role + request count</h4>
+            <p>Returns the broker's runtime, its role (<code class="inline-code">leader</code> or <code class="inline-code">follower</code>), when it last served the device, and the total requests handled since startup.</p>
+            <div class="returns">
+              <span>runtime</span><span>role: leader|follower</span><span>last_request_at</span><span>requests_total</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">tokenmonitor_health</div>
+            <h4>PASS / FAIL diagnostic per check</h4>
+            <p>Runs a PASS/FAIL check across your provider credentials (present, parseable, not expired), a signed self-ping to the broker, and recently observed device traffic.</p>
+            <div class="returns">
+              <span>ok</span><span>credentials</span><span>self_ping</span><span>observed_traffic</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">tokenmonitor_recent_logs</div>
+            <h4>Tail the broker log</h4>
+            <p>Returns the last N lines (default 50) of the broker's structured log. Useful when a device shows stale data and you want to see whether the broker even received the poll.</p>
+            <div class="returns">
+              <span>lines: int</span><span>level?: warn|err</span>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">tokenmonitor_provision_hint</div>
+            <h4>Suggests laptop LAN URLs</h4>
+            <p>Lists candidate broker URLs (your laptop's LAN interfaces) ranked by reachability. The captive portal uses this to populate the broker-URL field when you'd rather not run the configure skill.</p>
+            <div class="returns">
+              <span>urls[]</span><span>preferred: string</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Example end-to-end flow ──────────────────────────── -->
+      <div class="flow">
+        <p class="eyebrow" style="color: var(--color-purple-light);">Example</p>
+        <h3>A new device, end to end.</h3>
+        <p class="lead-sm">Powered on, pairing code visible, plugin installed. From here:</p>
+        <div class="flow-row">
+          <div>
+            <div class="chat-bubble user">I just powered on a new TokenMonitor. It's showing pairing code <code>428 715</code>.</div>
+            <div class="chat-bubble cli">I'll configure it. Running <code>/tokenmonitor:configure</code>… Found <code>tmon-3c7c9a02</code> at <code>192.168.1.42</code> via mDNS. Generated a device key and pushed it over the LAN. It's rebooting now — give it ~10 s.</div>
+          </div>
+          <div>
+            <div class="chat-bubble user">Is my broker actually serving it?</div>
+            <div class="chat-bubble cli">Called <code>tokenmonitor_status</code>. Broker is running with role <code>leader</code>; it last served <code>tmon-3c7c9a02</code> seconds ago, <strong style="color: var(--color-gold-light);">12 requests</strong> so far. Health <strong style="color: var(--color-success);">PASS</strong>.</div>
+            <div class="chat-bubble user">Switch to night mode.</div>
+            <div class="chat-bubble cli">Ran <code>/tokenmonitor:theme night</code>. Device acknowledged in 110 ms.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <Section spacing="flush">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px); margin-top: 4rem;">
+      <p class="eyebrow">Next step</p>
+      <h2 style="margin-bottom: 1rem">Configure your device.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;">With the plugin loaded, <code class="inline-code">/tokenmonitor:configure</code> takes over from here. It discovers the device on your LAN, prompts for the pairing code, pushes the PSK.</p>
+      <a href="/setup.html" class="btn btn-primary">Full setup walkthrough <span class="arrow">→</span></a>
+    </div>
+  </Section>
+</Layout>
+
+<script>
+  document.querySelectorAll('.cli-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const cli = t.dataset.cli;
+      document.querySelectorAll('.cli-tab').forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      document.querySelectorAll('.cli-panel').forEach(p => {
+        p.classList.toggle('active', p.dataset.panel === cli);
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 62ch; font-size: 1.18rem; }
+
+  /* ── Section divider heading (between install + reference) ── */
+  .part-head {
+    margin-top: 5rem;
+    padding-top: 3.5rem;
+    border-top: var(--border-faint);
+  }
+  .part-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: 0.5px;
+    margin: 0.5rem 0 0 0;
+  }
+  .part-head .lead { max-width: 60ch; font-size: 1.08rem; margin-top: 1rem; }
+
+  /* ── Big tab switcher ───────────────────────────────────── */
+  .cli-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin: 3rem 0 2.5rem 0;
+  }
+  .cli-tab {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    cursor: pointer;
+    text-align: left;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .cli-tab:hover { transform: translateY(-3px); }
+  .cli-tab .swatch {
+    width: 14px; height: 14px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cli-tab .swatch.claude { background: #e07a4a; box-shadow: 0 0 14px rgba(224,122,74,0.5); }
+  .cli-tab .swatch.codex  { background: #1ed29c; box-shadow: 0 0 14px rgba(30,210,156,0.5); }
+  .cli-tab .swatch.antigravity { background: #3186FF; box-shadow: 0 0 14px rgba(49,134,255,0.5); }
+  .cli-tab .label-block { line-height: 1.2; }
+  .cli-tab h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    color: var(--fg-1);
+    margin: 0 0 0.2rem 0;
+  }
+  .cli-tab .sub {
+    font-size: 0.78rem;
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+  }
+  .cli-tab.active {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .cli-tab.active.claude { border-color: rgba(224,122,74,0.50); box-shadow: 0 8px 30px rgba(224,122,74,0.18); }
+  .cli-tab.active.codex  { border-color: rgba(30,210,156,0.50); box-shadow: 0 8px 30px rgba(30,210,156,0.18); }
+  .cli-tab.active.antigravity { border-color: rgba(49,134,255,0.50); box-shadow: 0 8px 30px rgba(49,134,255,0.18); }
+
+  /* ── CLI panel ──────────────────────────────────────────── */
+  .cli-panel { display: none; }
+  .cli-panel.active { display: block; }
+  .cli-panel .panel-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-faint);
+  }
+  .cli-panel h2 {
+    font-size: 1.6rem;
+    margin: 0;
+  }
+  .cli-panel .marketplace {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--fg-3);
+  }
+  .cli-panel .marketplace a {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: rgba(245,158,11,0.4);
+  }
+  .cli-panel .lead { font-size: 1.05rem; color: var(--fg-2); }
+  .cli-panel h4 {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 1.8px;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    margin: 2rem 0 0.8rem 0;
+  }
+  .cli-panel .code-block { margin-bottom: 1rem; }
+
+  .file-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--fg-3);
+    background: rgba(255,255,255,0.04);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── Verify section ─────────────────────────────────────── */
+  .verify {
+    margin-top: 4rem;
+    background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(245,158,11,0.05) 100%);
+    border: 1px solid rgba(16,185,129,0.18);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+  }
+  .verify .head {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .verify .head .check {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.4);
+    display: grid; place-items: center;
+    color: var(--color-success);
+    flex-shrink: 0;
+  }
+  .verify h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  .verify .head p { margin: 0.2rem 0 0 0; font-size: 0.88rem; color: var(--fg-3); }
+  .verify p { color: var(--fg-2); }
+
+  /* ── Skills grid ────────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+  .skill-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-standard);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(245,158,11,0.30);
+    box-shadow: var(--shadow-sm);
+  }
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    top: -20%; right: -20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .skill-card .skill-name {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--color-gold-light);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .skill-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 1rem 0;
+  }
+  .skill-card .desc {
+    color: var(--fg-2);
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+  .skill-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 1.75rem 0 0.6rem 0;
+  }
+  .skill-card .syntax {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    color: var(--fg-2);
+    background: #07070a;
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .skill-card .syntax .opt { color: var(--color-purple-light); }
+  .skill-card .syntax .arg { color: var(--color-gold-light); }
+  .skill-card ul {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .skill-card ul li {
+    padding: 0.5rem 0 0.5rem 1.2rem;
+    border-bottom: var(--border-faint);
+    position: relative;
+    font-size: 0.92rem;
+    color: var(--fg-2);
+  }
+  .skill-card ul li:last-child { border-bottom: none; }
+  /* Dot sits in the left gutter so the text + inline code flow as one run
+     (a flex li would split the <code> into its own rigid column). */
+  .skill-card ul li .b {
+    position: absolute;
+    left: 0; top: 0.95rem;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  /* ── Tool cards (the 4 MCP tools) ───────────────────────── */
+  .tools-section {
+    margin-top: 4rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .tool-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .tool-card:hover {
+    border-color: rgba(245,158,11,0.25);
+    transform: translateY(-2px);
+  }
+  .tool-card .tool-name {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--color-gold-light);
+    margin-bottom: 0.6rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tool-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    color: var(--fg-1);
+    margin: 0 0 0.6rem 0;
+  }
+  .tool-card p {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+  .tool-card .returns {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+  .tool-card .returns span {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--fg-3);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── Example flow ───────────────────────────────────────── */
+  .flow {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(147,51,234,0.05) 0%, rgba(245,158,11,0.04) 100%);
+    border: 1px solid rgba(147,51,234,0.18);
+    border-radius: var(--radius-xl);
+  }
+  .flow h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.4rem 0;
+  }
+  .flow .lead-sm { color: var(--fg-2); margin-bottom: 2rem; }
+  .flow-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  /* ── Chat bubbles (shared by verify + flow) ─────────────── */
+  .chat-bubble {
+    background: rgba(20,20,20,0.6);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .chat-bubble.user {
+    border-left: 3px solid var(--color-gold);
+    color: var(--fg-1);
+  }
+  .chat-bubble.user::before {
+    content: 'YOU';
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    color: var(--color-gold);
+    margin-bottom: 0.3rem;
+  }
+  .chat-bubble.cli {
+    border-left: 3px solid var(--color-purple-light);
+  }
+  .chat-bubble.cli::before {
+    content: 'CLI';
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1.5px;
+    color: var(--color-purple-light);
+    margin-bottom: 0.3rem;
+  }
+  .chat-bubble code {
+    font-family: var(--font-mono);
+    background: rgba(245,158,11,0.10);
+    color: var(--color-gold-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.86rem;
+  }
+  /* tighter bubbles inside the example flow */
+  .flow .chat-bubble { padding: 0.9rem 1.1rem; margin: 0 0 1.25rem 0; border-radius: var(--radius-md); font-size: 0.92rem; }
+  .flow .chat-bubble:last-child { margin-bottom: 0; }
+  .flow .chat-bubble.cli::before { content: 'CLAUDE'; }
+
+  @media (max-width: 900px) {
+    .cli-tabs { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .flow-row { grid-template-columns: 1fr; }
+    .flow { padding: 1.75rem; }
+  }
+</style>

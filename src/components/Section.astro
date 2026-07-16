@@ -1,0 +1,24 @@
+---
+// Vertical-rhythm section. Replaces the raw `<section class="container">`
+// pattern. The section element itself carries `.container` (matching the
+// original markup), so it gets padding-inline (from .container) + padding-block
+// (from section) with no specificity collision — that IS the spacing fix.
+//   spacing: default 6rem · compact 4rem · tight 1rem/2rem · flush 0
+//   first:   drops top padding (section sitting right under the hero)
+//   width:   narrow => .container-narrow (880px)
+const { spacing = 'default', width = 'default', first = false, id, class: cls } = Astro.props;
+const base = width === 'narrow' ? 'container-narrow' : 'container';
+---
+<section
+  class:list={[
+    base,
+    spacing === 'compact' && 'sec-compact',
+    spacing === 'tight' && 'sec-tight',
+    spacing === 'flush' && 'sec-flush',
+    first && 'sec-first',
+    cls,
+  ]}
+  id={id}
+>
+  <slot />
+</section>

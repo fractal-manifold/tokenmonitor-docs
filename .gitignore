@@ -1,5 +1,10 @@
 # build output
 _site/
+dist/
+.astro/
+
+# dependencies
+node_modules/
 
 # macOS
 .DS_Store
@@ -9,6 +14,8 @@ _site/
 .vscode/
 *.iml
 
-# raw camera source footage — the web-encoded desk-loop.{mp4,webm} are what ship
+# raw camera source footage + editing masters — the web-encoded
+# desk-loop.{mp4,webm} in public/assets are what ship
 assets/*.MOV
 assets/DSCF9993.MOV
+_video-src/

@@ -1,0 +1,550 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+---
+<Layout
+  title="Usage — TokenMonitor"
+  description="Day-to-day usage guide for the TokenMonitor — dashboard, standby, settings, alerts, themes."
+  ogImage="/assets/prototype.jpg"
+  canonical="https://tokenmonitor.dev/usage.html"
+  page="usage"
+  usesDeviceScreens
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="eyebrow">Day-to-day</p>
+      <h1>How to use<br>your desk monitor.</h1>
+      <div class="rule"></div>
+      <p class="lead">The dashboard explained, what to expect in standby, where to find settings, what each of the four alerts means, and how themes follow your local daylight.</p>
+    </div>
+  </div>
+
+  <!-- ── Dashboard anatomy ──────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Dashboard</p>
+          <h2>What each number means.</h2>
+          <div class="step-rule"></div>
+          <p>The default screen is three stacked cards plus a single ambient strip. Designed to be read from 2–3 m away in under a second.</p>
+          <ol class="anatomy">
+            <li><div class="pin">1</div>
+              <div><h4>Current — 5-h session window</h4>
+                <p>How much of your active 5-hour Claude / Codex / Antigravity quota you've burned. Right-side projection is the AI's own forecast for end of window.</p></div></li>
+            <li><div class="pin">2</div>
+              <div><h4>Weekly — monthly cap pace</h4>
+                <p>Percent of the monthly limit consumed, with the day-of-month projection to the right. Yellow when you're trending over.</p></div></li>
+            <li><div class="pin">3</div>
+              <div><h4>Design — week's average</h4>
+                <p>Optional smaller card. Tracks long-running threads (Claude's "Design" mode). Hidden when zero so it never adds noise.</p></div></li>
+            <li><div class="pin">4</div>
+              <div><h4>Ambient strip</h4>
+                <p>Sunrise · sunset · temperature · battery. Lives under the header, stays lit in standby. Polls Open-Meteo hourly.</p></div></li>
+            <li><div class="pin">5</div>
+              <div><h4>Last-sync indicator</h4>
+                <p>The status word at the bottom (Whispering · Generating · Synthesizing) animates only while the broker has fresh data. Stale &gt; 60 s → fades to dim.</p></div></li>
+          </ol>
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Percentages or dollars?</strong>
+              <span>Depends on how you pay. On a <strong style="color: var(--fg-1)">Pro / Max subscription</strong> the cards show the <strong style="color: var(--fg-1)">percentage</strong> of your plan quota used — the number that actually matters when there's no per-token bill. On a <strong style="color: var(--fg-1)">pay-as-you-go API key</strong> there's no quota to fill, so the device shows an <strong style="color: var(--fg-1)">estimated&nbsp;$</strong> instead — your local token counts priced at public list rates (an estimate, not the invoice).</span>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-tmon-screen="claude-day" data-tmon-theme="auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Standby ────────────────────────────────────────────── -->
+  <section class="usage-block reverse">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Standby</p>
+          <h2>Quiet after 20 minutes.</h2>
+          <div class="step-rule"></div>
+          <p>Backlight ramps to 0% after 20 min of no touch. The last values persist in framebuffer along with the ambient strip — at 0% backlight they're invisible but the panel doesn't blank.</p>
+          <p>Tap anywhere — or press the <strong>PWR</strong> side button — to wake. The dashboard fades back in over 600 ms. A short PWR press also sends it back to standby on demand.</p>
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Why so long?</strong>
+              <span>20 min is empirically about one focused work block. Shorter and the device blanks mid-task; longer and you stop noticing it. Both bounds are tweakable in Settings.</span>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-tmon-screen="standby-day" data-tmon-theme="auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Buttons ────────────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Buttons</p>
+          <h2>Two side buttons.</h2>
+          <div class="step-rule"></div>
+          <p>Everything day-to-day is touch, but the two physical side buttons cover the moments the screen can't help you — sleeping, restarting, and starting over.</p>
+
+          <h4 style="margin: 1.4rem 0 0.4rem 0; color: var(--fg-1)">PWR — sleep, wake &amp; restart</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li><strong>Short press</strong> — toggle standby: blank the screen, or wake it.</li>
+            <li><strong>Hold ~2 s</strong> — restart the device. Nothing is erased — it just reboots, the way you'd power-cycle anything that's acting up. Wi-Fi, city, theme and pairing all come back exactly as they were.</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">BOOT — factory reset</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li><strong>Hold ~10 s</strong> — start a factory reset. A confirmation screen appears first; nothing is erased until you tap <strong>Erase</strong> (or <strong>Cancel</strong> to back out).</li>
+            <li>Confirming wipes your settings and pairing — Wi-Fi, city, brightness, providers, alert volume and the broker passphrase — then reboots into first-boot setup, ready to provision again.</li>
+            <li>The device's own identity and security state (its ID and update anti-rollback floor) are preserved, so it re-pairs cleanly without losing its place in the update chain.</li>
+          </ul>
+
+          <div class="callout" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--color-gold); flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.2rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Restart first, reset last</strong>
+              <span>If something looks wrong, hold PWR to restart before reaching for BOOT — a reboot fixes most transient glitches and keeps your setup intact. Factory reset is the clean-slate option. (Holding BOOT <em>while powering on</em> is a separate developer mode — see the <a href="/faq.html#troubleshooting">FAQ</a>.)</span>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-tmon-screen="saving" data-tmon-theme="auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Settings ───────────────────────────────────────────── -->
+  <section class="usage-block reverse">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Settings</p>
+          <h2>Tap the gear, bottom-right.</h2>
+          <div class="step-rule"></div>
+          <p>The gear icon on the dashboard's footer band opens Settings. Fields are grouped into five sections so the list scans at a glance instead of becoming one long flat enumeration.</p>
+
+          <h4 style="margin: 1.4rem 0 0.4rem 0; color: var(--fg-1)">Providers</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Claude Code · Codex · Antigravity (toggle each on / off)</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Display</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Auto-rotate (Enabled / Disabled)</li>
+            <li>Rotate interval (10..300 s)</li>
+            <li>Theme (Day / Night / Auto)</li>
+            <li>Day brightness · Night brightness</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Network</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>City (controls weather + Auto-theme sunrise / sunset)</li>
+            <li>Wi-Fi SSID + password</li>
+            <li>Broker URL (override the auto-discovered one)</li>
+            <li>Passphrase (rotates PSK — broker side updates via skill)</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">Audio</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Alert volume (0..100%) with four test buttons for live preview</li>
+          </ul>
+
+          <h4 style="margin: 1.2rem 0 0.4rem 0; color: var(--fg-1)">About</h4>
+          <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
+            <li>Device ID · Firmware version · IP address · Broker URL (read-only diagnostics)</li>
+          </ul>
+
+          <p style="margin-top: 1.2rem">Edits land on the editor screen with a slider + pencil for exact input. Cancel restores the previous value. The About rows are not editable — they show live device state for troubleshooting.</p>
+        </div>
+        <div class="uv">
+          <div class="theme-pair">
+            <div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="settings-day" data-tmon-theme="auto"></div></div>
+              <div class="lbl">Settings list</div>
+            </div>
+            <div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="editor-day" data-tmon-theme="auto"></div></div>
+              <div class="lbl">Editor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Alerts ─────────────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Alerts</p>
+          <h2>Four events. Hysteresis-armed.</h2>
+          <div class="step-rule"></div>
+          <p>The device fires four kinds of alert. Each is armed with a hysteresis band so it can't oscillate at the boundary — you get a single beep + flash, not a chatter loop.</p>
+          <div class="alerts-grid">
+            <div class="alert-card warn">
+              <div class="head"><h4>Battery low</h4><span class="threshold">&lt; 20%</span></div>
+              <p>Battery icon turns warning-orange. Soft chime on the hour.</p>
+              <div class="signal"><span>icon · orange</span><span>chime · soft</span></div>
+            </div>
+            <div class="alert-card danger">
+              <div class="head"><h4>Battery critical</h4><span class="threshold">&lt; 10%</span></div>
+              <p>Wakes the device from standby. Repeating beep until USB power is reconnected.</p>
+              <div class="signal"><span>full wake</span><span>beep · repeat</span></div>
+            </div>
+            <div class="alert-card gold">
+              <div class="head"><h4>Limit overshoot</h4><span class="threshold">→ &gt; 100%</span></div>
+              <p>Predicted to exceed the session or weekly cap before reset. Card outline pulses gold; one chime.</p>
+              <div class="signal"><span>card · pulse</span><span>chime · once</span></div>
+            </div>
+            <div class="alert-card purple">
+              <div class="head"><h4>5-h window rollover</h4><span class="threshold">@ rollover</span></div>
+              <p>Marks the moment Claude's 5-hour session window resets. Subtle bell.</p>
+              <div class="signal"><span>flash · purple</span><span>bell · soft</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen" data-tmon-screen="claude-night" data-tmon-theme="auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Themes ─────────────────────────────────────────────── -->
+  <section class="usage-block reverse">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Themes</p>
+          <h2>Day · Night · Auto.</h2>
+          <div class="step-rule"></div>
+          <p>Three modes. <strong style="color: var(--fg-1)">Auto</strong> follows sunrise/sunset for your configured city — with a ±90 s hysteresis so a passing cloud doesn't trigger a swap. Switch any time from Claude Code, Codex or Antigravity:</p>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:theme day|night|auto</div>
+          <div class="theme-row">
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: #e9dcc2"></span>
+                <span style="background: #fffdf8"></span>
+                <span style="background: #c15f3c"></span>
+              </div>
+              <h5>Day</h5>
+              <p>High-contrast, cream paper</p>
+            </div>
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: #120d09"></span>
+                <span style="background: #2a2017"></span>
+                <span style="background: #e07a4a"></span>
+              </div>
+              <h5>Night</h5>
+              <p>Warm dark, low-glare</p>
+            </div>
+            <div class="theme-tile">
+              <div class="swatch-stack">
+                <span style="background: linear-gradient(180deg, #e9dcc2 50%, #120d09 50%)"></span>
+                <span style="background: linear-gradient(180deg, #fffdf8 50%, #2a2017 50%)"></span>
+                <span style="background: linear-gradient(180deg, #c15f3c 50%, #e07a4a 50%)"></span>
+              </div>
+              <h5>Auto</h5>
+              <p>Tracks local daylight</p>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="theme-pair">
+            <div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="claude-day"></div></div>
+              <div class="lbl">Day · Claude Code</div>
+            </div>
+            <div>
+              <div class="device-frame"><div class="screen" data-tmon-screen="claude-night"></div></div>
+              <div class="lbl">Night · Claude Code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Custom panel ───────────────────────────────────────── -->
+  <section class="usage-block">
+    <div class="container">
+      <div class="usage-inner">
+        <div class="ut">
+          <p class="eyebrow">Custom panel</p>
+          <h2>Draw your own data.</h2>
+          <div class="step-rule"></div>
+          <p>Swipe up from the dashboard to reach an extra screen that shows <strong style="color: var(--fg-1)">whatever you want</strong> — a line or bar chart, a pie/donut, a key-value table or plain text. A small script on your laptop writes a JSON file; the broker serves it to the device over the same authenticated LAN link; the device draws it. Edit the file and the screen refreshes within seconds — nothing to recompile or reflash.</p>
+          <p>It's an <strong style="color: var(--fg-1)">opt-in</strong> feature, off by default. Turn it on from the device Settings, or from your CLI:</p>
+<div class="code-block" style="margin: 1rem 0"><span class="prompt" style="color:var(--color-gold)">&gt;</span> /tokenmonitor:settings panel_enabled=true</div>
+          <div class="callout" style="background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.22); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.92rem; display: flex; gap: 0.85rem; align-items: flex-start;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-purple-light); flex-shrink: 0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+            <div>
+              <strong style="color: var(--fg-1); display: block; margin-bottom: 0.25rem; font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase;">Full walkthrough on the setup page</strong>
+              <span>Where the file lives, the <code class="inline-code">[panel]</code> config and per-device files, a copy-paste generator script, colors, <code class="inline-code">poll_s</code> and all five widgets — step by step.</span>
+              <a href="/setup.html#custom-panel" class="btn btn-ghost" style="margin-top: 1rem;">Set up a custom panel <span class="arrow">→</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="uv">
+          <div class="device-frame">
+            <div class="screen">
+              <div class="tmon-panel">
+                <div class="tmon-panel__bar">
+                  <span class="tmon-panel__back">‹ Back</span>
+                  <span class="tmon-panel__title" style="color:#e0894a">Session</span>
+                </div>
+                <div class="tmon-panel__sub" style="color:#c15f3c">Tokens/min</div>
+                <div class="tmon-panel__body">
+                  <div class="tmon-panel__chart">
+                    <svg viewBox="0 0 100 60" preserveAspectRatio="none" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                      <polyline points="2,37.9 26,27.8 50,42.9 74,17.7 98,6" stroke="#c15f3c" stroke-width="1.8"/>
+                      <polyline points="2,51.3 26,46.3 50,53 74,39.5 98,32.8" stroke="#e07a4a" stroke-width="1.8"/>
+                    </svg>
+                  </div>
+                  <div class="tmon-panel__legend">
+                    <span><b style="background:#c15f3c"></b>in</span>
+                    <span><b style="background:#e07a4a"></b>out</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <Section spacing="flush">
+    <div class="close-cta" style="text-align:center; padding: 4rem 2rem; background: var(--color-bg-tertiary); border: var(--border-faint); border-radius: var(--radius-xl); backdrop-filter: blur(8px);">
+      <p class="eyebrow">Control plane</p>
+      <h2 style="margin-bottom: 1rem">Two skills do the heavy lifting.</h2>
+      <div class="rule" style="margin: 1.5rem auto;"></div>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/tokenmonitor:configure</code> pairs and provisions. <code class="inline-code">/tokenmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
+      <a href="/plugin.html#skills" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
+    </div>
+  </Section>
+</Layout>
+
+<style is:global>
+  .page-head {
+    padding: 4rem 0 3rem 0;
+  }
+  .page-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .page-head .lead { max-width: 60ch; font-size: 1.18rem; }
+
+  .usage-block {
+    padding: 5rem 0;
+    border-top: var(--border-faint);
+  }
+  .usage-block:first-of-type { border-top: none; padding-top: 2rem; }
+  .usage-inner {
+    display: grid;
+    grid-template-columns: 1fr 460px;
+    gap: 5rem;
+    align-items: start;
+  }
+  .usage-block.reverse .usage-inner { grid-template-columns: 460px 1fr; }
+  .usage-block.reverse .ut { order: 2; }
+  .usage-block.reverse .uv { order: 1; }
+
+  .usage-block h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: 0.8px;
+    margin-bottom: 1.25rem;
+  }
+  .usage-block .step-rule {
+    height: 2px; width: 56px;
+    background: var(--gradient-brand);
+    border-radius: 1px;
+    margin: 0 0 1.5rem 0;
+  }
+  .usage-block .eyebrow { margin-bottom: 1rem; }
+
+  /* ── Anatomy list (dashboard breakdown) ─────────────────── */
+  .anatomy {
+    list-style: none;
+    padding: 0; margin: 1.5rem 0 0 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .anatomy li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(8px);
+  }
+  .anatomy .pin {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.10);
+    border: 1px solid rgba(245,158,11,0.30);
+    color: var(--color-gold);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .anatomy h4 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+    color: var(--fg-1);
+    margin: 0 0 0.3rem 0;
+  }
+  .anatomy p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+
+  /* ── Alerts table ───────────────────────────────────────── */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .alert-card {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .alert-card.warn   { border-left: 3px solid var(--color-warning); }
+  .alert-card.danger { border-left: 3px solid var(--color-danger); }
+  .alert-card.gold   { border-left: 3px solid var(--color-gold); }
+  .alert-card.purple { border-left: 3px solid var(--color-purple); }
+  .alert-card .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .alert-card h4 {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.3px;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .alert-card .threshold {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-gold-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .alert-card p {
+    font-size: 0.88rem;
+    color: var(--fg-2);
+    margin: 0 0 0.6rem 0;
+    line-height: 1.55;
+  }
+  .alert-card .signal {
+    display: flex; gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .alert-card .signal span {
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ── Theme picker mock ──────────────────────────────────── */
+  .theme-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .theme-tile {
+    background: var(--color-bg-tertiary);
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    transition: all var(--ease-snappy);
+  }
+  .theme-tile:hover { border-color: rgba(245,158,11,0.25); transform: translateY(-2px); }
+  .theme-tile .swatch-stack {
+    display: flex; justify-content: center; gap: 4px;
+    margin-bottom: 0.7rem;
+  }
+  .theme-tile .swatch-stack span {
+    width: 22px; height: 36px;
+    border-radius: 4px;
+  }
+  .theme-tile h5 {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    color: var(--fg-1);
+    letter-spacing: 0.5px;
+    margin: 0 0 0.2rem 0;
+  }
+  .theme-tile p {
+    font-size: 0.75rem;
+    color: var(--fg-3);
+    margin: 0;
+    line-height: 1.4;
+  }
+  /* Theme dual screens */
+  .theme-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .theme-pair .lbl {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--fg-3);
+    text-align: center;
+    margin-top: 0.6rem;
+  }
+
+  @media (max-width: 900px) {
+    .usage-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .usage-block.reverse .usage-inner { grid-template-columns: 1fr; }
+    .usage-block.reverse .ut { order: 1; }
+    .usage-block.reverse .uv { order: 2; }
+    .alerts-grid { grid-template-columns: 1fr; }
+    .theme-row { grid-template-columns: 1fr; }
+    .usage-block { padding: 3rem 0; }
+  }
+</style>

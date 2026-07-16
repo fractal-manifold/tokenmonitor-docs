@@ -21,13 +21,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Stage static site
-        run: |
-          mkdir -p _site
-          cp *.html _site/
-          cp -r assets _site/
-          cp CNAME _site/
-          touch _site/.nojekyll
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -35,7 +39,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_site
+          # Astro emits the static site to dist/, and copies public/ verbatim,
+          # so CNAME + .nojekyll (in public/) land in dist/ automatically.
+          path: ./dist
 
   deploy:
     needs: build

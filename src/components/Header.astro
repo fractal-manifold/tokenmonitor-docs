@@ -1,0 +1,51 @@
+---
+// Site header + nav. Was injected at runtime by assets/site.js renderHeader().
+// Active link now comes from the `page` prop instead of body[data-page].
+import { NAV, WAITLIST_URL } from '../consts';
+const { page } = Astro.props;
+---
+<header class="site-header">
+  <div class="inner">
+    <a href="/index.html" class="brand-mark">
+      <img src="/assets/logo.png" alt="Fractal Manifold" />
+      <span class="name">
+        <span>TokenMonitor</span>
+        <span class="sub">by Fractal Manifold</span>
+      </span>
+    </a>
+    <nav class="site-nav" id="siteNav">
+      {NAV.map((n) => (
+        <a href={n.href} class={n.page === page ? 'active' : ''}>{n.label}</a>
+      ))}
+      <a href={WAITLIST_URL} target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">Get early access</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+      </svg>
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu" type="button">
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1h16M1 7h16M1 13h16"></path></svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  // Theme toggle (was site.js wireThemeToggle) + mobile menu toggle
+  // (was an inline onclick). Bundled once; runs on every page.
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('tmon:theme', next); } catch (_) {}
+  });
+  const menuBtn = document.getElementById('menuToggle');
+  menuBtn?.addEventListener('click', () => {
+    document.getElementById('siteNav')?.classList.toggle('open');
+  });
+</script>

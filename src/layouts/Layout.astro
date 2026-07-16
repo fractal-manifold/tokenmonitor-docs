@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import BgStage from '../components/BgStage.astro';
+import Header from '../components/Header.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import LegalFooter from '../components/LegalFooter.astro';
+import { SITE } from '../consts';
+
+const {
+  title,
+  description,
+  page,
+  canonical,
+  ogImage = '/assets/lead.jpg',
+  ogDescription = description,
+  ogAlt = 'TokenMonitor — 4-inch desk display showing live AI usage',
+  usesDeviceScreens = false,
+  noindex = false,
+  legal = true,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE).href;
+const ogImageUrl = new URL(ogImage, SITE).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{title}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description} />
+  {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalUrl} />}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TokenMonitor" />
+  <meta property="og:locale" content="en_US" />
+  {!noindex && <meta property="og:url" content={canonicalUrl} />}
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={ogDescription} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt" content={ogAlt} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={ogDescription} />
+  <meta name="twitter:image" content={ogImageUrl} />
+  <meta name="twitter:image:alt" content={ogAlt} />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo.png" />
+  <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)" />
+  {/* Anti-FOUC theme bootstrap — must stay inline & render-blocking in <head>. */}
+  <script is:inline>try{var t=localStorage.getItem('tmon:theme');document.documentElement.dataset.theme=(t==='dark')?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}</script>
+</head>
+<body data-page={page}>
+  <BgStage />
+  <Header page={page} />
+  <main>
+    <slot />
+  </main>
+  {legal && <LegalFooter />}
+  <SiteFooter />
+  {usesDeviceScreens && <script is:inline src="/assets/device-screens.js"></script>}
+</body>
+</html>
