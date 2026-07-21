@@ -174,22 +174,26 @@ command = "tokenmonitor-mcp"
 args = ["mcp"]
 ```
 
-**Antigravity CLI** (`agy`, successor to the Gemini CLI) — reads
-`~/.gemini/antigravity-cli/extensions/`:
+**Antigravity CLI** (`agy`, successor to the Gemini CLI) — installs
+from a GitHub subpath into `~/.gemini/config/plugins/`. Subcommand is
+`plugin` (NOT `extensions`), and the target must be the full
+`https://github.com/…` URL — a bare `owner/repo` shorthand is rejected:
 ```bash
-agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
+agy plugin install https://github.com/fractal-manifold/mcp-marketplace/plugins/tokenmonitor
 ```
 
-Extension JSON (same shape for all three):
+The install is self-contained: it copies the whole plugin, including
+the bundled `server/` launcher. The `gemini-extension.json` it writes
+points at that launcher (do NOT document a global-PATH `tokenmonitor-mcp`
++ `args:["mcp"]` — that's the old model):
 ```json
 {
   "name": "tokenmonitor",
-  "version": "0.4.0",
-  "description": "Registers tokenmonitor-mcp, the local broker for the TokenMonitor ESP32 device.",
+  "version": "0.10.4",
   "mcpServers": {
     "tokenmonitor": {
-      "command": "tokenmonitor-mcp",
-      "args": ["mcp"]
+      "command": "sh",
+      "args": ["${extensionPath}/server/tokenmonitor-mcp"]
     }
   }
 }

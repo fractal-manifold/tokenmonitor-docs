@@ -99,31 +99,25 @@ tokenmonitor_provision_hint
           <h2>Antigravity CLI</h2>
           <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
-        <p class="lead">Antigravity — the <code class="inline-code">agy</code> CLI, Google's successor to the Gemini CLI — reads extensions from <code class="inline-code">~/.gemini/antigravity-cli/extensions/</code>. One command installs from the marketplace, or you can drop the JSON manually. (It still runs the Gemini-family models, e.g. <code class="inline-code">gemini-3.5-flash</code> and <code class="inline-code">gemini-3.1-pro</code>.)</p>
+        <p class="lead">Antigravity — the <code class="inline-code">agy</code> CLI, Google's successor to the Gemini CLI — installs plugins straight from a GitHub subpath. One command; the plugin is self-contained (it bundles its own MCP server), so there's no separate broker install to wire up. (It still runs the Gemini-family models, e.g. <code class="inline-code">gemini-3.5-flash</code> and <code class="inline-code">gemini-3.1-pro</code>.)</p>
 
-        <h4>Install (recommended)</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
+        <h4>Install</h4>
+<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy plugin install https://github.com/fractal-manifold/mcp-marketplace/plugins/tokenmonitor</div>
+        <p style="font-size: 0.92rem; color: var(--fg-3); margin-top: -0.4rem;">Note the subcommand is <code class="inline-code">plugin</code> (not <code class="inline-code">extensions</code>), and the target is the full <code class="inline-code">https://github.com/…</code> URL — a bare <code class="inline-code">owner/repo</code> shorthand is rejected.</p>
 
-        <h4>Or — drop the JSON manually</h4>
-        <span class="file-tag">~/.gemini/antigravity-cli/extensions/tokenmonitor/gemini-extension.json</span>
+        <h4>Where it lands</h4>
+        <span class="file-tag">~/.gemini/config/plugins/tokenmonitor/gemini-extension.json</span>
 <div class="code-block">&#123;
   <span class="str">"name"</span>:    <span class="str">"tokenmonitor"</span>,
-  <span class="str">"version"</span>: <span class="str">"0.4.0"</span>,
+  <span class="str">"version"</span>: <span class="str">"0.10.4"</span>,
   <span class="str">"mcpServers"</span>: &#123;
     <span class="str">"tokenmonitor"</span>: &#123;
-      <span class="str">"command"</span>: <span class="str">"tokenmonitor-mcp"</span>,
-      <span class="str">"args"</span>:    [<span class="str">"mcp"</span>],
-      <span class="str">"env"</span>: &#123;
-        <span class="str">"TMON_BROKER"</span>: <span class="str">"http://localhost:8765"</span>
-      &#125;
+      <span class="str">"command"</span>: <span class="str">"sh"</span>,
+      <span class="str">"args"</span>:    [<span class="str">"$&#123;extensionPath&#125;/server/tokenmonitor-mcp"</span>]
     &#125;
-  &#125;,
-  <span class="str">"skills"</span>: [<span class="str">"configure"</span>, <span class="str">"theme"</span>, <span class="str">"settings"</span>, <span class="str">"firmware"</span>]
+  &#125;
 &#125;</div>
-
-        <h4>Restart Antigravity</h4>
-<div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> agy restart
-<span class="cmt"># Loaded extension: tokenmonitor (skills: configure, theme, settings, firmware)</span></div>
+        <p style="font-size: 0.92rem; color: var(--fg-3); margin-top: -0.4rem;">The install copies the whole plugin — skills, hooks and the bundled <code class="inline-code">server/</code> launcher. Start a fresh <code class="inline-code">agy</code> session to load it; remove it any time with <code class="inline-code">agy plugin uninstall tokenmonitor</code>.</p>
       </div>
 
       <!-- ── Verify (common to all three) ────────────────────── -->
