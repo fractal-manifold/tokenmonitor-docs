@@ -4,7 +4,7 @@ import Section from '../components/Section.astro';
 ---
 <Layout
   title="Plugin & skills — TokenMonitor"
-  description="Install the tokenmonitor MCP plugin for Claude Code, Codex CLI or the Antigravity CLI — plus the four skills and MCP tools it adds."
+  description="Install the tokenmonitor MCP plugin for Claude, Codex or Antigravity — from the command line, or the desktop app for Claude and Codex — plus the four skills and MCP tools it adds."
   ogImage="/assets/prototype.jpg"
   canonical="https://tokenmonitor.dev/plugin.html"
   page="plugin"
@@ -12,27 +12,27 @@ import Section from '../components/Section.astro';
   <div class="container">
     <div class="page-head">
       <p class="eyebrow">Plugin · skills · tools</p>
-      <h1>One MCP plugin.<br>Three CLIs.</h1>
+      <h1>One MCP plugin.<br>Three AI ecosystems.</h1>
       <div class="rule"></div>
-      <p class="lead">The <code class="inline-code">tokenmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Same skill catalogue, same tool surface — only the install command differs. Install it below, then jump to the <a href="#skills" style="color:var(--color-gold-light)">skills &amp; tools reference</a>.</p>
+      <p class="lead">The <code class="inline-code">tokenmonitor</code> plugin ships through Fractal Manifold's MCP marketplace. Claude, Codex and Antigravity each install it from the command line — and for Claude and Codex, from the desktop app too. Pick your ecosystem below, then jump to the <a href="#skills" style="color:var(--color-gold-light)">skills &amp; tools reference</a>.</p>
 
       <div class="cli-tabs">
-        <button class="cli-tab claude active" data-cli="claude">
+        <button type="button" class="cli-tab claude active" data-cli="claude">
           <span class="swatch claude"></span>
           <div class="label-block">
-            <h3>Claude Code</h3>
+            <h3>Claude</h3>
           </div>
         </button>
-        <button class="cli-tab codex" data-cli="codex">
+        <button type="button" class="cli-tab codex" data-cli="codex">
           <span class="swatch codex"></span>
           <div class="label-block">
-            <h3>Codex CLI</h3>
+            <h3>Codex</h3>
           </div>
         </button>
-        <button class="cli-tab antigravity" data-cli="antigravity">
+        <button type="button" class="cli-tab antigravity" data-cli="antigravity">
           <span class="swatch antigravity"></span>
           <div class="label-block">
-            <h3>Antigravity CLI</h3>
+            <h3>Antigravity</h3>
           </div>
         </button>
       </div>
@@ -40,9 +40,11 @@ import Section from '../components/Section.astro';
       <!-- ── Claude Code panel ───────────────────────────────── -->
       <div class="cli-panel active" data-panel="claude">
         <div class="panel-head">
-          <h2>Claude Code</h2>
+          <h2>Claude</h2>
           <span class="marketplace">via <a href="https://github.com/fractal-manifold/mcp-marketplace" target="_blank" rel="noopener">fractal-manifold/mcp-marketplace</a></span>
         </div>
+
+        <div class="method-head"><span class="method-tag">From the command line</span><span class="method-note">Claude Code</span></div>
         <p class="lead">Claude Code natively supports MCP marketplaces. Two commands — first you add the marketplace, then you install the plugin from it.</p>
 
         <h4>Install</h4>
@@ -65,15 +67,31 @@ tokenmonitor_provision_hint</div>
 
         <h4>Where it lives</h4>
         <p style="font-size: 0.92rem; color: var(--fg-3);">Marketplace entries land in <code class="inline-code">~/.claude/plugins/</code>. Uninstall any time with <code class="inline-code">/plugin uninstall tokenmonitor</code>.</p>
+
+        <div class="method-head"><span class="method-tag">From the desktop app</span><span class="method-note">Claude · Settings → Plugins</span></div>
+        <p class="lead">Prefer clicking to typing? The Claude desktop app installs the very same plugin from its Settings panel — no terminal needed.</p>
+        <ol class="gui-steps">
+          <li>Open <strong>Settings → Plugins</strong>, then click <strong>Add ▾</strong> in the top-right and choose <strong>Add marketplace</strong>.</li>
+          <li>Enter the marketplace repo <code class="inline-code">fractal-manifold/mcp-marketplace</code> and confirm.</li>
+          <li>Back in the plugin list, find <strong>Tokenmonitor</strong> by <em>fractal-manifold</em> and click <strong>Install</strong>.</li>
+        </ol>
+        <figure class="shot">
+          <img src="/assets/claude-desktop-add-marketplace.png"
+               alt="Claude desktop Settings → Plugins with the Add menu open, showing the Add marketplace option"
+               width="720" height="232" loading="lazy" decoding="async" />
+          <figcaption>Claude desktop → Settings → Plugins → <strong>Add ▾</strong> → <strong>Add marketplace</strong>.</figcaption>
+        </figure>
       </div>
 
       <!-- ── Codex CLI panel ─────────────────────────────────── -->
       <div class="cli-panel" data-panel="codex">
         <div class="panel-head">
-          <h2>Codex CLI</h2>
-          <span class="marketplace">registers <code class="inline-code">tokenmonitor-mcp</code> as an MCP server</span>
+          <h2>Codex</h2>
+          <span class="marketplace">MCP server on the CLI · full plugin in the app</span>
         </div>
-        <p class="lead">Codex reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. One command registers the broker so Codex can call the <code class="inline-code">tokenmonitor_*</code> tools — install the <code class="inline-code">tokenmonitor-mcp</code> broker first (see <a href="/setup.html" style="color:var(--color-gold-light)">Setup</a>).</p>
+
+        <div class="method-head"><span class="method-tag">From the command line</span><span class="method-note">Codex CLI · config.toml</span></div>
+        <p class="lead">Codex CLI reads MCP servers from <code class="inline-code">~/.codex/config.toml</code>. One command registers the broker so Codex can call the <code class="inline-code">tokenmonitor_*</code> tools — install the <code class="inline-code">tokenmonitor-mcp</code> broker first (see <a href="/setup.html" style="color:var(--color-gold-light)">Setup</a>).</p>
 
         <h4>Register the broker</h4>
 <div class="code-block"><span class="prompt" style="color:var(--color-gold)">$</span> codex mcp add tokenmonitor-mcp -- "$(command -v tokenmonitor-mcp)"</div>
@@ -91,6 +109,26 @@ tokenmonitor_provision_hint
 
         <h4>Remove it</h4>
         <p style="font-size: 0.92rem; color: var(--fg-3);">Drop the server any time with <code class="inline-code">codex mcp remove tokenmonitor-mcp</code>.</p>
+
+        <div class="method-head"><span class="method-tag">From the desktop app</span><span class="method-note">Codex · Plugins</span></div>
+        <p class="lead">The Codex desktop app has its own plugin marketplace. Installing from there pulls the <strong>full plugin — skills <em>and</em> tools</strong>, not just the MCP server the CLI command registers.</p>
+        <ol class="gui-steps">
+          <li>Open <strong>Plugins</strong>, click <strong>Create ▾</strong> in the top-right and choose <strong>Add marketplace</strong>.</li>
+          <li>Point it at the marketplace repo <code class="inline-code">fractal-manifold/mcp-marketplace</code>.</li>
+          <li>The <code class="inline-code">fractalmanifold-mcp-marketplace</code> section appears — install the <strong>TokenMonitor</strong> plugin (&ldquo;Control and diagnose TokenMonitor&hellip;&rdquo;).</li>
+        </ol>
+        <figure class="shot shot-wide">
+          <img src="/assets/codex-desktop-add-marketplace.png"
+               alt="Codex desktop Plugins page with the Create menu open, showing the Add marketplace option"
+               width="1325" height="365" loading="lazy" decoding="async" />
+          <figcaption>Codex desktop → Plugins → <strong>Create ▾</strong> → <strong>Add marketplace</strong>.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/codex-desktop-tokenmonitor-installed.png"
+               alt="Codex desktop Plugins page showing the fractalmanifold-mcp-marketplace section with the TokenMonitor plugin"
+               width="932" height="752" loading="lazy" decoding="async" />
+          <figcaption>The <code class="inline-code">fractalmanifold-mcp-marketplace</code> section, with the TokenMonitor plugin ready to install.</figcaption>
+        </figure>
       </div>
 
       <!-- ── Antigravity CLI panel ───────────────────────────── -->
@@ -128,7 +166,7 @@ tokenmonitor_provision_hint
           </div>
           <div>
             <h3>Verify the plugin is loaded</h3>
-            <p>Same prompt works in any of the three CLIs. It hits <code class="inline-code">tokenmonitor_status</code> under the hood.</p>
+            <p>Same prompt works in any of the three apps. It hits <code class="inline-code">tokenmonitor_status</code> under the hood.</p>
           </div>
         </div>
         <div class="chat-bubble user">
@@ -137,7 +175,7 @@ tokenmonitor_provision_hint
         <div class="chat-bubble cli">
           The broker is running with role <code>leader</code> on <code>localhost:8765</code>. It last served <code>tmon-3c7c9a02</code> a few seconds ago and has handled <strong style="color: var(--color-gold-light);">2,847 requests</strong> since it started 4&nbsp;hours ago. Health: <strong style="color: var(--color-success);">PASS</strong>.
         </div>
-        <p style="margin-top: 1.5rem; font-size: 0.92rem; color: var(--fg-3);">If the answer comes back with a different broker role, an empty request count, or the CLI says it can't find the tool — head to the <a href="/faq.html" style="color: var(--color-gold-light);">troubleshooting page</a>.</p>
+        <p style="margin-top: 1.5rem; font-size: 0.92rem; color: var(--fg-3);">If the answer comes back with a different broker role, an empty request count, or the app says it can't find the tool — head to the <a href="/faq.html" style="color: var(--color-gold-light);">troubleshooting page</a>.</p>
       </div>
 
       <!-- ══════════════════════════════════════════════════════ -->
@@ -450,6 +488,96 @@ tokenmonitor_provision_hint
     margin-bottom: 0.6rem;
   }
 
+  /* ── Method divider (Command line vs Desktop app) ───────── */
+  .method-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 2.75rem 0 1rem 0;
+    padding-top: 1.5rem;
+    border-top: var(--border-faint);
+  }
+  /* The command-line method sits right under the panel head — no top rule. */
+  .cli-panel > .method-head:first-of-type {
+    margin-top: 0.5rem;
+    padding-top: 0;
+    border-top: none;
+  }
+  .method-head .method-tag {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--fg-1);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.22);
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-md);
+  }
+  .method-head .method-note {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fg-3);
+  }
+
+  /* ── GUI step list ──────────────────────────────────────── */
+  .gui-steps {
+    list-style: none;
+    counter-reset: gui;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+  }
+  .gui-steps li {
+    counter-increment: gui;
+    position: relative;
+    padding: 0.55rem 0 0.55rem 2.4rem;
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--fg-2);
+    border-bottom: var(--border-faint);
+  }
+  .gui-steps li:last-child { border-bottom: none; }
+  .gui-steps li::before {
+    content: counter(gui);
+    position: absolute;
+    left: 0; top: 0.5rem;
+    width: 1.55rem; height: 1.55rem;
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-gold-light);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 50%;
+  }
+  .gui-steps strong { color: var(--fg-1); }
+
+  /* ── Screenshot figures ─────────────────────────────────── */
+  .shot {
+    margin: 0 0 1.5rem 0;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    border: var(--border-faint);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    background: #07070a;
+  }
+  /* Wide, shallow menu capture — don't blow it up to full column width. */
+  .shot.shot-wide img { max-width: 680px; }
+  .shot figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fg-3);
+    line-height: 1.5;
+  }
+  .shot figcaption strong { color: var(--fg-2); font-weight: 400; }
+
   /* ── Verify section ─────────────────────────────────────── */
   .verify {
     margin-top: 4rem;
@@ -682,7 +810,7 @@ tokenmonitor_provision_hint
     border-left: 3px solid var(--color-purple-light);
   }
   .chat-bubble.cli::before {
-    content: 'CLI';
+    content: 'APP';
     display: block;
     font-family: var(--font-display);
     font-size: 0.62rem;
