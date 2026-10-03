@@ -145,7 +145,9 @@ Key properties:
   device.
 - PSK derived from a memorable passphrase chosen at setup.
 - Per-device control plane: rotate keys, switch theme, change
-  broker URL — all from Claude Code.
+  settings — all from your AI client. (On firmware 1.0.1+ there is no
+  broker URL to manage — the device finds its broker by mDNS; older
+  units keep a pinned address the broker can re-point.)
 
 ### 3. Setup tutorial (`/setup`) — the main tutorial page
 
@@ -179,8 +181,8 @@ own card labels verbatim — they are what the user is looking at:
 - **Enter WiFi here** — scan + on-screen keyboard, no phone needed. Same
   picker component Settings opens later to change networks.
 - **Set up over USB** — no code to read or type; `/tokenmonitor:configure`
-  pushes Wi-Fi + broker URL + key in one go, collapsing steps 3 and 4. The
-  6-digit code gates the LAN path only. Linux hosts only for now.
+  pushes Wi-Fi + key in one go, collapsing steps 3 and 4. The
+  6-digit code gates the LAN path only. Linux and macOS hosts for now.
 
 Rendered as a three-column grid, each column led by the detail screen that
 card opens: `provisioning-softap`, `provisioning-picker`, `provisioning-usb`
@@ -190,7 +192,9 @@ status line. That is deliberate in the firmware and the mock mirrors it; don't
 re-add status to the chooser.
 
 Whichever route: device reboots once into "Waiting for setup" — except USB,
-which already carried broker URL + key and goes straight to the dashboard.
+which already carried the key: on firmware 1.0.0+ it discovers the broker by mDNS (one more
+short restart once found) and goes on to the dashboard, no code to type;
+older firmware is sent the broker address over the cable too.
 
 **Step 4 — Pair from Claude Code** *(the magic moment)*
 - Install plugin (see /plugin).
@@ -210,8 +214,8 @@ Each section with the matching mockup:
   average, ambient weather strip, last-sync indicator. (mockup 1)
 - **Standby** — 20 min idle → backlight 0 %, last values + ambient
   strip remain. Tap anywhere to wake. (mockup 2)
-- **Settings** — long-press the mascot to open. Editable: city,
-  Wi-Fi, broker URL, passphrase, day brightness, night brightness,
+- **Settings** — tap the gear (bottom-right of the dashboard) to open.
+  Editable: city, Wi-Fi, Service URL (auto-discovered on firmware 1.0.1+; a pin on older units), passphrase, day brightness, night brightness,
   alert volume. (mockups 7 + 8)
 - **Alerts** — 4 events:
   1. Battery < 20 % — red label + chirp
@@ -288,7 +292,7 @@ points at that launcher (do NOT document a global-PATH `tokenmonitor-mcp`
 ```json
 {
   "name": "tokenmonitor",
-  "version": "0.11.2",
+  "version": "1.0.2",
   "mcpServers": {
     "tokenmonitor": {
       "command": "sh",
@@ -305,14 +309,26 @@ role + request count. On `"no working implementation found"`, run
 
 ### 6. Skills + tools reference (`/skills`)
 
-**`/tokenmonitor:configure`** — Provision or reconfigure a device
-from the LAN. Discovers via mDNS, prompts for the 6-digit pairing
-code, pushes broker URL + auto-generated PSK, registers the device
-locally. Use when a new device shows "Waiting for setup".
+**`/tokenmonitor:configure`** — Pair a new device or reconfigure an
+existing one, over the LAN or a USB cable. LAN: discovers via mDNS and
+prompts for the 6-digit pairing code. USB: no code, and it can change
+Wi-Fi without a factory reset. A first pairing generates a PSK and registers the device locally; known
+devices keep their key, and settings-only changes leave the pairing alone. Firmware 1.0.0+ discovers the broker address by mDNS;
+for older units the skill pushes it with the key. Use when a new device shows "Waiting for setup".
+
+**`/tokenmonitor:settings`** — Remotely change any setting the on-device
+Settings panel exposes (city, brightness, volume, providers, rotation,
+theme, pet, custom panel, passphrase). No broker-URL setting on firmware
+1.0.1+; for older units it can re-point the device to the same broker at a
+new address.
 
 **`/tokenmonitor:theme`** — Switch a device between Day / Night /
 Auto remotely. Auto follows sunrise/sunset for the configured
 city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
+
+**`/tokenmonitor:firmware`** — Build signed firmware with `make build-prod`
+and stage it as an OTA: dev channel first (canary on revertible test
+units), then stable.
 
 **MCP tools** the model can call directly:
 
@@ -320,8 +336,11 @@ city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
 |-------------------------------|--------------------------------------------------------------------|
 | `tokenmonitor_status`         | Broker role (leader/follower), last ESP32 request, request count. |
 | `tokenmonitor_health`         | PASS/FAIL diagnostic per component (creds, self-ping, traffic).    |
-| `tokenmonitor_recent_logs`    | In-memory tail of the broker log.                                  |
-| `tokenmonitor_provision_hint` | Laptop LAN URLs ready to type into the portal.                     |
+| `tokenmonitor_recent_logs`    | Tail of the shared broker daemon log.                              |
+| `tokenmonitor_provision_hint` | Laptop LAN URLs the broker answers on (diagnostic; seeded automatically for pre-1.0.0 firmware). |
+
+The plugin exposes 17 tools in total (see the plugin README); these four are
+the ones a user reaches for directly.
 
 ### 7. FAQ (`/faq`)
 
@@ -346,7 +365,7 @@ city. Usage: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`.
 - Captive portal not appearing — only shown when NVS is empty.
   Reset from Settings.
 - Data stale (orange clock) — multiple polls failed. Check Wi-Fi,
-  firewall, broker URL.
+  firewall, and that the broker is running on the same LAN.
 - Audio silent — check volume in Settings. PA is gated by a
   TCA9554 expander; a reboot recovers it.
 - Weather absurd — geocoding failed. Re-enter the city; the

@@ -81,7 +81,7 @@ import Layout from '../layouts/Layout.astro';
             <div><span class="prompt">&gt;</span> <span class="input-line">/plugin install tokenmonitor@fractalmanifold-mcp-marketplace</span></div>
             <div class="out">Fetching plugin <span class="accent">tokenmonitor</span>…</div>
             <div class="out">Loaded skills: <span class="accent">configure</span>, <span class="accent">theme</span>, <span class="accent">settings</span>, <span class="accent">firmware</span></div>
-            <div class="out">MCP server <span class="accent">tokenmonitor</span> ready (17 tools)</div>
+            <div class="out">MCP server <span class="accent">tokenmonitor-mcp</span> ready (17 tools)</div>
             <div><span class="ok">[ok]</span> plugin installed · waiting for devices</div>
           </div>
         </div>
@@ -161,7 +161,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="screen" data-tmon-screen="provisioning-usb"></div>
           </div>
           <div class="route-head"><span class="route-n">3</span><h3>Set up over USB</h3></div>
-          <p>The cable it already draws power from is also a data link. One command from your agent pushes Wi-Fi, broker URL and key together — <strong style="color:var(--fg-1)">steps 3 and 4 collapse into one</strong>.</p>
+          <p>The cable it already draws power from is also a data link. One command from your agent pushes Wi-Fi and key together (plus the broker's address when the firmware needs it) — <strong style="color:var(--fg-1)">steps 3 and 4 collapse into one</strong>.</p>
           <ul>
             <li><strong>No pairing code.</strong> Plugging it in <em>is</em> the proof you are standing in front of it</li>
             <li>Works with no shared network at all — before the device has ever seen Wi-Fi</li>
@@ -201,14 +201,14 @@ import Layout from '../layouts/Layout.astro';
               <input type="password" value="••••••••••••" readonly>
             </div>
             <button class="portal-submit" type="button">Save and reboot</button>
-            <div class="portal-note">After saving, the device reboots and shows its IP and a <strong>6-digit pairing code</strong> on screen. Then run <code>/tokenmonitor:configure</code> from your AI agent on the same LAN and enter the code to finish setup (broker URL, key and city).</div>
+            <div class="portal-note">After saving, the device reboots and shows its IP and a <strong>6-digit pairing code</strong> on screen. Then run <code>/tokenmonitor:configure</code> from your AI agent on the same LAN and enter the code to finish setup (key and city; the broker address rides along for older firmware — from 1.0.0 the device finds the broker by itself).</div>
             <p class="portal-byline">by Fractal Manifold</p>
           </div>
         </div>
         <div class="portal-caption">
           <h4>Route 1 — what the portal looks like</h4>
           <p>Joining <code class="inline-code">TokenMonitor-XXXX</code> pops this page up on its own; if it doesn't, open <code class="inline-code">192.168.4.1</code> by hand.</p>
-          <p>It asks for two things and no more. Broker URL, key and city are <strong style="color:var(--fg-1)">not</strong> here — they come from your agent in step 4, over a signed channel, so nothing sensitive is ever typed into a page anyone on that access point could read.</p>
+          <p>It asks for two things and no more. Key and city are <strong style="color:var(--fg-1)">not</strong> here — they come from your agent in step 4 (the broker address is never typed either: the device finds it, or on older firmware your agent sends it), over a signed channel, so nothing sensitive is ever typed into a page anyone on that access point could read.</p>
         </div>
       </div>
 
@@ -220,7 +220,7 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
 
-      <p style="margin-top: 1.5rem">Whichever route you take, the device reboots once and lands on <em>Waiting for setup</em> — except route 3, which already carried the broker URL and key across the cable and goes straight to the dashboard.</p>
+      <p style="margin-top: 1.5rem">Whichever route you take, the device reboots once and lands on <em>Waiting for setup</em> — except route 3, which already carried the key across the cable: on firmware 1.0.0 and newer it finds the broker by itself (one more short restart once it has) and goes on to the dashboard, with no code to type; for older firmware the cable carries the broker address too.</p>
     </div>
   </section>
 
@@ -239,7 +239,7 @@ import Layout from '../layouts/Layout.astro';
             <li>Discovers your device on the LAN via mDNS</li>
             <li>Asks for the 6-digit code shown on screen</li>
             <li>Generates a passphrase, derives the PSK locally</li>
-            <li>Pushes broker URL + key, device reboots</li>
+            <li>Pushes the key (and the broker's address, which older firmware needs), device reboots</li>
           </ul>
           <div class="callout">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
@@ -252,7 +252,7 @@ import Layout from '../layouts/Layout.astro';
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12"/><circle cx="12" cy="19" r="2"/><path d="M8 8l4-5 4 5"/><path d="M7 12h10"/></svg>
             <div>
               <strong>Took route 3? You are already done.</strong>
-              <span>The cable carried Wi-Fi, broker URL and key in one push, so this step already happened — there is nothing to discover and no code to type. The 6-digit code on this page gates the <strong>LAN</strong> path only; over USB, plugging it in <em>is</em> the proof you are standing in front of the device. That also makes the cable the way out of guest networks and VLANs that block mDNS. See <a href="#step-3" style="color: var(--color-gold-light)">route 3</a> above.</span>
+              <span>The cable carried Wi-Fi and key in one push (and the broker's address, for firmware that needs it), so this step already happened — no code to type. The 6-digit code on this page gates the <strong>LAN</strong> path only; over USB, plugging it in <em>is</em> the proof you are standing in front of the device. That also lets you pair where your agent can't discover the device over mDNS (guest networks, VLANs). Once paired, though, firmware 1.0.1 and newer still finds the broker by mDNS on its own network — there is no pinned-address fallback — so the device and the broker need to share a network. See <a href="#step-3" style="color: var(--color-gold-light)">route 3</a> above.</span>
             </div>
           </div>
         </div>

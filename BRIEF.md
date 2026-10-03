@@ -47,7 +47,7 @@ CLI and the Antigravity CLI on the user's laptop. Designed to fit a standard
 /setup                      Tutorial (5 steps with screenshots)
 /usage                      Day-to-day usage guide
 /plugin                     MCP plugin install (Claude Code, Codex, Antigravity)
-/skills                     Skill reference (/tokenmonitor:configure, /tokenmonitor:theme)
+/skills                     Skill reference (/tokenmonitor:configure, :settings, :theme, :firmware)
 /faq                        Troubleshooting + FAQ
 ```
 
@@ -103,7 +103,9 @@ Bullet list of key properties:
   device.
 - PSK derived from a memorable passphrase you choose at setup.
 - Per-device control plane: rotate keys, switch theme, change
-  broker URL — all from Claude Code.
+  settings — all from your AI client. (On firmware 1.0.1+ there is no
+  broker URL to manage — the device finds its broker by mDNS; older
+  units keep a pinned address the broker can re-point.)
 
 ## 3. Setup tutorial (`/setup`) — **the main tutorial page**
 
@@ -112,14 +114,13 @@ Bullet list of key properties:
 
 ### Step 1 — Install the broker on your laptop
 
-```bash
-# Pick one
-go install github.com/fractal-manifold/tokenmonitor-mcp/cmd/tokenmonitor-mcp@latest
-pipx install tokenmonitor-mcp-py
-npm install -g tokenmonitor-mcp-js
+There is no separate broker install any more: the marketplace plugin bundles
+the broker and launches it (see section 5). With no Node / Python / Go on the
+host it downloads a verified prebuilt Go binary.
 
-# Then the launcher shim (one-time)
-curl -fsSL https://github.com/fractal-manifold/tokenmonitor-mcp/raw/main/tokenmonitor-mcp-launcher/install.sh | sh
+```text
+/plugin marketplace add fractal-manifold/mcp-marketplace
+/plugin install tokenmonitor@fractalmanifold-mcp-marketplace
 ```
 
 ### Step 2 — Power the device
@@ -142,18 +143,21 @@ site so the page and the screen agree.
   (It is derived from the device's MAC, so it keeps neighbours out but
   is not a secret — never describe this network as "open".)
   Browser auto-opens `192.168.4.1`. Form: Wi-Fi SSID + password
-  **only** — city, broker URL and passphrase are not asked here.
+  **only** — city and passphrase are not asked here, and neither is the
+  broker address (firmware 1.0.0+ finds it by mDNS; older units get it at
+  pairing).
 - **Enter WiFi here** — scan the air and type the password on the
   touchscreen. No phone or laptop involved at all.
 - **Set up over USB** — nothing to read or type: plug into a computer and run
-  `/tokenmonitor:configure`, which pushes Wi-Fi, broker URL and key in one
+  `/tokenmonitor:configure`, which pushes Wi-Fi and key in one
   payload, so steps 3 and 4 become one step. No pairing code is involved
   (the cable is the physical-presence proof; the 6-digit code is for the
-  LAN path only). Serial provisioning is Linux-only for now.
+  LAN path only). Serial provisioning is Linux + macOS for now.
 
 - Submit → device reboots **once** into "Waiting for setup" — except the USB
-  route, which already carried broker URL + key and goes straight to the
-  dashboard.
+  route, which already carried the key: on firmware 1.0.0+ it discovers the broker by
+  mDNS (one more short restart once found) and goes on to the dashboard;
+  older firmware is sent the broker address over the cable too.
 → All four screens now exist as live mocks in `device-screens.js`
   (`provisioning`, `provisioning-softap`, `provisioning-picker`,
   `provisioning-usb`) plus the captive-portal browser mock in `setup.astro`;
@@ -183,8 +187,8 @@ Each section paired with the relevant mockup:
   indicator. (mockup 1)
 - **Standby** — 20 min idle → backlight 0 %, last values + ambient
   strip remain. Tap anywhere to wake. (mockup 2)
-- **Settings** — long-press the mascot to open. Editable fields:
-  city, Wi-Fi, broker URL, passphrase, day brightness, night
+- **Settings** — tap the gear (bottom-right of the dashboard) to open.
+  Editable fields: city, Wi-Fi, Service URL (auto-discovered on firmware 1.0.1+; a pin on older units), passphrase, day brightness, night
   brightness, alert volume. (mockups 7 + 8)
 - **Alerts** — 4 events:
   1. Battery < 20 % — red label + chirp
@@ -220,24 +224,26 @@ args = ["mcp"]
 ### Antigravity CLI
 
 Antigravity (`agy`, Google's successor to the Gemini CLI) reads
-extensions from `~/.gemini/antigravity-cli/extensions/`. Either drop
-in the `gemini-extension.json` from the plugin repo, or:
+plugins from `~/.gemini/config/plugins/`. Install with (subcommand is
+`plugin`, target is the full URL):
 
 ```bash
-agy extensions install fractal-manifold/mcp-marketplace/plugins/tokenmonitor
+agy plugin install https://github.com/fractal-manifold/mcp-marketplace/plugins/tokenmonitor
 ```
 
-The extension JSON is identical across CLIs:
+Each client has its own manifest (`.claude-plugin/plugin.json`,
+`.codex-plugin/plugin.json`, `gemini-extension.json`); they share the version
+and the bundled launcher. The Antigravity one registers the MCP server only —
+promise the tools there, not the skills or the session-start hook:
 
 ```json
 {
   "name": "tokenmonitor",
-  "version": "0.4.0",
-  "description": "Registers tokenmonitor-mcp, the local broker for the TokenMonitor ESP32 device.",
+  "version": "1.0.2",
   "mcpServers": {
     "tokenmonitor": {
-      "command": "tokenmonitor-mcp",
-      "args": ["mcp"]
+      "command": "sh",
+      "args": ["${extensionPath}/server/tokenmonitor-mcp"]
     }
   }
 }
@@ -255,14 +261,18 @@ identifies which runtime got picked or which install hint applies.
 
 ## 6. Skills reference (`/skills`)
 
-Two cards, pulled from the SKILL.md frontmatter under
+Four cards, pulled from the SKILL.md frontmatter under
 `mcp-marketplace/plugins/tokenmonitor/skills/`:
 
 ### `/tokenmonitor:configure`
 
-Provision or reconfigure a device from the LAN. Discovers via
-mDNS, prompts for the 6-digit pairing code, pushes broker URL +
-auto-generated PSK, registers the device locally.
+Pair a new device or reconfigure an existing one, over the LAN or a
+USB cable. LAN: discovers via mDNS and prompts for the 6-digit pairing
+code. USB: no code, and it can change Wi-Fi without a factory reset.
+A first pairing generates a PSK and registers the device locally; known
+devices keep their key, and settings-only changes leave the pairing alone. Firmware
+1.0.0+ discovers the broker address by mDNS; for older units the skill
+pushes it with the key.
 
 **Use when**: user has a new device showing "Waiting for setup",
 or wants to re-pair an existing one.
@@ -274,14 +284,29 @@ follows sunrise/sunset for the configured city.
 
 **Usage**: `/tokenmonitor:theme <day|night|auto> [--device <device_id>]`
 
+### `/tokenmonitor:settings`
+
+Remotely change any setting the on-device Settings panel exposes (city,
+brightness, volume, providers, rotation, theme, pet, custom panel,
+passphrase). No broker-URL setting on firmware 1.0.1+; for older units it
+can re-point the device to the same broker at a new address.
+
+### `/tokenmonitor:firmware`
+
+Build signed firmware with `make build-prod` and stage it as an OTA: dev
+channel first (canary on revertible test units), then stable.
+
 ### MCP tools the model can call directly
 
 | Tool                          | What it does                                                       |
 |-------------------------------|--------------------------------------------------------------------|
 | `tokenmonitor_status`         | Broker role (leader/follower), last ESP32 request, request count. |
 | `tokenmonitor_health`         | PASS/FAIL diagnostic per component (creds, self-ping, traffic).    |
-| `tokenmonitor_recent_logs`    | In-memory tail of the broker log.                                  |
-| `tokenmonitor_provision_hint` | Suggests laptop LAN URLs to type into the captive portal.          |
+| `tokenmonitor_recent_logs`    | Tail of the shared broker daemon log.                              |
+| `tokenmonitor_provision_hint` | Laptop LAN URLs the broker answers on (diagnostic; seeded automatically for pre-1.0.0 firmware). |
+
+The plugin exposes 17 tools in total (see the plugin README); these four are
+the ones a user reaches for directly.
 
 ## 7. FAQ (`/faq`)
 
@@ -312,7 +337,7 @@ English. Key entries:
 - Captive portal not appearing — only shown when NVS is empty.
   Reset from Settings.
 - Data stale (orange clock) — multiple polls failing. Check Wi-Fi,
-  firewall, broker URL.
+  firewall, and that the broker is running on the same LAN.
 - Audio silent — verify volume in Settings; the PA is gated by a
   TCA9554 expander pin, a reboot recovers it.
 - Weather absurd — geocoding failed. Re-enter the city; lat/lon

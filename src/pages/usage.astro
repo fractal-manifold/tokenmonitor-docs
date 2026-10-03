@@ -157,7 +157,7 @@ import Section from '../components/Section.astro';
           <ul style="padding-left: 1.2rem; margin: 0 0 0.6rem 0; color: var(--fg-2)">
             <li>City (controls weather + Auto-theme sunrise / sunset)</li>
             <li>Wi-Fi SSID + password</li>
-            <li>Broker URL (override the auto-discovered one)</li>
+            <li>Service URL (the broker address — on firmware 1.0.1+ shown as <em>(auto)</em> when discovered, and a manual edit is replaced by the next discovery; older firmware uses exactly what you enter)</li>
             <li>Passphrase (rotates PSK — broker side updates via skill)</li>
             <li><strong>Pairing mode</strong> — re-opens the USB / LAN pairing window on an already-configured device, without a factory reset</li>
           </ul>
@@ -347,7 +347,7 @@ import Section from '../components/Section.astro';
       <p class="eyebrow">Control plane</p>
       <h2 style="margin-bottom: 1rem">Two skills do the heavy lifting.</h2>
       <div class="rule" style="margin: 1.5rem auto;"></div>
-      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/tokenmonitor:configure</code> pairs and provisions. <code class="inline-code">/tokenmonitor:theme</code> switches themes. Both ship with every CLI plugin.</p>
+      <p style="max-width: 56ch; margin: 0 auto 2rem auto;"><code class="inline-code">/tokenmonitor:configure</code> pairs and provisions. <code class="inline-code">/tokenmonitor:theme</code> switches themes. Both ship in the plugin, alongside the settings and firmware skills.</p>
       <a href="/plugin.html#skills" class="btn btn-primary">Skills reference <span class="arrow">→</span></a>
     </div>
   </Section>

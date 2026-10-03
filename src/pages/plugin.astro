@@ -4,7 +4,7 @@ import Section from '../components/Section.astro';
 ---
 <Layout
   title="Plugin & skills — TokenMonitor"
-  description="Install the tokenmonitor MCP plugin for Claude, Codex or Antigravity — from the command line, or the desktop app for Claude and Codex — plus the four skills and MCP tools it adds."
+  description="Install the tokenmonitor MCP plugin for Claude, Codex or Antigravity — from the command line, or the desktop app for Claude and Codex — plus the four skills and 17 MCP tools it adds."
   canonical="https://tokenmonitor.dev/plugin.html"
   page="plugin"
 >
@@ -210,7 +210,7 @@ tokenmonitor_provision_hint</div>
         <span class="file-tag">~/.gemini/config/plugins/tokenmonitor/gemini-extension.json</span>
 <div class="code-block">&#123;
   <span class="str">"name"</span>:    <span class="str">"tokenmonitor"</span>,
-  <span class="str">"version"</span>: <span class="str">"0.11.2"</span>,
+  <span class="str">"version"</span>: <span class="str">"1.0.3"</span>,
   <span class="str">"mcpServers"</span>: &#123;
     <span class="str">"tokenmonitor"</span>: &#123;
       <span class="str">"command"</span>: <span class="str">"sh"</span>,
@@ -218,7 +218,7 @@ tokenmonitor_provision_hint</div>
     &#125;
   &#125;
 &#125;</div>
-        <p class="route-fine" style="margin-top: -0.4rem;">The install copies the whole plugin — skills, hooks and the bundled <code class="inline-code">server/</code> launcher. Start a fresh <code class="inline-code">agy</code> session to load it; remove it any time with <code class="inline-code">agy plugin uninstall tokenmonitor</code>.</p>
+        <p class="route-fine" style="margin-top: -0.4rem;">The install copies the whole plugin, and the manifest above registers the bundled <code class="inline-code">server/</code> launcher — so the MCP tools are available. The manifest declares no skills or hooks: the session-start hook does not run under Antigravity, and whether the <code class="inline-code">/tokenmonitor:…</code> skills appear as commands depends on the client — if they don't, ask in plain language and the model drives the same tools. Start a fresh <code class="inline-code">agy</code> session to load it; remove it any time with <code class="inline-code">agy plugin uninstall tokenmonitor</code>.</p>
       </div>
 
       <!-- ── Verify (common to all three) ────────────────────── -->
@@ -246,9 +246,9 @@ tokenmonitor_provision_hint</div>
       <!-- ══════════════════════════════════════════════════════ -->
       <div class="part-head" id="skills">
         <p class="eyebrow">Skills &amp; MCP tools</p>
-        <h2>Four skills. Four core tools.</h2>
+        <h2>Four skills. Seventeen tools.</h2>
         <div class="rule"></div>
-        <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. Both are loaded the moment the <code class="inline-code">tokenmonitor</code> plugin is installed — nothing else to wire up.</p>
+        <p class="lead">Skills are explicit commands you invoke; tools are functions the model can call on your behalf. In Claude Code and Codex both are loaded the moment the <code class="inline-code">tokenmonitor</code> plugin is installed — nothing else to wire up. Every client gets the tools; skill support depends on the client.</p>
       </div>
 
       <!-- ── Skills (pulled from SKILL.md frontmatter) ────────── -->
@@ -256,13 +256,13 @@ tokenmonitor_provision_hint</div>
         <article class="skill-card">
           <div class="skill-name">/tokenmonitor:configure</div>
           <h3>Pair or reconfigure a device</h3>
-          <p class="desc">Provision a new device, or reconfigure an existing one, from the LAN. Discovers via mDNS, prompts for the 6-digit pairing code, pushes broker URL + auto-generated PSK, registers the device locally.</p>
+          <p class="desc">Provision a new device, or reconfigure an existing one, over the LAN or a USB cable. On the LAN it discovers the device via mDNS and prompts for the 6-digit pairing code; over USB no code is needed and it can also change Wi-Fi without a factory reset. A first pairing generates a key and registers the device locally; a device the broker already knows keeps its key, and a Wi-Fi-only or settings-only change leaves the pairing untouched. On firmware 1.0.0 and newer the device finds its broker by mDNS; for older units the skill pushes the broker's address along with the key.</p>
 
           <h4>When to use</h4>
           <ul>
             <li><span class="b"></span>New device showing "Waiting for setup" / pairing code on screen</li>
-            <li><span class="b"></span>Moving the broker to a different machine</li>
-            <li><span class="b"></span>Rotating the passphrase / PSK</li>
+            <li><span class="b"></span>Changing the Wi-Fi network of a device you already set up</li>
+            <li><span class="b"></span>Reaching a device on a guest network or VLAN, over the cable</li>
             <li><span class="b"></span>Re-establishing trust after a device factory reset</li>
           </ul>
 
@@ -271,10 +271,10 @@ tokenmonitor_provision_hint</div>
 
           <h4>What it does, step by step</h4>
           <ul>
-            <li><span class="b"></span>Scans <code class="inline-code">_tmon._tcp.local</code> for advertised devices</li>
-            <li><span class="b"></span>Prompts you to confirm the pairing code on the device</li>
+            <li><span class="b"></span>Scans <code class="inline-code">_tmon._tcp.local</code> for advertised devices (or the serial ports, for USB)</li>
+            <li><span class="b"></span>Prompts you for the pairing code on the device (LAN only)</li>
             <li><span class="b"></span>Generates a random per-device key (or hashes a passphrase you set)</li>
-            <li><span class="b"></span>POSTs the broker URL + key to the device over the LAN</li>
+            <li><span class="b"></span>Sends the key (and any settings) to the device — over the LAN, or down the USB cable</li>
             <li><span class="b"></span>Writes the device entry under <code class="inline-code">~/.config/tokenmonitor/devices/</code></li>
           </ul>
         </article>
@@ -303,7 +303,7 @@ tokenmonitor_provision_hint</div>
         <article class="skill-card">
           <div class="skill-name">/tokenmonitor:settings</div>
           <h3>Reconfigure a provisioned device</h3>
-          <p class="desc">Push runtime settings to an already-paired device via the control plane: city, day / night brightness, alert volume, which providers are enabled, auto-rotation, broker URL, passphrase rotation. The change applies on the device's next poll — about 10 seconds — with automatic rollback if it can't be promoted.</p>
+          <p class="desc">Push runtime settings to an already-paired device via the control plane: city, day / night brightness, alert volume, which providers are enabled, auto-rotation, theme, pet, custom panel, passphrase rotation. The change applies on the device's next poll — about 10 seconds — with automatic rollback if it can't be promoted.</p>
 
           <h4>When to use</h4>
           <ul>
@@ -313,24 +313,23 @@ tokenmonitor_provision_hint</div>
             <li><span class="b"></span>"Disable Codex on the TokenMonitor"</li>
             <li><span class="b"></span>"Rotate providers every 60 s"</li>
             <li><span class="b"></span>"Rotate the broker passphrase"</li>
-            <li><span class="b"></span>"Change the broker URL"</li>
           </ul>
 
           <h4>Syntax</h4>
           <div class="syntax"><span class="arg">/tokenmonitor:settings</span> <span class="opt">&lt;natural-language change&gt;</span> [<span class="opt">--device</span> <span class="arg">&lt;device_id&gt;</span>]</div>
 
           <h4>Out of scope</h4>
-          <p class="desc" style="font-size:0.88rem">This skill will not change WiFi blind. Ask it to and it hands you to <code class="inline-code">/tokenmonitor:configure</code>, which does it properly: over a <strong>USB cable</strong> (no factory reset, and it keeps the broker URL and key), or over the LAN when the device already remembers the network you are naming. Note the cable is only listening while the device is in <strong>pairing mode</strong> — on a device that is already online, hold <strong>BOOT</strong> for 3–10 seconds and let go first; it reboots into pairing mode and then the USB route works. A device only ever auto-joins networks it has a password for, so an open network has to be chosen over the cable or on the device's own screen. Display and provider tweaks are also available in the on-device Settings panel (tap the gear on the dashboard).</p>
+          <p class="desc" style="font-size:0.88rem">This skill will not change WiFi blind. Ask it to and it hands you to <code class="inline-code">/tokenmonitor:configure</code>, which does it properly: over a <strong>USB cable</strong> (no factory reset, and it keeps the pairing key), or over the LAN when the device already remembers the network you are naming. Note the cable is only listening while the device is in <strong>pairing mode</strong> — on a device that is already online, hold <strong>BOOT</strong> for 3–10 seconds and let go first; it reboots into pairing mode and then the USB route works. A device only ever auto-joins networks it has a password for, so an open network has to be chosen over the cable or on the device's own screen. Display and provider tweaks are also available in the on-device Settings panel (tap the gear on the dashboard). On firmware 1.0.1 and newer there is no broker address to change either: the device finds its broker by mDNS, so moving it to another machine means registering the same device ID and key on that machine's broker. Older units pin the address — the skill can re-point one to the same broker at a new address, and moving one to a different broker means re-pairing it with <code class="inline-code">/tokenmonitor:configure</code>.</p>
         </article>
 
         <article class="skill-card">
           <div class="skill-name">/tokenmonitor:firmware</div>
           <h3>Stage a signed firmware update</h3>
-          <p class="desc">Stage an over-the-air firmware update to the device across your LAN, through the broker. Each image is an Ed25519-signed manifest the device verifies before the boot slot switches — with automatic rollback if the new build doesn't check in healthy, and an anti-rollback floor against downgrades.</p>
+          <p class="desc">Build signed firmware from the repo (<code class="inline-code">make build-prod</code>) and stage it as an over-the-air update across your LAN, through the broker — dev channel first, as a canary on test units, then stable. Each image is an Ed25519-signed manifest the device verifies before the boot slot switches — with automatic rollback if the new build doesn't check in healthy, and an anti-rollback floor against downgrades.</p>
 
           <h4>When to use</h4>
           <ul>
-            <li><span class="b"></span>A new firmware release is available for your device</li>
+            <li><span class="b"></span>You built a new firmware version and want it on a device</li>
             <li><span class="b"></span>You want to move a device onto the dev / canary channel</li>
             <li><span class="b"></span>Re-applying after an automatic rollback</li>
           </ul>
@@ -343,12 +342,12 @@ tokenmonitor_provision_hint</div>
         </article>
       </div>
 
-      <!-- ── 4 MCP tools (table-style) ────────────────────────── -->
+      <!-- ── 4 of the 17 MCP tools (table-style) ────────────────────────── -->
       <div class="tools-section">
         <p class="eyebrow">MCP tools</p>
         <h2>What the model can call directly.</h2>
         <div class="rule"></div>
-        <p class="lead" style="max-width: 64ch;">These are the four you'll reach for directly — your AI agent calls them in response to natural-language questions, no slash-skill needed. The skills drive a larger set of control-plane tools (device registry, discovery, firmware publish / revert) behind the scenes.</p>
+        <p class="lead" style="max-width: 64ch;">These are the four of the 17 you'll reach for directly — your AI agent calls them in response to natural-language questions, no slash-skill needed. The skills drive a larger set of control-plane tools (device registry, discovery, LAN and USB provisioning, Wi-Fi changes, firmware publish / revert / update checks) behind the scenes.</p>
 
         <div class="tools-grid">
           <div class="tool-card">
@@ -370,7 +369,7 @@ tokenmonitor_provision_hint</div>
           <div class="tool-card">
             <div class="tool-name">tokenmonitor_recent_logs</div>
             <h4>Tail the broker log</h4>
-            <p>Returns the last N lines (default 50) of the broker's structured log. Useful when a device shows stale data and you want to see whether the broker even received the poll.</p>
+            <p>Returns the last N lines (default 50) of the shared broker daemon's log. Useful when a device shows stale data and you want to see whether the broker even received the poll.</p>
             <div class="returns">
               <span>limit: string</span>
             </div>
@@ -378,9 +377,9 @@ tokenmonitor_provision_hint</div>
           <div class="tool-card">
             <div class="tool-name">tokenmonitor_provision_hint</div>
             <h4>Suggests laptop LAN URLs</h4>
-            <p>Lists candidate broker URLs (your laptop's LAN interfaces) ranked by reachability. The captive portal uses this to populate the broker-URL field when you'd rather not run the configure skill.</p>
+            <p>Lists the URLs your broker is reachable on (your laptop's LAN interfaces plus the broker port). Mostly a diagnostic: on firmware 1.0.0 and newer the device finds its broker by mDNS. Older units need the address pushed at pairing: over the LAN the tool sends this host's address on the route to the device, and over USB it uses this list when it has exactly one URL (otherwise it asks).</p>
             <div class="returns">
-              <span>urls[]</span><span>preferred: string</span>
+              <span>port</span><span>bind</span><span>hosts[]</span><span>urls[]</span>
             </div>
           </div>
         </div>

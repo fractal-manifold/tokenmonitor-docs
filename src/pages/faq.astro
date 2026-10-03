@@ -78,7 +78,7 @@ import { KICKSTARTER_URL, KICKSTARTER_CTA } from '../consts';
               <summary class="acc-summary">Which CLIs are supported — what if I only use one? <span class="plus">+</span></summary>
               <div class="acc-body">
                 <p>Claude Code, Codex CLI and the Antigravity CLI. Enable one or all three from Settings; a provider whose CLI isn't installed simply doesn't appear. The pairing plugin installs into whichever of the three you use.</p>
-                <p>The "magic" pairing skill is most polished in Claude Code, but the broker is a standard local server — you can configure a device against it manually (broker URL + key) from any of the supported CLIs, or by hand.</p>
+                <p>The "magic" pairing skill is most polished in Claude Code, but the broker is a standard local server — you can configure a device against it manually (broker URL + key) from any of the supported CLIs, or by hand. On firmware 1.0.0 and newer the broker URL is optional — the device finds the broker by mDNS; older firmware needs it.</p>
               </div>
             </details>
 
@@ -176,7 +176,7 @@ import { KICKSTARTER_URL, KICKSTARTER_CTA } from '../consts';
             <details class="acc-item">
               <summary class="acc-summary">I have two laptops / a work and a personal machine. <span class="plus">+</span></summary>
               <div class="acc-body">
-                <p>One broker reads one machine's usage — the machine it runs on. To track a second laptop, run a broker there too; a device points at one broker at a time, and you can re-point it (broker URL is editable in Settings or via the configure skill). There's no built-in aggregation of two machines into a single combined number.</p>
+                <p>One broker reads one machine's usage — the machine it runs on. To track a second laptop, run a broker there too; a device points at one broker at a time, and you can move it. On firmware 1.0.1 and newer, register the same device ID and key on the other machine's broker and stop the old one — the device finds whichever broker holds its key by mDNS, so there is no address to change. Older firmware pins the broker URL (editable in Settings): pointing it at a broker that doesn't hold its key just gets refused, so re-pair it from the other machine with the configure skill. There's no built-in aggregation of two machines into a single combined number.</p>
               </div>
             </details>
 
@@ -291,7 +291,7 @@ import { KICKSTARTER_URL, KICKSTARTER_CTA } from '../consts';
             <h4>My laptop's IP changed — do I have to re-point the device?</h4>
             <p>Router rebooted, DHCP handed out a new address, or you moved the laptop between networks.</p>
             <span class="fix-tag">Fix</span>
-            <p>Nothing to do. The device notices within about twenty seconds that the address stopped answering, asks the network over mDNS where the broker went, and picks up the new address — usually back on screen in half a minute. It only accepts an answer from a broker that already knows this device, so a stray service on the LAN can't hijack it. If it doesn't come back, the two are probably no longer on the same layer-2 network (guest Wi-Fi, VLAN, or mDNS blocked) — see the stale-data card above.</p>
+            <p>Nothing to do. The device notices within about twenty seconds that the address stopped answering, asks the network over mDNS where the broker went, and picks up the new address — usually back on screen in half a minute. On firmware 1.0.1 and newer it only accepts an answer from a broker that proves it holds this device's key, so a stray service on the LAN can't hijack it; older firmware lacks that proof (1.0.0) or keeps a fixed broker address you change in Settings (0.12 and earlier). If it doesn't come back, the two are probably no longer on the same layer-2 network (guest Wi-Fi, VLAN, or mDNS blocked) — see the stale-data card above.</p>
           </div>
 
           <div class="ts-card symptom">
